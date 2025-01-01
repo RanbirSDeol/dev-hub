@@ -6,13 +6,24 @@ require('dotenv').config();
 const express = require('express');
 const sqlite3 = require('sqlite3').verbose();  // Import sqlite3
 const app = express();
-const port = 5000;
+const port = process.env.PORT;
+const bcrypt = require('bcrypt');
+
+// | Documentation |
+/*
+[http://localhost:port]
+
+'/' : A simple api check
+
+*/
 
 // Middleware to parse JSON
 app.use(express.json());
 
+// | GOALS |
+
 // SQLite connection
-const db = new sqlite3.Database('./models/goals.db', (err) => {
+const db = new sqlite3.Database(process.env.DB, (err) => {
   if (err) {
     console.error('Error connecting to SQLite database:', err.message);
   } else {
@@ -104,6 +115,50 @@ app.delete("/goals/:id", (req, res) => {
       res.status(204).send();
     }
   });
+});
+
+// | USERS |
+
+// Route to get all registered users | GET
+app.get('/users', async (req, res) => {
+  const sql = 'SELECT id, email, created_at FROM users';
+
+  db.all(sql, [], (err, rows) => {
+    if (err) {
+      console.error('Error fetching users: ', err);
+      return res.status(500).json({ error: 'Internal server error.' })
+    }
+
+    res.status(200).json({ users: rows })
+  })
+})
+
+// Route to register a new user | POST
+app.post('/register', async (req, res) => {
+  const { email, password } = req.body;
+
+  if (!email || !password) {
+    return res.status(400).json({ error: 'Email and password are required.' });
+  }
+
+  try {
+    // Hash the password
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Insert user into the database
+    const sql = `INSERT INTO users (email, password) VALUES (?, ?)`;
+    db.run(sql, [email, hashedPassword], function (err) {
+      if (err) {
+        if (err.message.includes('UNIQUE constraint failed')) {
+          return res.status(400).json({ error: 'Email already in use.' });
+        }
+        return res.status(500).json({ error: err.message });
+      }
+      res.status(201).json({ id: this.lastID, email });
+    });
+  } catch (error) {
+    res.status(500).json({ error: 'Internal server error.' });
+  }
 });
 
 // Start the server
