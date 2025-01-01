@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styles from './styles/Login.module.css';  
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import { faEye, faEyeSlash, faCalendar } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';  // Importing useNavigate for navigation after successful login
 
 const Login = () => {
@@ -63,6 +63,12 @@ const Login = () => {
 
   return (
     <div className={styles.mainContainer}>
+      <div className={styles.displayName}>
+        <h1>
+          Goal Tracker
+          <FontAwesomeIcon icon={faCalendar} style={{ marginLeft: '25px', color: 'rgb(47, 130, 224)'}} />
+        </h1>
+      </div>
       <div className={styles.leftContainer}>
         <form onSubmit={handleSubmit} className={styles.form}>
           <h1 className={styles.title}>
@@ -112,7 +118,7 @@ const Login = () => {
 
           <button type="submit" className={styles.sign_in_button}>Login</button>
           <p className={styles.subtitle}>
-            Don't have an account? <a href="/signup">Sign up</a>
+            Don't have an account? <a className={styles.link} href="/sign-up">Sign up</a>
           </p>
         </form>
       </div>

@@ -157,7 +157,7 @@ app.delete("/goals/:id", (req, res) => {
 
 // Route to get all registered users | GET
 app.get('/users', async (req, res) => {
-  const sql = 'SELECT id, email, created_at FROM users';
+  const sql = 'SELECT id, name, email, created_at FROM users';
 
   db.all(sql, [], (err, rows) => {
     if (err) {
@@ -171,10 +171,10 @@ app.get('/users', async (req, res) => {
 
 // Route to register a new user | POST
 app.post('/register', async (req, res) => {
-  const { email, password } = req.body;
+  const { name, email, password } = req.body;
 
-  if (!email || !password) {
-    return res.status(400).json({ error: 'Email and password are required.' });
+  if (!name || !email || !password) {
+    return res.status(400).json({ error: 'Name, email, and password are required.' });
   }
 
   try {
@@ -182,15 +182,18 @@ app.post('/register', async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     // Insert user into the database
-    const sql = `INSERT INTO users (email, password) VALUES (?, ?)`;
-    db.run(sql, [email, hashedPassword], function (err) {
+    const sql = `INSERT INTO users (name, email, password) VALUES (?, ?, ?)`;
+    db.run(sql, [name, email, hashedPassword], function (err) {
       if (err) {
-        if (err.message.includes('UNIQUE constraint failed')) {
+        if (err.message.includes('UNIQUE constraint failed: users.email')) {
           return res.status(400).json({ error: 'Email already in use.' });
+        }
+        if (err.message.includes('UNIQUE constraint failed: users.name')) {
+          return res.status(400).json({ error: 'Name already in use.' });
         }
         return res.status(500).json({ error: err.message });
       }
-      res.status(201).json({ id: this.lastID, email });
+      res.status(201).json({ id: this.lastID, name, email });
     });
   } catch (error) {
     res.status(500).json({ error: 'Internal server error.' });
@@ -201,7 +204,6 @@ app.post('/register', async (req, res) => {
 app.post('/login', async (req, res) => {
   const { email, password } = req.body;
 
-  // Make sure are email and password are sent
   if (!email || !password) {
     return res.status(400).json({ error: 'Email and password are required.' });
   }
@@ -221,7 +223,7 @@ app.post('/login', async (req, res) => {
       // Compare the provided password with the stored hash
       const match = await bcrypt.compare(password, user.password);
       if (!match) {
-        return res.status(401).json({ error: 'Invalid credentials.' });
+        return res.status(401).json({ error: 'Invalid password.' });
       }
 
       // Password matched, create JWT token
@@ -234,6 +236,7 @@ app.post('/login', async (req, res) => {
         token, // Send the token back to the frontend
         user: {
           id: user.id,
+          name: user.name, // Include the name in the response
           email: user.email,
           created_at: user.created_at,
         },
@@ -243,7 +246,6 @@ app.post('/login', async (req, res) => {
     res.status(500).json({ error: 'Internal server error.' });
   }
 });
-
 
 // Start the server
 app.listen(port, () => {
