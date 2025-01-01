@@ -1,5 +1,5 @@
-// Ranbir Deol
-// December 29, 2024
+// Ranbir Singh Deol
+// Last Updated: Jan 1, 2025
 // Server-side code for the Goal Tracker app
 
 require('dotenv').config();
@@ -9,12 +9,21 @@ const app = express();
 const port = process.env.PORT;
 const bcrypt = require('bcrypt');
 
-// | Documentation |
+// | API Documentation |
+
 /*
-[http://localhost:port]
-
-'/' : A simple api check
-
+----
+GET '/' : An API check
+GET '/goals' : Returns all the goals
+GET '/users' : Returns all the users
+----
+POST '/goals' : Adds a new goal
+POST '/register' : Registers a new user
+----
+PUT '/goals/:id' : Updates a goal, all fields required
+----
+DELETE '/goals/:id' : Deletes a goal
+----
 */
 
 // Middleware to parse JSON
@@ -49,16 +58,23 @@ app.get("/goals", (req, res) => {
 
 // Route to add a new goal | POST
 app.post("/goals", (req, res) => {
-  const { title, initial_value, current_value, target_value, unit, priority, status, due_date } = req.body;
-  const sql = `INSERT INTO goals (title, initial_value, current_value, target_value, unit, priority, status, due_date) 
-               VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
+  const { user_id, title, initial_value, current_value, target_value, unit, priority, status, due_date } = req.body;
+  
+  // Validate user_id
+  if (!user_id) {
+    return res.status(400).json({ error: 'User ID is required' });
+  }
 
-  db.run(sql, [title, initial_value, current_value, target_value, unit, priority, status, due_date], function(err) {
+  const sql = `INSERT INTO goals (user_id, title, initial_value, current_value, target_value, unit, priority, status, due_date) 
+               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+
+  db.run(sql, [user_id, title, initial_value, current_value, target_value, unit, priority, status, due_date], function(err) {
     if (err) {
       res.status(500).json({ error: err.message });
     } else {
       res.status(201).json({
         id: this.lastID,
+        user_id,
         title,
         initial_value,
         current_value,
@@ -80,7 +96,20 @@ app.put("/goals/:id", (req, res) => {
   const sql = `UPDATE goals SET title = ?, initial_value = ?, current_value = ?, target_value = ?, unit = ?, 
                priority = ?, status = ?, due_date = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?`;
 
-  db.run(sql, [title, initial_value, current_value, target_value, unit, priority, status, due_date, id], function(err) {
+  // Ensure the values array has the correct number of parameters
+  const values = [
+    title, 
+    initial_value, 
+    current_value, 
+    target_value, 
+    unit, 
+    priority, 
+    status, 
+    due_date, 
+    id  // Make sure the id is the last parameter
+  ];
+
+  db.run(sql, values, function (err) {
     if (err) {
       res.status(500).json({ error: err.message });
     } else if (this.changes === 0) {
