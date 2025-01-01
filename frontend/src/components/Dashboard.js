@@ -1,11 +1,14 @@
-// src/Dashboard.js
-import React, { useState } from 'react';
+import React from 'react';
+import Navbar from '../components/Navbar';  // Make sure the path is correct
+import styles from './styles/Dashboard.module.css';  // Optional styling for Dashboard
 
 const Dashboard = () => {
   return (
-    <div>
-      <h1>Dashboard</h1>
-      <p>Welcome back! Here's an overview of your goals:</p>
+    <div className={styles.container}>
+      <Navbar />
+      <div className={styles.dashboardContent}>
+        <h2>Welcome to your Dashboard</h2>
+      </div>
     </div>
   );
 };

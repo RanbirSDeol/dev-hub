@@ -19,18 +19,18 @@ const Signup = () => {
     setError('');
 
     // Validation for empty fields
-    if (!email || !password) {
-      setError('Email and password are required.');
+    if (!name || !email || !password) {
+      setError('Email, password, and a name are required.');
       return;
     }
 
     try {
-      const response = await fetch('http://localhost:5000/login', {
+      const response = await fetch('http://localhost:5000/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ name, email, password }),
       });
 
       // Check if the response is successful
@@ -46,15 +46,11 @@ const Signup = () => {
       console.log('Server Response:', data);
 
       // Check if token is returned
-      if (data.token) {
-        // Store the token in localStorage
-        localStorage.setItem('authToken', data.token);
-        console.log('Token saved to localStorage');
-        
+      if (data) {
         // Navigate to the home/dashboard page
-        navigate('/home');
+        navigate('/login');
       } else {
-        setError('No token received.');
+        setError('Account could not be created.');
       }
     } catch (error) {
       setError('An error occurred. Please try again.');
@@ -133,10 +129,10 @@ const Signup = () => {
       </div>
       <div className={styles.rightContainer}>
         <img
-          src="https://cdni.iconscout.com/illustration/premium/thumb/workers-rotating-cogwheels-teamwork-process-illustration-download-in-svg-png-gif-file-formats--business-achievement-strategies-entrepreneurial-goal-realization-objectives-driven-ventures-triumphs-and-team-work-building-part-2-pack-illustrations-8354754.png"
+          src="https://png.pngtree.com/png-vector/20220520/ourmid/pngtree-morning-time-for-business-people-work-icon-png-image_4709256.png"
           alt="People Chasing Goal"
-          width="600"
-          height="600"
+          width="602"
+          height="361"
         />
       </div>
     </div>

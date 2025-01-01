@@ -188,9 +188,6 @@ app.post('/register', async (req, res) => {
         if (err.message.includes('UNIQUE constraint failed: users.email')) {
           return res.status(400).json({ error: 'Email already in use.' });
         }
-        if (err.message.includes('UNIQUE constraint failed: users.name')) {
-          return res.status(400).json({ error: 'Name already in use.' });
-        }
         return res.status(500).json({ error: err.message });
       }
       res.status(201).json({ id: this.lastID, name, email });

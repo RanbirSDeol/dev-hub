@@ -14,7 +14,13 @@ function App() {
   return (
     <Router>
       <Routes>
-        {/* Public route */}
+        {/* Redirect / to /login or /home based on authentication */}
+        <Route 
+          path="/" 
+          element={<Navigate to={isAuthenticated() ? "/home" : "/login"} />} 
+        />
+        
+        {/* Public routes */}
         <Route path="/login" element={<Login />} />
         <Route path="/sign-up" element={<Signup />} />
         

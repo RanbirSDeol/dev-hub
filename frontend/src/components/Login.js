@@ -51,7 +51,10 @@ const Login = () => {
         console.log('Token saved to localStorage');
         
         // Navigate to the home/dashboard page
-        navigate('/home');
+        setTimeout(function(){
+          //do what you need here
+          navigate('/home');
+        }, 500);
       } else {
         setError('No token received.');
       }
