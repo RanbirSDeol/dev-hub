@@ -14,20 +14,42 @@ const Navbar = () => {
           width="150"
           height="150"
         />
-        <p>John Doe</p>
+        <p className={styles.name}>John Doe</p>
       </div>
       <ul className={styles.navLinks}>
-        <li>
+        <li className={styles.linkContainer}>
+          <Link to="/dashboard" className={`${styles.link} ${styles.active}`}>
+            <FontAwesomeIcon icon={faHouse} size="m" style={{ marginRight: '15px' }} />
+            DASHBOARD
+          </Link>
           <Link to="/dashboard" className={styles.link}>
             <FontAwesomeIcon icon={faHouse} size="m" style={{ marginRight: '15px' }} />
             DASHBOARD
           </Link>
-        </li>
-        <li>
-          <Link to="/dashboard" className={styles.link}>Dashboard</Link>
-        </li>
-        <li>
-          <Link to="/dashboard" className={styles.link}>Dashboard</Link>
+          <Link to="/dashboard" className={styles.link}>
+            <FontAwesomeIcon icon={faHouse} size="m" style={{ marginRight: '15px' }} />
+            DASHBOARD
+          </Link>
+          <Link to="/dashboard" className={styles.link}>
+            <FontAwesomeIcon icon={faHouse} size="m" style={{ marginRight: '15px' }} />
+            DASHBOARD
+          </Link>
+          <Link to="/dashboard" className={styles.link}>
+            <FontAwesomeIcon icon={faHouse} size="m" style={{ marginRight: '15px' }} />
+            DASHBOARD
+          </Link>
+          <Link to="/dashboard" className={styles.link}>
+            <FontAwesomeIcon icon={faHouse} size="m" style={{ marginRight: '15px' }} />
+            DASHBOARD
+          </Link>
+          <Link to="/dashboard" className={styles.link}>
+            <FontAwesomeIcon icon={faHouse} size="m" style={{ marginRight: '15px' }} />
+            DASHBOARD
+          </Link>
+          <Link to="/dashboard" className={styles.link}>
+            <FontAwesomeIcon icon={faHouse} size="m" style={{ marginRight: '15px' }} />
+            DASHBOARD
+          </Link>
         </li>
       </ul>
     </nav>

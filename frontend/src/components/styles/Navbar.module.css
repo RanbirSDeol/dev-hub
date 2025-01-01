@@ -5,8 +5,8 @@
 
 .navbar {
   text-decoration: none;
-  flex: 0 0 15%;  /* The navbar takes up 25% of the container width */
-  background-color: #2c3e50;
+  flex: 0 0 10%;  /* The navbar takes up 25% of the container width */
+  background-color: rgb(47, 130, 224);
   color: white;
   height: 100vh;  /* Optionally, to make it take up the full height */
 }
@@ -15,6 +15,11 @@
   margin-top: 25px;
   text-align: center;
   align-items: baseline;
+}
+
+.name {
+  font-size: 2rem;
+  padding-bottom: 25px;
 }
 
 .navLinks {
@@ -28,13 +33,32 @@
   font-size: 2rem;
 }
 
+li {
+  width: 95%;
+  height: 75px;
+  border-radius: 25px;
+}
+
 .link {
-  color: rgb(47, 130, 224);
+  display: flex;
+  justify-content: center;
+  color: white;
   text-decoration: none;
   font-size: 1.5rem;
+  padding: 25px;
+  padding-left: 0px;
+  border-radius: 25px;
+}
+
+.active {
+  background-color: black;
+}
+
+.active:hover {
+  font-size: 25px;
 }
 
 .link:hover {
-  text-decoration: none;
-  color: rgb(119, 161, 210);
+  font-size: 25px;
+  background-color: rgba(0, 0, 0, 0.5);
 }

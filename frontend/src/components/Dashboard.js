@@ -7,6 +7,10 @@ const Dashboard = () => {
     <div className={styles.container}>
       <Navbar />
       <div className={styles.dashboardContent}>
+        <div>
+          Menu Toggle
+          Logout Here
+        </div>
         <h2>Welcome to your Dashboard</h2>
       </div>
     </div>
