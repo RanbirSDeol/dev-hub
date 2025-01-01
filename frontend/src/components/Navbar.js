@@ -2,7 +2,10 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import styles from './styles/Navbar.module.css'; // CSS module for styling
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHouse } from '@fortawesome/free-solid-svg-icons';
+import { 
+  faHouse, faPlus, faBullseye, faBell,
+  faCalendar, faGear, faMoon
+} from '@fortawesome/free-solid-svg-icons';
 
 const Navbar = () => {
   return (
@@ -22,33 +25,29 @@ const Navbar = () => {
             <FontAwesomeIcon icon={faHouse} size="m" style={{ marginRight: '15px' }} />
             DASHBOARD
           </Link>
-          <Link to="/dashboard" className={styles.link}>
-            <FontAwesomeIcon icon={faHouse} size="m" style={{ marginRight: '15px' }} />
-            DASHBOARD
+          <Link to="/dashboard" className={`${styles.link}`}>
+            <FontAwesomeIcon icon={faPlus} size="m" style={{ marginRight: '15px' }} />
+            Create Goal
           </Link>
-          <Link to="/dashboard" className={styles.link}>
-            <FontAwesomeIcon icon={faHouse} size="m" style={{ marginRight: '15px' }} />
-            DASHBOARD
+          <Link to="/dashboard" className={`${styles.link}`}>
+            <FontAwesomeIcon icon={faBullseye} size="m" style={{ marginRight: '15px' }} />
+            View Goal
           </Link>
-          <Link to="/dashboard" className={styles.link}>
-            <FontAwesomeIcon icon={faHouse} size="m" style={{ marginRight: '15px' }} />
-            DASHBOARD
+          <Link to="/dashboard" className={`${styles.link}`}>
+            <FontAwesomeIcon icon={faBell} size="m" style={{ marginRight: '15px' }} />
+            Notifications
           </Link>
-          <Link to="/dashboard" className={styles.link}>
-            <FontAwesomeIcon icon={faHouse} size="m" style={{ marginRight: '15px' }} />
-            DASHBOARD
+          <Link to="/dashboard" className={`${styles.link}`}>
+            <FontAwesomeIcon icon={faCalendar} size="m" style={{ marginRight: '15px' }} />
+            Calendar
           </Link>
-          <Link to="/dashboard" className={styles.link}>
-            <FontAwesomeIcon icon={faHouse} size="m" style={{ marginRight: '15px' }} />
-            DASHBOARD
+          <Link to="/dashboard" className={`${styles.link}`}>
+            <FontAwesomeIcon icon={faGear} size="m" style={{ marginRight: '15px' }} />
+            Settings
           </Link>
-          <Link to="/dashboard" className={styles.link}>
-            <FontAwesomeIcon icon={faHouse} size="m" style={{ marginRight: '15px' }} />
-            DASHBOARD
-          </Link>
-          <Link to="/dashboard" className={styles.link}>
-            <FontAwesomeIcon icon={faHouse} size="m" style={{ marginRight: '15px' }} />
-            DASHBOARD
+          <Link to="/dashboard" className={`${styles.link}`}>
+            <FontAwesomeIcon icon={faMoon} size="m" style={{ marginRight: '15px' }} />
+            Dark Mode
           </Link>
         </li>
       </ul>

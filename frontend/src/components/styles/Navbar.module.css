@@ -41,12 +41,11 @@ li {
 
 .link {
   display: flex;
-  justify-content: center;
+  justify-content: left;
   color: white;
   text-decoration: none;
   font-size: 1.5rem;
   padding: 25px;
-  padding-left: 0px;
   border-radius: 25px;
 }
 
