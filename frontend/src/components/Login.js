@@ -1,20 +1,25 @@
-// src/Login.js
 import React, { useState } from 'react';
-import styles from './Login.module.css';  // Import the CSS Module for styling
+import styles from './styles/Login.module.css';  
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import { useNavigate } from 'react-router-dom';  // Importing useNavigate for navigation after successful login
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const [error, setError] = useState('');  // Error state to hold error message
+  const navigate = useNavigate();  // Hook to navigate after login
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Perform validation if necessary
+    // Clear previous errors
+    setError('');
+
+    // Validation for empty fields
     if (!email || !password) {
-      console.log('Email and password are required.');
+      setError('Email and password are required.');
       return;
     }
 
@@ -27,14 +32,32 @@ const Login = () => {
         body: JSON.stringify({ email, password }),
       });
 
+      // Check if the response is successful
       if (!response.ok) {
-        throw new Error('Invalid credentials.');
+        const errorData = await response.json();
+        setError(errorData.error);
+        return;
       }
 
       const data = await response.json();
-      console.log("Logged In!\n{$data}");
+
+      // Log the response data to see if the token is returned
+      console.log('Server Response:', data);
+
+      // Check if token is returned
+      if (data.token) {
+        // Store the token in localStorage
+        localStorage.setItem('authToken', data.token);
+        console.log('Token saved to localStorage');
+        
+        // Navigate to the home/dashboard page
+        navigate('/home');
+      } else {
+        setError('No token received.');
+      }
     } catch (error) {
-      console.log(error)
+      setError('An error occurred. Please try again.');
+      console.error(error);
     }
   };
 
@@ -47,7 +70,11 @@ const Login = () => {
           </h1>
           <p className={styles.subtitle}>
             Please enter your details
-          </p> 
+          </p>
+
+          {/* Display error message */}
+          {error && <div className={styles.errorMessage}>{error}</div>}
+
           <div className={styles.inputContainer}>
             <label htmlFor="email" className={styles.label}>Email address</label>
             <input
@@ -60,41 +87,45 @@ const Login = () => {
           </div>
 
           <div className={styles.inputContainer}>
-          <label htmlFor="password" className={styles.label}>Password</label>
-          <div className={styles.passwordWrapper}>
-            <input
-              type={isPasswordVisible ? 'text' : 'password'}
-              id="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className={styles.input}
-            />
-            <button
-              type="button"
-              onClick={() => setIsPasswordVisible(!isPasswordVisible)}
-              className={styles.toggleButton}
-            >
-              {isPasswordVisible ? (
-                <FontAwesomeIcon icon={faEyeSlash}/>
-              ) : (
-                <FontAwesomeIcon icon={faEye} />
-              )}
-            </button>
+            <label htmlFor="password" className={styles.label}>Password</label>
+            <div className={styles.passwordWrapper}>
+              <input
+                type={isPasswordVisible ? 'text' : 'password'}
+                id="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className={styles.input}
+              />
+              <button
+                type="button"
+                onClick={() => setIsPasswordVisible(!isPasswordVisible)}
+                className={styles.toggleButton}
+              >
+                {isPasswordVisible ? (
+                  <FontAwesomeIcon icon={faEyeSlash} />
+                ) : (
+                  <FontAwesomeIcon icon={faEye} />
+                )}
+              </button>
+            </div>
           </div>
-          </div>
-        
+
           <button type="submit" className={styles.sign_in_button}>Login</button>
           <p className={styles.subtitle}>
-              Don't have an account? <a href="/signup">Sign up</a>
+            Don't have an account? <a href="/signup">Sign up</a>
           </p>
         </form>
       </div>
       <div className={styles.rightContainer}>
-        <img src="https://cdni.iconscout.com/illustration/premium/thumb/workers-rotating-cogwheels-teamwork-process-illustration-download-in-svg-png-gif-file-formats--business-achievement-strategies-entrepreneurial-goal-realization-objectives-driven-ventures-triumphs-and-team-work-building-part-2-pack-illustrations-8354754.png" alt="People Chasing Goal" width="600" height="600"></img>
+        <img
+          src="https://cdni.iconscout.com/illustration/premium/thumb/workers-rotating-cogwheels-teamwork-process-illustration-download-in-svg-png-gif-file-formats--business-achievement-strategies-entrepreneurial-goal-realization-objectives-driven-ventures-triumphs-and-team-work-building-part-2-pack-illustrations-8354754.png"
+          alt="People Chasing Goal"
+          width="600"
+          height="600"
+        />
       </div>
     </div>
   );
 };
 
 export default Login;
- 

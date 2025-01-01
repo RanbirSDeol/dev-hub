@@ -8,7 +8,9 @@ const sqlite3 = require('sqlite3').verbose();  // Import sqlite3
 const app = express();
 const cors = require('cors');
 const port = process.env.PORT;
-const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken'); // Import JWT
+const bcrypt = require('bcrypt'); // Import bcrypt for password hashing (if not already imported)
+const JWT_SECRET = process.env.KEY; // This should be kept secure
 
 // | API Documentation |
 
@@ -199,6 +201,7 @@ app.post('/register', async (req, res) => {
 app.post('/login', async (req, res) => {
   const { email, password } = req.body;
 
+  // Make sure are email and password are sent
   if (!email || !password) {
     return res.status(400).json({ error: 'Email and password are required.' });
   }
@@ -221,11 +224,19 @@ app.post('/login', async (req, res) => {
         return res.status(401).json({ error: 'Invalid credentials.' });
       }
 
-      // Password matched, send the user data (without the password)
+      // Password matched, create JWT token
+      const token = jwt.sign({ id: user.id, email: user.email }, JWT_SECRET, {
+        expiresIn: '1h', // Token will expire in 1 hour
+      });
+
+      // Send the token and user data (without the password)
       res.status(200).json({
-        id: user.id,
-        email: user.email,
-        created_at: user.created_at
+        token, // Send the token back to the frontend
+        user: {
+          id: user.id,
+          email: user.email,
+          created_at: user.created_at,
+        },
       });
     });
   } catch (error) {

@@ -17,6 +17,11 @@ body {
   padding: 5px;
 }
 
+.errorMessage{
+  color: red;
+  padding-bottom: 25px;
+}
+
 .leftContainer {
   flex: 1; /* Allow containers to flexibly adjust their size */
   display: flex;
