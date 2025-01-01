@@ -6,6 +6,7 @@ require('dotenv').config();
 const express = require('express');
 const sqlite3 = require('sqlite3').verbose();  // Import sqlite3
 const app = express();
+const cors = require('cors');
 const port = process.env.PORT;
 const bcrypt = require('bcrypt');
 
@@ -19,6 +20,7 @@ GET '/users' : Returns all the users
 ----
 POST '/goals' : Adds a new goal
 POST '/register' : Registers a new user
+POST '/login' : Logs in a user
 ----
 PUT '/goals/:id' : Updates a goal, all fields required
 ----
@@ -27,6 +29,9 @@ DELETE '/goals/:id' : Deletes a goal
 */
 
 // Middleware to parse JSON
+app.use(cors({
+  origin: 'http://localhost:3000', // allow only localhost:3000 to access the server
+}));
 app.use(express.json());
 
 // | GOALS |
@@ -189,6 +194,45 @@ app.post('/register', async (req, res) => {
     res.status(500).json({ error: 'Internal server error.' });
   }
 });
+
+// Route to log in a user | POST
+app.post('/login', async (req, res) => {
+  const { email, password } = req.body;
+
+  if (!email || !password) {
+    return res.status(400).json({ error: 'Email and password are required.' });
+  }
+
+  try {
+    // Fetch user from the database by email
+    const sql = `SELECT * FROM users WHERE email = ?`;
+    db.get(sql, [email], async (err, user) => {
+      if (err) {
+        return res.status(500).json({ error: 'Internal server error.' });
+      }
+
+      if (!user) {
+        return res.status(404).json({ error: 'User not found.' });
+      }
+
+      // Compare the provided password with the stored hash
+      const match = await bcrypt.compare(password, user.password);
+      if (!match) {
+        return res.status(401).json({ error: 'Invalid credentials.' });
+      }
+
+      // Password matched, send the user data (without the password)
+      res.status(200).json({
+        id: user.id,
+        email: user.email,
+        created_at: user.created_at
+      });
+    });
+  } catch (error) {
+    res.status(500).json({ error: 'Internal server error.' });
+  }
+});
+
 
 // Start the server
 app.listen(port, () => {

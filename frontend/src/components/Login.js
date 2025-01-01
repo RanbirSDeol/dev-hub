@@ -9,11 +9,33 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Here, you will handle the form submission, e.g., call an API
-    console.log('Email:', email);
-    console.log('Password:', password);
+
+    // Perform validation if necessary
+    if (!email || !password) {
+      console.log('Email and password are required.');
+      return;
+    }
+
+    try {
+      const response = await fetch('http://localhost:5000/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Invalid credentials.');
+      }
+
+      const data = await response.json();
+      console.log("Logged In!\n{$data}");
+    } catch (error) {
+      console.log(error)
+    }
   };
 
   return (
