@@ -1,0 +1,8 @@
+.container {
+  display: flex;
+}
+
+.dashboardContent {
+  flex: 1;  /* The dashboard takes up the remaining space (75%) */
+  padding: 1rem;
+}

@@ -2,14 +2,14 @@
 // Last Updated: Jan 1, 2025
 // Server-side code for the Goal Tracker app
 
-require('dotenv').config();
-const express = require('express');
-const sqlite3 = require('sqlite3').verbose();  // Import sqlite3
+require("dotenv").config();
+const express = require("express");
+const sqlite3 = require("sqlite3").verbose(); // Import sqlite3
 const app = express();
-const cors = require('cors');
+const cors = require("cors");
 const port = process.env.PORT;
-const jwt = require('jsonwebtoken'); // Import JWT
-const bcrypt = require('bcrypt'); // Import bcrypt for password hashing (if not already imported)
+const jwt = require("jsonwebtoken"); // Import JWT
+const bcrypt = require("bcrypt"); // Import bcrypt for password hashing (if not already imported)
 const JWT_SECRET = process.env.KEY; // This should be kept secure
 
 // | API Documentation |
@@ -31,19 +31,38 @@ DELETE '/goals/:id' : Deletes a goal
 */
 
 // Middleware to parse JSON
-app.use(cors({
-  origin: 'http://localhost:3000', // allow only localhost:3000 to access the server
-}));
+app.use(
+  cors({
+    origin: "http://localhost:3000", // allow only localhost:3000 to access the server
+  })
+);
 app.use(express.json());
 
+// Middleware to authenticate token
+function authenticateToken(req, res, next) {
+  const token = req.header("Authorization")?.replace("Bearer ", "");
+
+  if (!token) {
+    return res.status(401).json({ error: "Access Denied. No Token Provided." });
+  }
+
+  try {
+    const decoded = jwt.verify(token, process.env.KEY);
+    req.user = decoded; // Attach the user information to the request object
+    next(); // Proceed to the next middleware or route handler
+  } catch (err) {
+    console.error("Token verification error:", err);
+    return res.status(400).json({ error: "Invalid Token or Token Expired" });
+  }
+}
 // | GOALS |
 
 // SQLite connection
 const db = new sqlite3.Database(process.env.DB, (err) => {
   if (err) {
-    console.error('Error connecting to SQLite database:', err.message);
+    console.error("Error connecting to SQLite database:", err.message);
   } else {
-    console.log('Connected to the SQLite database.');
+    console.log("Connected to the SQLite database.");
   }
 });
 
@@ -64,40 +83,73 @@ app.get("/goals", (req, res) => {
 });
 
 // Route to add a new goal | POST
-app.post("/goals", (req, res) => {
-  const { user_id, title, initial_value, current_value, target_value, unit, priority, status, due_date } = req.body;
-  
-  // Validate user_id
+app.post("/goals", authenticateToken, (req, res) => {
+  const {
+    title,
+    initial_value,
+    current_value,
+    target_value,
+    unit,
+    priority,
+    status,
+    due_date,
+  } = req.body;
+  const user_id = req.user.id; // User ID from the JWT payload
+
+  // Validate user_id (should always be present now)
   if (!user_id) {
-    return res.status(400).json({ error: 'User ID is required' });
+    return res.status(400).json({ error: "User ID is required" });
   }
 
   const sql = `INSERT INTO goals (user_id, title, initial_value, current_value, target_value, unit, priority, status, due_date) 
                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
-  db.run(sql, [user_id, title, initial_value, current_value, target_value, unit, priority, status, due_date], function(err) {
-    if (err) {
-      res.status(500).json({ error: err.message });
-    } else {
-      res.status(201).json({
-        id: this.lastID,
-        user_id,
-        title,
-        initial_value,
-        current_value,
-        target_value,
-        unit,
-        priority,
-        status,
-        due_date
-      });
+  db.run(
+    sql,
+    [
+      user_id,
+      title,
+      initial_value,
+      current_value,
+      target_value,
+      unit,
+      priority,
+      status,
+      due_date,
+    ],
+    function (err) {
+      if (err) {
+        res.status(500).json({ error: err.message });
+      } else {
+        res.status(201).json({
+          id: this.lastID,
+          user_id,
+          title,
+          initial_value,
+          current_value,
+          target_value,
+          unit,
+          priority,
+          status,
+          due_date,
+        });
+      }
     }
-  });
+  );
 });
 
 // Route to update a goal | PUT
 app.put("/goals/:id", (req, res) => {
-  const { title, initial_value, current_value, target_value, unit, priority, status, due_date } = req.body;
+  const {
+    title,
+    initial_value,
+    current_value,
+    target_value,
+    unit,
+    priority,
+    status,
+    due_date,
+  } = req.body;
   const { id } = req.params;
 
   const sql = `UPDATE goals SET title = ?, initial_value = ?, current_value = ?, target_value = ?, unit = ?, 
@@ -105,15 +157,15 @@ app.put("/goals/:id", (req, res) => {
 
   // Ensure the values array has the correct number of parameters
   const values = [
-    title, 
-    initial_value, 
-    current_value, 
-    target_value, 
-    unit, 
-    priority, 
-    status, 
-    due_date, 
-    id  // Make sure the id is the last parameter
+    title,
+    initial_value,
+    current_value,
+    target_value,
+    unit,
+    priority,
+    status,
+    due_date,
+    id, // Make sure the id is the last parameter
   ];
 
   db.run(sql, values, function (err) {
@@ -131,7 +183,7 @@ app.put("/goals/:id", (req, res) => {
         unit,
         priority,
         status,
-        due_date
+        due_date,
       });
     }
   });
@@ -142,7 +194,7 @@ app.delete("/goals/:id", (req, res) => {
   const { id } = req.params;
   const sql = `DELETE FROM goals WHERE id = ?`;
 
-  db.run(sql, [id], function(err) {
+  db.run(sql, [id], function (err) {
     if (err) {
       res.status(500).json({ error: err.message });
     } else if (this.changes === 0) {
@@ -156,25 +208,27 @@ app.delete("/goals/:id", (req, res) => {
 // | USERS |
 
 // Route to get all registered users | GET
-app.get('/users', async (req, res) => {
-  const sql = 'SELECT id, name, email, created_at FROM users';
+app.get("/users", async (req, res) => {
+  const sql = "SELECT id, name, email, created_at FROM users";
 
   db.all(sql, [], (err, rows) => {
     if (err) {
-      console.error('Error fetching users: ', err);
-      return res.status(500).json({ error: 'Internal server error.' })
+      console.error("Error fetching users: ", err);
+      return res.status(500).json({ error: "Internal server error." });
     }
 
-    res.status(200).json({ users: rows })
-  })
-})
+    res.status(200).json({ users: rows });
+  });
+});
 
 // Route to register a new user | POST
-app.post('/register', async (req, res) => {
+app.post("/register", async (req, res) => {
   const { name, email, password } = req.body;
 
   if (!name || !email || !password) {
-    return res.status(400).json({ error: 'Name, email, and password are required.' });
+    return res
+      .status(400)
+      .json({ error: "Name, email, and password are required." });
   }
 
   try {
@@ -185,24 +239,24 @@ app.post('/register', async (req, res) => {
     const sql = `INSERT INTO users (name, email, password) VALUES (?, ?, ?)`;
     db.run(sql, [name, email, hashedPassword], function (err) {
       if (err) {
-        if (err.message.includes('UNIQUE constraint failed: users.email')) {
-          return res.status(400).json({ error: 'Email already in use.' });
+        if (err.message.includes("UNIQUE constraint failed: users.email")) {
+          return res.status(400).json({ error: "Email already in use." });
         }
         return res.status(500).json({ error: err.message });
       }
       res.status(201).json({ id: this.lastID, name, email });
     });
   } catch (error) {
-    res.status(500).json({ error: 'Internal server error.' });
+    res.status(500).json({ error: "Internal server error." });
   }
 });
 
 // Route to log in a user | POST
-app.post('/login', async (req, res) => {
+app.post("/login", async (req, res) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
-    return res.status(400).json({ error: 'Email and password are required.' });
+    return res.status(400).json({ error: "Email and password are required." });
   }
 
   try {
@@ -210,22 +264,22 @@ app.post('/login', async (req, res) => {
     const sql = `SELECT * FROM users WHERE email = ?`;
     db.get(sql, [email], async (err, user) => {
       if (err) {
-        return res.status(500).json({ error: 'Internal server error.' });
+        return res.status(500).json({ error: "Internal server error." });
       }
 
       if (!user) {
-        return res.status(404).json({ error: 'User not found.' });
+        return res.status(404).json({ error: "User not found." });
       }
 
       // Compare the provided password with the stored hash
       const match = await bcrypt.compare(password, user.password);
       if (!match) {
-        return res.status(401).json({ error: 'Invalid password.' });
+        return res.status(401).json({ error: "Invalid password." });
       }
 
       // Password matched, create JWT token
       const token = jwt.sign({ id: user.id, email: user.email }, JWT_SECRET, {
-        expiresIn: '1h', // Token will expire in 1 hour
+        expiresIn: "1h", // Token will expire in 1 hour
       });
 
       // Send the token and user data (without the password)
@@ -240,7 +294,7 @@ app.post('/login', async (req, res) => {
       });
     });
   } catch (error) {
-    res.status(500).json({ error: 'Internal server error.' });
+    res.status(500).json({ error: "Internal server error." });
   }
 });
 
