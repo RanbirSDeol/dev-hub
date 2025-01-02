@@ -1,109 +1,98 @@
-import React, { useState } from 'react';
-import styles from './styles/Login.module.css';  
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEye, faEyeSlash, faCalendar } from '@fortawesome/free-solid-svg-icons';
-import { useNavigate } from 'react-router-dom';  // Importing useNavigate for navigation after successful login
+import React, { useState } from "react";
+import styles from "./styles/Login.module.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faEye,
+  faEyeSlash,
+  faCrosshairs,
+} from "@fortawesome/free-solid-svg-icons";
+import { useNavigate } from "react-router-dom"; // Importing useNavigate for navigation after successful login
 
 const Login = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-  const [error, setError] = useState('');  // Error state to hold error message
-  const navigate = useNavigate();  // Hook to navigate after login
+  const [error, setError] = useState(""); // Error state to hold error message
+  const navigate = useNavigate(); // Hook to navigate after login
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Clear previous errors
-    setError('');
+    setError("");
 
-    // Validation for empty fields
     if (!email || !password) {
-      setError('Email and password are required.');
+      setError("Email and password are required.");
       return;
     }
 
     try {
-      const response = await fetch('http://localhost:5000/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+      const response = await fetch("http://localhost:5000/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
       });
 
-      // Check if the response is successful
       if (!response.ok) {
         const errorData = await response.json();
-        setError(errorData.error);
+        console.error("API Error:", errorData.error);
+        setError(errorData.error || "An error occurred.");
         return;
       }
 
       const data = await response.json();
 
-      // Log the response data to see if the token is returned
-      console.log('Server Response:', data);
-
-      // Check if token is returned
       if (data.token) {
-        // Store the token in localStorage
-        localStorage.setItem('authToken', data.token);
-        console.log('Token saved to localStorage');
-        
-        // Navigate to the home/dashboard page
-        setTimeout(function(){
-          //do what you need here
-          navigate('/home');
-        }, 500);
+        localStorage.setItem("authToken", data.token);
+        console.log("Stored Token:", localStorage.getItem("authToken"));
+        navigate("/home");
       } else {
-        setError('No token received.');
+        setError("No token received.");
       }
     } catch (error) {
-      setError('An error occurred. Please try again.');
+      setError("An error occurred. Please try again.");
       console.error(error);
     }
   };
 
   return (
     <div className={styles.mainContainer}>
-      <div className={styles.displayName}>
-        <h1>
-          Goal Tracker
-          <FontAwesomeIcon icon={faCalendar} style={{ marginLeft: '25px', color: 'rgb(47, 130, 224)'}} />
-        </h1>
-      </div>
       <div className={styles.leftContainer}>
         <form onSubmit={handleSubmit} className={styles.form}>
-          <h1 className={styles.title}>
-            Welcome back
+          <h1 className={styles.displayName}>
+            <FontAwesomeIcon
+              icon={faCrosshairs}
+              size="xl"
+              style={{ marginRight: "5px", color: "#4D4847" }}
+            />
+            GoalTracker
           </h1>
-          <p className={styles.subtitle}>
-            Please enter your details
-          </p>
+          <h1 className={styles.title}>Sign in</h1>
 
           {/* Display error message */}
           {error && <div className={styles.errorMessage}>{error}</div>}
 
           <div className={styles.inputContainer}>
-            <label htmlFor="email" className={styles.label}>Email address</label>
+            <label htmlFor="email" className={styles.label}></label>
             <input
               type="email"
               id="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className={styles.input}
+              placeholder="Enter your email" // Optional: add a placeholder
             />
           </div>
 
           <div className={styles.inputContainer}>
-            <label htmlFor="password" className={styles.label}>Password</label>
+            <label htmlFor="password" className={styles.label}></label>
             <div className={styles.passwordWrapper}>
               <input
-                type={isPasswordVisible ? 'text' : 'password'}
+                type={isPasswordVisible ? "text" : "password"}
                 id="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className={styles.input}
+                placeholder="Enter your password" // Optional: add a placeholder
               />
               <button
                 type="button"
@@ -119,19 +108,16 @@ const Login = () => {
             </div>
           </div>
 
-          <button type="submit" className={styles.sign_in_button}>Login</button>
+          <button type="submit" className={styles.sign_in_button}>
+            Login
+          </button>
           <p className={styles.subtitle}>
-            Don't have an account? <a className={styles.link} href="/sign-up">Sign up</a>
+            Don't have an account?{" "}
+            <a className={styles.link} href="/sign-up">
+              Create one!
+            </a>
           </p>
         </form>
-      </div>
-      <div className={styles.rightContainer}>
-        <img
-          src="https://cdni.iconscout.com/illustration/premium/thumb/workers-rotating-cogwheels-teamwork-process-illustration-download-in-svg-png-gif-file-formats--business-achievement-strategies-entrepreneurial-goal-realization-objectives-driven-ventures-triumphs-and-team-work-building-part-2-pack-illustrations-8354754.png"
-          alt="People Chasing Goal"
-          width="600"
-          height="600"
-        />
       </div>
     </div>
   );

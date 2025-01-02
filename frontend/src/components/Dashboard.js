@@ -1,5 +1,6 @@
 import React from 'react';
 import Navbar from '../components/Navbar';  // Make sure the path is correct
+import Logout from "./Logout";
 import styles from './styles/Dashboard.module.css';  // Optional styling for Dashboard
 
 const Dashboard = () => {
@@ -9,7 +10,7 @@ const Dashboard = () => {
       <div className={styles.dashboardContent}>
         <div>
           Menu Toggle
-          Logout Here
+          <Logout />
         </div>
         <h2>Welcome to your Dashboard</h2>
       </div>
