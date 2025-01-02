@@ -33,7 +33,7 @@ li {
 }
 
 .link {
-  color: #8BAAAD;
+  color: #000F08;
   display: flex;
   justify-content: center;
   flex-direction: column;
@@ -57,12 +57,13 @@ li {
 
 .active:hover {
   background-color: #F4FFF8;
+  color: #000F08;
 }
 
 .link:hover {
-  background-color: #F4FFF8;
+  background-color: #000F08;
   border: 1px solid #ddd; /* Ensure consistent border */
   border-radius: 2px;
   box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
-  color: #000F08;
+  color: #F4FFF8;
 }

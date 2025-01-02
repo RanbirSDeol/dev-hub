@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Navbar from "./Navbar";
-import styles from "./styles/Dashboard.module.css";
+import styles from "./styles/Create.module.css";
 
 const Create = () => {
   const [formData, setFormData] = useState({
@@ -68,73 +68,75 @@ const Create = () => {
   return (
     <div className={styles.container}>
       <Navbar />
-      <form onSubmit={handleSubmit}>
-        <label>Title:</label>
-        <input
-          type="text"
-          name="title"
-          value={formData.title}
-          onChange={handleChange}
-        />
+      <div className={styles.goalContainer}>
+        <label className={styles.header}>Create a goal</label>
+        <form onSubmit={handleSubmit}>
+          <input
+            type="text"
+            name="title"
+            value={formData.title}
+            onChange={handleChange}
+          />
 
-        <label>Initial Value:</label>
-        <input
-          type="number"
-          name="initial_value"
-          value={formData.initial_value}
-          onChange={handleChange}
-        />
+          <label>Initial Value:</label>
+          <input
+            type="number"
+            name="initial_value"
+            value={formData.initial_value}
+            onChange={handleChange}
+          />
 
-        <label>Current Value:</label>
-        <input
-          type="number"
-          name="current_value"
-          value={formData.current_value}
-          onChange={handleChange}
-        />
+          <label>Current Value:</label>
+          <input
+            type="number"
+            name="current_value"
+            value={formData.current_value}
+            onChange={handleChange}
+          />
 
-        <label>Target Value:</label>
-        <input
-          type="number"
-          name="target_value"
-          value={formData.target_value}
-          onChange={handleChange}
-        />
+          <label>Target Value:</label>
+          <input
+            type="number"
+            name="target_value"
+            value={formData.target_value}
+            onChange={handleChange}
+          />
 
-        <label>Unit:</label>
-        <input
-          type="text"
-          name="unit"
-          value={formData.unit}
-          onChange={handleChange}
-        />
+          <label>Unit:</label>
+          <input
+            type="text"
+            name="unit"
+            value={formData.unit}
+            onChange={handleChange}
+          />
 
-        <label>Priority:</label>
-        <input
-          type="text"
-          name="priority"
-          value={formData.priority}
-          onChange={handleChange}
-        />
+          <label>Priority:</label>
+          <input
+            type="text"
+            name="priority"
+            value={formData.priority}
+            onChange={handleChange}
+          />
 
-        <label>Status:</label>
-        <input
-          type="text"
-          name="status"
-          value={formData.status}
-          onChange={handleChange}
-        />
+          <label>Status:</label>
+          <input
+            type="text"
+            name="status"
+            value={formData.status}
+            onChange={handleChange}
+          />
 
-        <label>Due Date:</label>
-        <input
-          type="date"
-          name="due_date"
-          value={formData.due_date}
-          onChange={handleChange}
-        />
+          <label>Due Date:</label>
+          <input
+            type="date"
+            name="due_date"
+            value={formData.due_date}
+            onChange={handleChange}
+          />
 
-        <button type="submit">Create Goal</button>
-      </form>
+          <button type="submit">Create Goal</button>
+        </form>
+      </div>
     </div>
   );
 };

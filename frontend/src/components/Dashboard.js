@@ -8,9 +8,6 @@ const Dashboard = () => {
     <div className={styles.container}>
       <Navbar />
       <div className={styles.dashboardContent}>
-        <div>
-          <Logout />
-        </div>
         <h2>Welcome to your Dashboard</h2>
       </div>
     </div>
