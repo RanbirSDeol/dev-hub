@@ -1,20 +1,13 @@
 .navbar {
   text-decoration: none;
-  flex: 0 0 10%;  /* The navbar takes up 25% of the container width */
-  background-color: rgb(47, 130, 224);
-  color: white;
+  flex: 0 0 3%;  /* The navbar takes up 25% of the container width */
+  background-color: #F4FFF8;
+  border: 1px solid #ddd;
+  border-radius: 2px;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+  color: #8BAAAD;
   height: 100vh;  /* Optionally, to make it take up the full height */
-}
-
-.profile {
-  margin-top: 25px;
-  text-align: center;
-  align-items: baseline;
-}
-
-.name {
-  font-size: 2rem;
-  padding-bottom: 25px;
+  padding-top: 25px;
 }
 
 .navLinks {
@@ -29,30 +22,47 @@
 }
 
 li {
-  width: 95%;
+  margin-top: 500px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
   height: 75px;
   border-radius: 25px;
+  transition: border 0.1s ease;
 }
 
 .link {
+  color: #8BAAAD;
   display: flex;
-  justify-content: left;
-  color: white;
+  justify-content: center;
+  flex-direction: column;
+  font-size: 1rem;
   text-decoration: none;
-  font-size: 1.5rem;
-  padding: 25px;
-  border-radius: 25px;
+  text-align: center;
+  padding: 15px;
+  background-color: transparent;
+  transition: color 0.1s ease, background-color 0.1s ease, border-color 0.1s ease, box-shadow 0.1s ease;
+  margin: 5px;
+  border: 1px solid transparent; /* Add a transparent border to maintain consistent size */
+  border-radius: 2px;
 }
 
 .active {
-  background-color: black;
+  background-color: #F4FFF8;
+  border: 1px solid #ddd; /* Consistent border */
+  border-radius: 2px;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .active:hover {
-  font-size: 25px;
+  background-color: #F4FFF8;
 }
 
 .link:hover {
-  font-size: 25px;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: #F4FFF8;
+  border: 1px solid #ddd; /* Ensure consistent border */
+  border-radius: 2px;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+  color: #000F08;
 }

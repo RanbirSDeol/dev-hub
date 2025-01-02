@@ -1,53 +1,101 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import styles from './styles/Navbar.module.css'; // CSS module for styling
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { 
-  faHouse, faPlus, faBullseye, faBell,
-  faCalendar, faGear, faMoon
-} from '@fortawesome/free-solid-svg-icons';
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import Logout from "./Logout";
+import styles from "./styles/Navbar.module.css"; // CSS module for styling
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faHouse,
+  faCrosshairs,
+  faPlus,
+  faBullseye,
+  faChartSimple,
+  faGear,
+  faRightFromBracket,
+} from "@fortawesome/free-solid-svg-icons";
 
 const Navbar = () => {
+  const [activeLink, setActiveLink] = useState("/home"); // Default active link
+
+  const handleLinkClick = (path) => {
+    setActiveLink(path); // Update active link state
+  };
+
   return (
     <nav className={styles.navbar}>
-      <div className={styles.profile}>
-        <img 
-          src="https://www.pngkey.com/png/full/73-730477_first-name-profile-image-placeholder-png.png"
-          alt="People Chasing Goal"
-          width="150"
-          height="150"
+      <div className={styles.logo}>
+        <FontAwesomeIcon
+          icon={faCrosshairs}
+          size="xl"
+          style={{ marginLeft: "25px", color: "#8BAAAD" }}
         />
-        <p className={styles.name}>John Doe</p>
       </div>
       <ul className={styles.navLinks}>
         <li className={styles.linkContainer}>
-          <Link to="/dashboard" className={`${styles.link} ${styles.active}`}>
-            <FontAwesomeIcon icon={faHouse} size="m" style={{ marginRight: '15px' }} />
-            DASHBOARD
+          <Link
+            to="/home"
+            className={`${styles.link} ${
+              activeLink === "/home" ? styles.active : ""
+            }`}
+            onClick={() => handleLinkClick("/home")}
+          >
+            <FontAwesomeIcon icon={faHouse} size="xl" />
+            Home
           </Link>
-          <Link to="/dashboard" className={`${styles.link}`}>
-            <FontAwesomeIcon icon={faPlus} size="m" style={{ marginRight: '15px' }} />
-            Create Goal
+
+          <Link
+            to="/create"
+            className={`${styles.link} ${
+              activeLink === "/create" ? styles.active : ""
+            }`}
+            onClick={() => handleLinkClick("/create")}
+          >
+            <FontAwesomeIcon icon={faPlus} size="xl" />
+            Create
           </Link>
-          <Link to="/dashboard" className={`${styles.link}`}>
-            <FontAwesomeIcon icon={faBullseye} size="m" style={{ marginRight: '15px' }} />
-            View Goal
+
+          <Link
+            to="/goals"
+            className={`${styles.link} ${
+              activeLink === "/goals" ? styles.active : ""
+            }`}
+            onClick={() => handleLinkClick("/goals")}
+          >
+            <FontAwesomeIcon icon={faBullseye} size="xl" />
+            Goals
           </Link>
-          <Link to="/dashboard" className={`${styles.link}`}>
-            <FontAwesomeIcon icon={faBell} size="m" style={{ marginRight: '15px' }} />
-            Notifications
+
+          <Link
+            to="/goals"
+            className={`${styles.link} ${
+              activeLink === "/goals" ? styles.active : ""
+            }`}
+            onClick={() => handleLinkClick("/goals")}
+          >
+            <FontAwesomeIcon icon={faChartSimple} size="xl" />
+            Statistics
           </Link>
-          <Link to="/dashboard" className={`${styles.link}`}>
-            <FontAwesomeIcon icon={faCalendar} size="m" style={{ marginRight: '15px' }} />
-            Calendar
-          </Link>
-          <Link to="/dashboard" className={`${styles.link}`}>
-            <FontAwesomeIcon icon={faGear} size="m" style={{ marginRight: '15px' }} />
+
+          <Link
+            to="/goals"
+            className={`${styles.link} ${
+              activeLink === "/goals" ? styles.active : ""
+            }`}
+            onClick={() => handleLinkClick("/goals")}
+          >
+            <FontAwesomeIcon icon={faGear} size="xl" />
             Settings
           </Link>
-          <Link to="/dashboard" className={`${styles.link}`}>
-            <FontAwesomeIcon icon={faMoon} size="m" style={{ marginRight: '15px' }} />
-            Dark Mode
+
+          <Link
+            to="/login"
+            className={`${styles.link} ${
+              activeLink === "/login" ? styles.active : ""
+            }`}
+            onClick={() => handleLinkClick("/login")}
+          >
+            <FontAwesomeIcon icon={faRightFromBracket} size="xl" />
+            Logout
+            <Logout />
           </Link>
         </li>
       </ul>
@@ -55,6 +103,14 @@ const Navbar = () => {
 
     /*
     <nav className={styles.navbar}>
+    <Link to="/dashboard" className={`${styles.link} ${styles.active}`}>
+            <FontAwesomeIcon
+              icon={faHouse}
+              size="m"
+              style={{ marginRight: "15px" }}
+            />
+            DASHBOARD
+          </Link>
       <h1 className={styles.logo}>My App</h1>
       <ul className={styles.navLinks}>
         <li>

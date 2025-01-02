@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import { useNavigate } from "react-router-dom";
 
 const Logout = () => {
@@ -7,7 +7,7 @@ const Logout = () => {
   const handleLogout = () => {
     localStorage.removeItem("authToken");
     navigate("/login");
-  }
+  };
 
   return (
     <button onClick={handleLogout} style={logoutButtonStyle}>
@@ -17,13 +17,8 @@ const Logout = () => {
 };
 
 const logoutButtonStyle = {
-  backgroundColor: "#e74c3c",
-  color: "white",
-  border: "none",
-  padding: "10px 15px",
-  cursor: "pointer",
-  borderRadius: "5px",
-  fontSize: "16px",
+  backgroundColor: "transparent",
+  position: "absolute",
 };
 
 export default Logout;

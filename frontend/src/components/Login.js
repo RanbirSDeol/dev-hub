@@ -6,14 +6,14 @@ import {
   faEyeSlash,
   faCrosshairs,
 } from "@fortawesome/free-solid-svg-icons";
-import { useNavigate } from "react-router-dom"; // Importing useNavigate for navigation after successful login
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-  const [error, setError] = useState(""); // Error state to hold error message
-  const navigate = useNavigate(); // Hook to navigate after login
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -44,7 +44,11 @@ const Login = () => {
       if (data.token) {
         localStorage.setItem("authToken", data.token);
         console.log("Stored Token:", localStorage.getItem("authToken"));
-        navigate("/home");
+
+        // Ensure navigation occurs only after the token is set
+        setTimeout(() => {
+          navigate("/home");
+        }, 1000);
       } else {
         setError("No token received.");
       }
@@ -79,7 +83,7 @@ const Login = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className={styles.input}
-              placeholder="Enter your email" // Optional: add a placeholder
+              placeholder="Enter your email"
             />
           </div>
 
@@ -92,7 +96,7 @@ const Login = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className={styles.input}
-                placeholder="Enter your password" // Optional: add a placeholder
+                placeholder="Enter your password"
               />
               <button
                 type="button"
