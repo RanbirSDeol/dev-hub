@@ -88,36 +88,86 @@ const Create = () => {
             />
           </div>
 
-          <label>Initial Value:</label>
-          <input
-            type="number"
-            name="initial_value"
-            value={formData.initial_value}
-            onChange={handleChange}
-          />
+          <div className={styles.values}>
+            <div>
+              <label className={styles.header}>Initial Value:</label>
+              <input
+                type="number"
+                name="initial_value"
+                value={formData.initial_value}
+                onChange={handleChange}
+                className={styles.inputNum}
+                placeholder="0"
+              />
+            </div>
+            <div>
+              <label className={styles.header}>Current Value:</label>
+              <input
+                type="number"
+                name="current_value"
+                value={formData.current_value}
+                onChange={handleChange}
+                className={styles.inputNum}
+                placeholder="0"
+              />
+            </div>
+            <div>
+              <label className={styles.header}>Target Value:</label>
+              <input
+                type="number"
+                name="target_value"
+                value={formData.target_value}
+                onChange={handleChange}
+                className={styles.inputNum}
+                placeholder="0"
+              />
+            </div>
+          </div>
 
-          <label>Current Value:</label>
-          <input
-            type="number"
-            name="current_value"
-            value={formData.current_value}
-            onChange={handleChange}
-          />
-
-          <label>Target Value:</label>
-          <input
-            type="number"
-            name="target_value"
-            value={formData.target_value}
-            onChange={handleChange}
-          />
-
-          <label>Unit:</label>
           <input
             type="text"
             name="unit"
             value={formData.unit}
             onChange={handleChange}
+            className={styles.inputString}
+            placeholder="Unit"
+          />
+
+          <label className={styles.header}>Priority Value:</label>
+          <select
+            type="text"
+            name="priority"
+            value={formData.priority}
+            onChange={handleChange}
+            className={styles.inputString}
+            placeholder="Priority"
+          >
+            <option value="Low">Low</option>
+            <option value="Medium">Medium</option>
+            <option value="High">High</option>
+          </select>
+
+          <label className={styles.header}>Status Value:</label>
+          <select
+            type="text"
+            name="status"
+            value={formData.status}
+            onChange={handleChange}
+            className={styles.inputString}
+            placeholder="Status"
+          >
+            <option value="Low">Uncompleted</option>
+            <option value="Medium">Completed</option>
+          </select>
+
+          <label>Due Date:</label>
+          <input
+            type="date"
+            name="due_date"
+            value={formData.due_date}
+            onChange={handleChange}
+            className={styles.inputDate}
+            placeholder="Status"
           />
 
           <button type="submit">Create Goal</button>
@@ -126,30 +176,5 @@ const Create = () => {
     </div>
   );
 };
-
-/* 
-<label>Priority:</label>
-          <input
-            type="text"
-            name="priority"
-            value={formData.priority}
-            onChange={handleChange}
-          />
-
-          <label>Status:</label>
-          <input
-            type="text"
-            name="status"
-            value={formData.status}
-            onChange={handleChange}
-          />
-
-          <label>Due Date:</label>
-          <input
-            type="date"
-            name="due_date"
-            value={formData.due_date}
-            onChange={handleChange}
-          />*/
 
 export default Create;

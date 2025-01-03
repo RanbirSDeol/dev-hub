@@ -48,7 +48,9 @@ form {
   width: 100%; 
   display: flex;
   flex-direction: column;
+  align-items: right;
   gap: 1rem; 
+  padding: 15px;
 }
 
 .inputBig {
@@ -56,15 +58,83 @@ form {
   background-color: #000F08;
   width: 100%; 
   padding: 0.75rem;
+  font-size: 1.85rem;
+  border: none;
+  outline: none;
+  border-color: #8BAAAD;
+  box-shadow: 0 0 2px rgba(139, 170, 173, 0.5); 
+}
+
+.inputString{
+  color: #F4FFF8;
+  background-color: #000F08;
+  width: 100%; 
+  padding: 0.75rem;
+  font-size: 1.85rem;
+  border: none;
+  outline: none;
+  border-color: #8BAAAD;
+  box-shadow: 0 0 2px rgba(139, 170, 173, 0.5); 
+}
+
+.header {
+  font-size: 1.25rem;
+}
+
+.values {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.inputNum {
+  color: #F4FFF8;
+  background-color: #000F08;
+  width: 100%; 
+  padding: 0.75rem;
+  margin-top: 0.45rem;
   font-size: 1.65rem;
   border: none;
   outline: none;
+  border-color: #8BAAAD;
+  box-shadow: 0 0 2px rgba(139, 170, 173, 0.5); 
+}
+
+.inputDate {
+  color: #F4FFF8;
+  background-color: #000F08;
+  width: 100%; 
+  padding: 0.75rem;
+  font-size: 1.85rem;
+  border: none;
+  outline: none;
+  border-color: #8BAAAD;
+  box-shadow: 0 0 2px rgba(139, 170, 173, 0.5); 
+}
+
+.inputDate {
+  color: #F4FFF8;
+  background-color: #000F08;
+  width: 100%;
+  padding: 0.75rem;
+  font-size: 1.75rem; /* Adjusted to ensure clarity and consistency with labels */
+  border: 1px solid #8BAAAD; /* Added border for better definition */
+  border-radius: 4px; /* Rounded corners for a modern look */
+  outline: none;
+  box-shadow: 0 0 4px rgba(139, 170, 173, 0.5); /* Slightly increased shadow for subtle depth */
+  transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Smooth interaction effect */
+}
+
+.inputDate::-webkit-calendar-picker-indicator {
+  filter: invert(1); /* Inverts colors to make the icon white */
 }
 
 input:focus {
   border-color: #8BAAAD;
   box-shadow: 0 0 4px rgba(139, 170, 173, 0.5); 
 }
+
+
 
 /* 
 form {
