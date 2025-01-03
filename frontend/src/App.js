@@ -36,8 +36,8 @@ function App() {
           element={isAuthenticated() ? <Dashboard /> : <Navigate to="/login" />}
         />
         <Route
-          path="/goals"
-          element={isAuthenticated() ? <Create /> : <Navigate to="/goals" />}
+          path="/create"
+          element={isAuthenticated() ? <Create /> : <Navigate to="/create" />}
         />
       </Routes>
     </Router>

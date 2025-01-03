@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import Navbar from "./Navbar";
 import styles from "./styles/Create.module.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 
 const Create = () => {
   const [formData, setFormData] = useState({
@@ -69,14 +71,22 @@ const Create = () => {
     <div className={styles.container}>
       <Navbar />
       <div className={styles.goalContainer}>
-        <label className={styles.header}>Create a goal</label>
         <form onSubmit={handleSubmit}>
-          <input
-            type="text"
-            name="title"
-            value={formData.title}
-            onChange={handleChange}
-          />
+          <div className={styles.mainInput}>
+            <FontAwesomeIcon
+              icon={faCircleNotch}
+              className={styles.icon}
+              size="xl"
+            />
+            <input
+              type="text"
+              name="title"
+              onChange={handleChange}
+              value={formData.title}
+              className={styles.inputBig}
+              placeholder="Enter goal"
+            />
+          </div>
 
           <label>Initial Value:</label>
           <input
@@ -110,7 +120,15 @@ const Create = () => {
             onChange={handleChange}
           />
 
-          <label>Priority:</label>
+          <button type="submit">Create Goal</button>
+        </form>
+      </div>
+    </div>
+  );
+};
+
+/* 
+<label>Priority:</label>
           <input
             type="text"
             name="priority"
@@ -132,13 +150,6 @@ const Create = () => {
             name="due_date"
             value={formData.due_date}
             onChange={handleChange}
-          />
-
-          <button type="submit">Create Goal</button>
-        </form>
-      </div>
-    </div>
-  );
-};
+          />*/
 
 export default Create;

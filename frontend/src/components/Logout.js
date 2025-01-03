@@ -19,6 +19,8 @@ const Logout = () => {
 const logoutButtonStyle = {
   backgroundColor: "transparent",
   position: "absolute",
+  width: "2%",
+  color: "transparent",
 };
 
 export default Logout;

@@ -3,7 +3,7 @@
 }
 
 .dashboardContent {
-  flex: 1;  /* The dashboard takes up the remaining space (75%) */
+  flex: 1; /* Take up the remaining space */
   padding: 1rem;
 }
 
@@ -11,10 +11,8 @@
   display: flex;
   flex-direction: column;
   border: 1px solid #ddd;
-  border-radius: 2px;
-  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
-  width: 20%;
-  height: 50%;
+  width: 30%;
+  height: 60%;
   padding: 1rem;
   
   /* Center goalContainer on the screen */
@@ -22,19 +20,83 @@
   top: 50%;          /* Move to the center vertically */
   left: 50%;         /* Move to the center horizontally */
   transform: translate(-50%, -50%);  /* Adjust for the container's own size */
+  background-color: #000F08;
+  color: #F4FFF8;
+
+  border-radius: 16px; /* Rounded bottom edges for consistency */
 }
 
+.icon {
+  margin-top: 15px;
+  padding-right: 10px;
+}
 
-.header {
-  margin-bottom: 50px;
+.mainInput {
+  display: flex;
+  padding: 10px;
+  margin-bottom: rem; /* Adjust spacing for consistent look */
+  font-size: 1.5rem; /* Larger font for prominence */
+  text-align: left;
+  border-bottom: 2px solid #F4FFF8; /* Add border to the bottom */
+  border-radius: 2px; /* Rounded bottom edges for consistency */
+  outline: none; /* Remove focus outline */
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  transition: border-color 0.3s ease; /* Smooth border color transition */
 }
 
 form {
-  margin: 5px;
+  width: 100%; 
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
-  border: 1px solid #ddd;
-  border-radius: 2px;
-  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+  gap: 1rem; 
 }
+
+.inputBig {
+  color: #F4FFF8;
+  background-color: #000F08;
+  width: 100%; 
+  padding: 0.75rem;
+  font-size: 1.65rem;
+  border: none;
+  outline: none;
+}
+
+input:focus {
+  border-color: #8BAAAD;
+  box-shadow: 0 0 4px rgba(139, 170, 173, 0.5); 
+}
+
+/* 
+form {
+  width: 100%; 
+  display: flex;
+  flex-direction: column;
+  gap: 1rem; 
+}
+
+form input,
+form button {
+  width: 100%; 
+  padding: 0.75rem;
+  font-size: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  outline: none;
+}
+
+form input:focus {
+  border-color: #8BAAAD;
+  box-shadow: 0 0 5px rgba(139, 170, 173, 0.5); 
+}
+
+form button {
+  background-color: #1C3738;
+  color: #F4FFF8;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+form button:hover {
+  background-color: #8BAAAD;
+} */
