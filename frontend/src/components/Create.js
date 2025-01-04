@@ -11,13 +11,14 @@ const Create = () => {
     current_value: "",
     target_value: "",
     unit: "",
-    priority: "",
-    status: "",
+    priority: "low",
+    status: "Uncompleted",
     due_date: "",
   });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+    console.log(name, value); // Log for debugging
     setFormData((prevData) => ({
       ...prevData,
       [name]: value,
@@ -156,8 +157,8 @@ const Create = () => {
             className={styles.inputString}
             placeholder="Status"
           >
-            <option value="Low">Uncompleted</option>
-            <option value="Medium">Completed</option>
+            <option value="Uncompleted">Uncompleted</option>
+            <option value="Completed">Completed</option>
           </select>
 
           <label>Due Date:</label>
@@ -167,7 +168,7 @@ const Create = () => {
             value={formData.due_date}
             onChange={handleChange}
             className={styles.inputDate}
-            placeholder="Status"
+            placeholder="Due Date"
           />
 
           <button type="submit">Create Goal</button>

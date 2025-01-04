@@ -10,6 +10,7 @@ import Login from "./components/Login";
 import Dashboard from "./components/Dashboard";
 import Signup from "./components/Signup";
 import Create from "./components/Create";
+import Goals from "./components/Goals";
 
 // A simple function to check if the user is logged in (i.e., if the token exists in localStorage)
 const isAuthenticated = () => {
@@ -38,6 +39,10 @@ function App() {
         <Route
           path="/create"
           element={isAuthenticated() ? <Create /> : <Navigate to="/create" />}
+        />
+        <Route
+          path="/goals"
+          element={isAuthenticated() ? <Goals /> : <Navigate to="/goals" />}
         />
       </Routes>
     </Router>
