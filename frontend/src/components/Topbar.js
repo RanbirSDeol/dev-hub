@@ -12,6 +12,37 @@ import {
 import { faBell } from "@fortawesome/free-regular-svg-icons";
 
 const Topbar = () => {
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const token = localStorage.getItem("authToken");
+
+    const fetchUser = async () => {
+      try {
+        const response = await fetch("http://localhost:5000/get-user", {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        const data = await response.json();
+        if (response.ok) {
+          setUser(data.user); // Set the user data from the response
+        } else {
+          alert("Error: " + data.error);
+        }
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+        alert("Failed to fetch user data.");
+      }
+    };
+
+    if (token) {
+      fetchUser();
+    }
+  }, []); // Run only once on mount
+
   return (
     <div className={styles.container}>
       <div className={styles.title}>
@@ -50,8 +81,14 @@ const Topbar = () => {
             />
           </div>
           <div className={styles.name}>
-            <p>John Doe</p>
-            <p>admin@admin.com</p>
+            {user ? (
+              <>
+                <p>{user.name}</p>
+                <p>{user.email}</p>
+              </>
+            ) : (
+              <p>Loading...</p>
+            )}
           </div>
         </div>
       </ul>

@@ -19,6 +19,7 @@ const JWT_SECRET = process.env.KEY; // This should be kept secure
 GET '/' : An API check
 GET '/goals' : Returns all the goals
 GET '/users' : Returns all the users
+GET '/get-user' : Returns a specific user, must have token
 ----
 POST '/goals' : Adds a new goal
 POST '/register' : Registers a new user
@@ -50,6 +51,22 @@ function authenticateToken(req, res, next) {
     const decoded = jwt.verify(token, process.env.KEY);
     req.user = decoded; // Attach the user information to the request object
     next(); // Proceed to the next middleware or route handler
+  } catch (err) {
+    console.error("Token verification error:", err);
+    return res.status(400).json({ error: "Invalid Token or Token Expired" });
+  }
+}
+
+function getUserFromToken(req, res, next) {
+  const token = req.header("Authorization")?.replace("Bearer ", "");
+
+  if (!token) {
+    return res.status(401).json({ error: "Access Denied. No Token Provided." });
+  }
+
+  try {
+    const decoded = jwt.verify(token, process.env.KEY);
+    return req.user;
   } catch (err) {
     console.error("Token verification error:", err);
     return res.status(400).json({ error: "Invalid Token or Token Expired" });
@@ -218,6 +235,26 @@ app.get("/users", async (req, res) => {
     }
 
     res.status(200).json({ users: rows });
+  });
+});
+
+// Route to get a user by ID | GET
+app.get("/get-user", authenticateToken, (req, res) => {
+  const { id } = req.user; // Get user ID from token (already decoded)
+
+  const sql = "SELECT id, name, email, created_at FROM users WHERE id = ?";
+
+  db.get(sql, [id], (err, row) => {
+    if (err) {
+      console.error("Error fetching user: ", err);
+      return res.status(500).json({ error: "Internal server error." });
+    }
+
+    if (!row) {
+      return res.status(404).json({ error: "User not found." });
+    }
+
+    res.status(200).json({ user: row }); // Send the user data in the response
   });
 });
 
