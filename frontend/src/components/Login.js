@@ -49,6 +49,7 @@ const Login = () => {
         // Ensure navigation occurs only after the token is set
         setTimeout(() => {
           navigate("/home");
+          navigate(0);
         }, 1000);
       } else {
         setError("No token received.");
