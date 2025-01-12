@@ -7,7 +7,7 @@ import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 const Create = () => {
   const [formData, setFormData] = useState({
     title: "",
-    initial_value: "",
+    initial_value: 0,
     current_value: "",
     target_value: "",
     unit: "",
