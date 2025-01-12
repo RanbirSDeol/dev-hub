@@ -33,13 +33,7 @@ const Navbar = () => {
 
   return (
     <nav className={styles.navbar}>
-      <div className={styles.logo}>
-        <FontAwesomeIcon
-          icon={faCrosshairs}
-          size="xl"
-          style={{ marginLeft: "25px", color: "#8BAAAD" }}
-        />
-      </div>
+      <div className={styles.logo}></div>
       <ul className={styles.navLinks}>
         <li className={styles.linkContainer}>
           {navLinks.map((link, index) => (

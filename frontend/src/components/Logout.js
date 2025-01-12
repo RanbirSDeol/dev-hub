@@ -1,5 +1,8 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import styles from "./styles/Logout.module.css"; // CSS module for styling
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 
 const Logout = () => {
   const navigate = useNavigate();
@@ -10,17 +13,10 @@ const Logout = () => {
   };
 
   return (
-    <button onClick={handleLogout} style={logoutButtonStyle}>
-      Log Out
+    <button onClick={handleLogout} className={styles.logout}>
+      <FontAwesomeIcon icon={faRightFromBracket} size="lg" />
     </button>
   );
-};
-
-const logoutButtonStyle = {
-  backgroundColor: "transparent",
-  position: "absolute",
-  width: "2%",
-  color: "transparent",
 };
 
 export default Logout;

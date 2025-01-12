@@ -1,0 +1,79 @@
+.container {
+  padding-left: 150px;
+  padding-right: 150px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  margin-bottom: 3px;
+  background-color: white;
+  display: flex;
+  justify-content: space-between;
+}
+
+.title {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 26px;
+}
+
+.sourceLink {
+  text-decoration: none;  /* Removes underline */
+  color: inherit;         /* Inherits color from parent element */
+  font-weight: 600;
+  padding: 5px;
+  border: 2px solid #0582ca;
+  border-radius: 5px;
+  color: #0582ca;
+}
+
+.sourceLink:hover {
+  background-color: #0582ca;
+  color: white;
+}
+
+.notification {
+  background: none; 
+  border: none;    
+  padding: 0;        
+  cursor: pointer;  
+  color: black; 
+}
+
+.notification:hover {
+  color: #0582ca;  
+}
+
+.profile {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.circleContainer {
+  position: relative;  /* This allows absolute positioning of the user icon inside the container */
+  display: inline-block;  /* Ensures both icons appear in line */
+}
+
+.circle {
+  color: black;  /* Set the circle's color */
+}
+
+.userIcon {
+  position: absolute;  /* This positions the user icon inside the circle */
+  top: 50%;            /* Vertically centers the icon */
+  left: 50%;           /* Horizontally centers the icon */
+  transform: translate(-50%, -50%);  /* Fine-tunes the centering */
+  color: white;        /* Set the color of the user icon */
+}
+
+.logout {
+  display: flex;
+  align-items: center;
+}
+
+.navigation {
+  display: flex;
+  flex-direction: row;
+  gap: 2rem;
+  align-items: center;
+}

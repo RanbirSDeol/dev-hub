@@ -1,5 +1,5 @@
 * {
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-family: 'Montserrat', sans-serif;
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -7,9 +7,11 @@
 
 .container {
   display: flex;
+  flex-direction: column;
+  background-color: #F5F5F5;
 }
 
-.dashboardContent {
+.dashboardContainer {
   flex: 1;  /* The dashboard takes up the remaining space (75%) */
   padding: 1rem;
 }
