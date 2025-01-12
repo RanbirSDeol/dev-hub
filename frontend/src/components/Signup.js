@@ -7,6 +7,7 @@ import {
   faCrosshairs,
 } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom"; // Importing useNavigate for navigation after successful login
+import targetIcon from "../images/target.png";
 
 const Signup = () => {
   const [name, setName] = useState("");
@@ -67,12 +68,12 @@ const Signup = () => {
       <div className={styles.leftContainer}>
         <form onSubmit={handleSubmit} className={styles.form}>
           <h1 className={styles.displayName}>
-            <FontAwesomeIcon
-              icon={faCrosshairs}
-              size="xl"
-              style={{ marginRight: "5px", color: "#4D4847" }}
+            <img
+              src={targetIcon}
+              alt="Goal Icon"
+              style={{ width: "80px", height: "80px" }}
             />
-            GoalTracker
+            GOAL TRACKER
           </h1>
           <h1 className={styles.title}>Sign Up</h1>
 
