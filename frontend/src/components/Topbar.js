@@ -18,9 +18,9 @@ const Topbar = () => {
         <img
           src={targetIcon}
           alt="Goal Icon"
-          style={{ width: "40px", height: "40px" }}
+          style={{ width: "50px", height: "50px" }}
         />
-        <div>goal-tracker</div>
+        <div>Goal Tracker</div>
       </div>
       <ul className={styles.navigation}>
         <a

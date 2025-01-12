@@ -28,7 +28,6 @@ const Navbar = () => {
     { to: "/goals", label: "Goals", icon: faBullseye },
     { to: "/statistics", label: "Statistics", icon: faChartSimple },
     { to: "/settings", label: "Settings", icon: faGear },
-    { to: "/login", label: "Logout", icon: faRightFromBracket, logout: true }, // Adding special case for logout
   ];
 
   return (
@@ -44,10 +43,12 @@ const Navbar = () => {
                 activeLink === link.to ? styles.active : ""
               }`}
             >
-              <FontAwesomeIcon icon={link.icon} size="xl" />
+              <FontAwesomeIcon
+                icon={link.icon}
+                size="s"
+                style={{ paddingRight: "8px" }}
+              />
               {link.label}
-              {link.logout && <Logout />}{" "}
-              {/* Render logout component for the Logout link */}
             </Link>
           ))}
         </li>

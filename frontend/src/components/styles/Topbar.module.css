@@ -1,6 +1,6 @@
 .container {
-  padding-left: 150px;
-  padding-right: 150px;
+  padding-left: 350px;
+  padding-right: 350px;
   padding-top: 20px;
   padding-bottom: 20px;
   margin-bottom: 3px;
@@ -12,7 +12,7 @@
 .title {
   display: flex;
   align-items: center;
-  gap: 5px;
+  gap: 10px;
   font-size: 26px;
 }
 
@@ -40,7 +40,7 @@
 }
 
 .notification:hover {
-  color: #0582ca;  
+  color: #ddd;  
 }
 
 .profile {

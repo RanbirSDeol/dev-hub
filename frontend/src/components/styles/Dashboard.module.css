@@ -8,10 +8,79 @@
 .container {
   display: flex;
   flex-direction: column;
-  background-color: #F5F5F5;
+  background-color: #f5f5f5;
+  min-height: 100vh;  /* Ensure the container takes up the full height */
+}
+
+.navbar {
+  flex-shrink: 0;  /* Prevent navbar from shrinking */
 }
 
 .dashboardContainer {
-  flex: 1;  /* The dashboard takes up the remaining space (75%) */
+  flex-grow: 1;  /* The dashboard takes up the remaining space */
   padding: 1rem;
+  padding-left: 350px;
+  padding-right: 350px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  background-color: #F5F5F5;  /* Optional: Set background color for the dashboard */
+}
+
+.header {
+  font-size: 36px;
+}
+
+.dashboardTopbar {
+  display: flex;
+  flex-direction: row;
+}
+
+.searchbar {
+  width: 100%;               
+  max-width: 400px;           
+  padding: 10px 15px; 
+  margin-right: 25px;       
+  border: 2px solid #ccc;        
+  font-size: 16px;      
+  outline: none;    
+  box-sizing: border-box;     
+  transition: border-color 0.3s ease;
+}
+
+.searchbar:focus {
+  border-color: #5b9bd5;     
+  background-color: #f0f8ff;
+}
+
+.filters {
+  display: flex;
+  gap: 1rem;
+}
+
+.dropdown {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.dropdown p {
+  font-size: 18px;           
+  color: #8b8b8b;      
+  font-weight: 600;
+}
+
+.dropdown select {
+  width: 100%;           
+  padding: 10px 15px;
+  font-size: 16px;           
+  border: 2px solid #ccc; 
+  background-color: white;     
+  color: #333;
+  outline: none;       
+  transition: border-color 0.3s ease, background-color 0.3s ease;
+}
+
+.dropdown select:focus {
+  border-color: #5b9bd5;         
+  background-color: #fff;    
 }
