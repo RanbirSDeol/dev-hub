@@ -134,7 +134,7 @@
 }
 
 .edit {
-  color: #000000;
+  color: #828181;
   position: absolute;
   top: 10px;
   right: 10px;
@@ -173,6 +173,13 @@
   font-size: 10px;
   bottom: 10px;
   right: 10px;
+}
+
+.priority {
+  position: absolute;
+  font-size: 20px;
+  bottom: 10px;
+  left: 10px;
 }
 
 .goalDueDate {
@@ -287,4 +294,31 @@
   to {
     transform: translateY(0);
   }
+}
+
+/* Decrement and Increment buttons */
+.decrementButton,
+.incrementButton {
+  position: absolute;
+  top: 50%;
+  transform: translateY(190%);
+  background: none;
+  border: none;
+  font-size: 20px;
+  color: #000;
+  cursor: pointer;
+  z-index: 1; /* Ensure buttons stay above the progress bar */
+}
+
+.decrementButton {
+  left: 35px; /* Place the - button on the left */
+}
+
+.incrementButton {
+  right: 35px; /* Place the + button on the right */
+}
+
+.decrementButton:hover,
+.incrementButton:hover {
+  color: #ccc; /* Change color on hover */
 }

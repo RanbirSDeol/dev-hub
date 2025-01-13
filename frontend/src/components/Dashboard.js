@@ -3,13 +3,23 @@ import Navbar from "../components/Navbar"; // Make sure the path is correct
 import Topbar from "./Topbar";
 import styles from "./styles/Dashboard.module.css"; // Optional styling for Dashboard
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars } from "@fortawesome/free-solid-svg-icons";
+import { faBars, faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import { faTrashCan } from "@fortawesome/free-regular-svg-icons";
 
 const calculateDaysLeft = (dueDate) => {
   const today = new Date();
   const due = new Date(dueDate);
-  const timeDiff = due - today;
+
+  // Strip out the time component by creating new date objects
+  const todayWithoutTime = new Date(today.toDateString()); // Use toDateString to get the date without time
+  const dueWithoutTime = new Date(due.toDateString()); // Use toDateString to get the date without time
+
+  const timeDiff = dueWithoutTime - todayWithoutTime;
+
+  // If the due date is today
+  if (timeDiff === 0) {
+    return "Due Today";
+  }
 
   // Convert time difference to days
   const daysLeft = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
@@ -19,11 +29,17 @@ const calculateDaysLeft = (dueDate) => {
 
 const formatDate = (dateString) => {
   const date = new Date(dateString);
+
+  // Convert the date to local time (not UTC)
+  const localDate = new Date(
+    date.toLocaleString("en-US", { timeZone: "America/New_York" })
+  );
+
   return new Intl.DateTimeFormat("en-US", {
     month: "long",
     day: "numeric",
     year: "numeric",
-  }).format(date);
+  }).format(localDate);
 };
 
 const Dashboard = () => {
@@ -32,7 +48,7 @@ const Dashboard = () => {
   const [error, setError] = useState(null);
   const [statusMessage, setStatusMessage] = useState(""); // Message to display
   const [showStatus, setShowStatus] = useState(false); // Control visibility of the topbar
-  const [sortBy, setSortBy] = useState("new");
+  const [sortBy, setSortBy] = useState("due");
   const [searchQuery, setSearchQuery] = useState("");
 
   const filteredGoals = goals.filter((goal) =>
@@ -97,6 +113,53 @@ const Dashboard = () => {
 
     fetchGoals();
   }, [sortBy]); // Add sortBy as a dependency to re-fetch when it changes
+
+  const updateProgress = async (goalId, change) => {
+    setGoals((prevGoals) =>
+      prevGoals.map((goal) =>
+        goal.id === goalId
+          ? {
+              ...goal,
+              current_value: Math.max(
+                0, // Ensure progress doesn't go below 0
+                Math.min(goal.target_value, goal.current_value + change)
+              ),
+            }
+          : goal
+      )
+    );
+
+    // Find the goal that was updated
+    const updatedGoal = goals.find((goal) => goal.id === goalId);
+
+    try {
+      // Send a PUT request to update the goal in the backend
+      const response = await fetch(`http://localhost:5000/goals/${goalId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          title: updatedGoal.title,
+          initial_value: updatedGoal.initial_value,
+          current_value: updatedGoal.current_value + change, // Updated value
+          target_value: updatedGoal.target_value,
+          unit: updatedGoal.unit,
+          priority: updatedGoal.priority,
+          status: updatedGoal.status,
+          due_date: updatedGoal.due_date,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to update goal");
+      }
+
+      const data = await response.json();
+    } catch (error) {
+      console.error("Error updating goal:", error);
+    }
+  };
 
   const deleteGoal = async (goalId) => {
     try {
@@ -163,9 +226,9 @@ const Dashboard = () => {
                 value={sortBy}
                 onChange={handleSortChange}
               >
+                <option value="due">Due Date</option>
                 <option value="new">Newest Created</option>
                 <option value="old">Oldest Created</option>
-                <option value="due">Due Date</option>
                 <option value="priority">Priority</option>
                 <option value="completed">Completed</option>
               </select>
@@ -185,7 +248,7 @@ const Dashboard = () => {
                 <div key={goal.id} className={styles.goalCard}>
                   <div className={styles.goalTopbar}>
                     <button className={styles.edit}>
-                      <FontAwesomeIcon icon={faBars} size="xl" />
+                      <FontAwesomeIcon icon={faPenToSquare} size="xl" />
                     </button>
                     <button
                       className={styles.trash}
@@ -220,16 +283,34 @@ const Dashboard = () => {
                     )}`}
                     style={{ width: `100%` }}
                   >
+                    {/* Decrement button */}
+                    <button
+                      className={styles.decrementButton}
+                      onClick={() => updateProgress(goal.id, -1)} // Decrease progress by 5
+                    >
+                      -
+                    </button>
+
+                    {/* Progress bar */}
                     <div
                       className={`${styles.progressBar} ${getProgressClass(
                         progress
                       )}`}
                       style={{ width: `${progress}%` }}
                     ></div>
+
+                    {/* Increment button */}
+                    <button
+                      className={styles.incrementButton}
+                      onClick={() => updateProgress(goal.id, 1)} // Increase progress by 5
+                    >
+                      +
+                    </button>
                   </div>
                   <p className={styles.goalStatus}>
                     Created @ {goal.created_at}
                   </p>
+                  <p className={styles.priority}>{goal.priority}</p>
                   <p className={styles.goalDueDate}>
                     {formatDate(goal.due_date)}
                   </p>

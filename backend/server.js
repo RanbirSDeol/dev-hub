@@ -72,6 +72,7 @@ function getUserFromToken(req, res, next) {
     return res.status(400).json({ error: "Invalid Token or Token Expired" });
   }
 }
+
 // | GOALS |
 
 // SQLite connection

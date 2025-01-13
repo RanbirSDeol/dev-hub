@@ -8,10 +8,10 @@ const Create = () => {
   const [formData, setFormData] = useState({
     title: "",
     initial_value: 0,
-    current_value: "",
+    current_value: 0,
     target_value: "",
     unit: "",
-    priority: "low",
+    priority: "Low",
     status: "Uncompleted",
     due_date: "",
   });
