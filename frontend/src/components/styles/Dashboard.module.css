@@ -89,29 +89,10 @@
 
 .goalsList {
   display: flex;
+  flex-wrap: wrap;
   gap: 1rem;
   margin-top: 25px;
 }
-
-/* 
-
-.goalsList {
-  padding-top: 25px;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  margin: 25px;
-  width: 50%;
-  max-height: 80vh; 
-  overflow-y: auto; 
-  border: 1px solid #ddd; 
-  padding: 1rem; 
-  background-color: #000F08; 
-  color: #F4FFF8;
-  border-radius: 12px;
-}
-
-*/
 
 .goalCard {
   display: flex;
@@ -119,26 +100,83 @@
   align-items: center;
   justify-content: center;
   text-align: center;
-  height: 350px;
+  height: 359px;
   padding: 25px;
-  width: 300px;
+  width: 359px;
   border-radius: 10px;
   background-color: white;
   position: relative;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.numberDisplay {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.currentValue {
+  padding-right: 10px;
+  font-size: 26px;
+  font-weight: 600;
+}
+
+.endValue {
+  font-size: 18px;
+  font-weight: 200;
+  color: #383838;
+}
+
+.goalTopbar {
+  display: flex;
 }
 
 .edit {
+  color: #000000;
   position: absolute;
   top: 10px;
   right: 10px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.edit:hover, .trash:hover {
+  color: #ddd;  
+}
+
+.trash {
+  color: #ff0000;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: none;
+  border: none;
+  cursor: pointer;
 }
 
 .goalPercent {
-  font-size: 46px;
+  font-size: 65px;
+  padding-bottom: 10px;
 }
 
 .goalTitle {
   font-size: 26px;
+  font-weight: 600;
+  padding-bottom: 10px;
+}
+
+.goalStatus {
+  position: absolute;
+  font-size: 10px;
+  bottom: 10px;
+  right: 10px;
+}
+
+.goalDueDate {
+  padding-top: 10px;
 }
 
 .progressDetails {
@@ -158,7 +196,6 @@
   background-color: #f0f0f0; /* Lighter background color */
   border-radius: 6px;
   overflow: hidden;
-  border: 1px solid black;
 }
 
 .progressContainer.low {
@@ -198,4 +235,56 @@
 }
 .progressBar.high {
   background-color: rgb(0, 187, 255);
+}
+
+.goalPercent.low {
+  color: red;
+}
+.goalPercent.mediumLow {
+  color: rgb(255, 120, 71);
+}
+.goalPercent.medium {
+  color: rgb(255, 204, 0);
+}
+.goalPercent.mediumHigh {
+  color: rgb(49, 187, 49);
+}
+.goalPercent.high {
+  color: rgb(0, 187, 255);
+}
+
+.statusTopbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-color: #4caf50; /* Green color for success */
+  color: white;
+  text-align: center;
+  padding: 10px;
+  font-size: 18px;
+  font-weight: bold;
+  z-index: 1000;
+  animation: slideDown 0.3s ease-in-out;
+}
+
+.goalDaysLeft {
+  color: #444;
+  padding-top: 15px;
+  font-size: 14px;
+}
+
+.overdue {
+  color: red; /* Highlight overdue goals */
+  font-weight: bold;
+}
+
+/* Slide-down animation */
+@keyframes slideDown {
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(0);
+  }
 }
