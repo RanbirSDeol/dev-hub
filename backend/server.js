@@ -89,14 +89,19 @@ app.get("/", (req, res) => {
   res.send("Goal Tracker API is running");
 });
 
-// Route to get all goals | GET
-app.get("/goals", (req, res) => {
-  db.all("SELECT * FROM goals", (err, rows) => {
+// Route to get all goals for the authenticated user | GET
+app.get("/goals", authenticateToken, (req, res) => {
+  const user_id = req.user.id; // Get the user ID from the JWT payload
+
+  // Fetch only goals that belong to the authenticated user
+  const sql = "SELECT * FROM goals WHERE user_id = ?";
+
+  db.all(sql, [user_id], (err, rows) => {
     if (err) {
-      res.status(500).json({ error: err.message });
-    } else {
-      res.json({ goals: rows });
+      return res.status(500).json({ error: err.message });
     }
+
+    res.json({ goals: rows });
   });
 });
 

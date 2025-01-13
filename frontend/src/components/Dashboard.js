@@ -66,11 +66,19 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchGoals = async () => {
       try {
-        const response = await fetch("http://localhost:5000/goals");
+        const token = localStorage.getItem("authToken"); // Get the JWT token from localStorage (or wherever it's stored)
+        const response = await fetch("http://localhost:5000/goals", {
+          headers: {
+            Authorization: `Bearer ${token}`, // Pass the token in the header
+          },
+        });
+
         if (!response.ok) {
           throw new Error("Failed to fetch goals");
         }
+
         const data = await response.json();
+
         if (data && Array.isArray(data.goals)) {
           let sortedGoals = [...data.goals];
 
