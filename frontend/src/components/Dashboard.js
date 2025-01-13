@@ -30,7 +30,7 @@ const calculateDaysLeft = (dueDate) => {
 const formatDate = (dateString) => {
   const date = new Date(dateString);
 
-  // Convert the date to local time (not UTC)
+  // Convert the date to local time (America/New_York timezone)
   const localDate = new Date(
     date.toLocaleString("en-US", { timeZone: "America/New_York" })
   );
@@ -73,6 +73,13 @@ const Dashboard = () => {
         const data = await response.json();
         if (data && Array.isArray(data.goals)) {
           let sortedGoals = [...data.goals];
+
+          // Move due date forward by 1 day
+          sortedGoals = sortedGoals.map((goal) => {
+            const dueDate = new Date(goal.due_date);
+            dueDate.setDate(dueDate.getDate() + 1); // Add 1 day to the due date
+            return { ...goal, due_date: dueDate.toISOString() };
+          });
 
           switch (sortBy) {
             case "new":
@@ -308,7 +315,7 @@ const Dashboard = () => {
                     </button>
                   </div>
                   <p className={styles.goalStatus}>
-                    Created @ {goal.created_at}
+                    Created @ {formatDate(goal.created_at)}
                   </p>
                   <p className={styles.priority}>{goal.priority}</p>
                   <p className={styles.goalDueDate}>
