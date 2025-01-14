@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import styles from "./styles/Create.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCircleNotch,
+  faSquareXmark,
+} from "@fortawesome/free-solid-svg-icons";
 
 const Create = () => {
   const [visible, setVisible] = useState(true);
@@ -79,7 +82,7 @@ const Create = () => {
             onClick={() => setVisible(false)}
             className={styles.closeButton}
           >
-            X
+            <FontAwesomeIcon icon={faSquareXmark} size="xl" />
           </buttom>
           <form className={styles.createForm} onSubmit={handleSubmit}>
             <div className={styles.mainInput}>
