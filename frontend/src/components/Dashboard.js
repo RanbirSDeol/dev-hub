@@ -3,11 +3,14 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import Topbar from "./Topbar";
+import Create from "./Create";
 import styles from "./styles/Dashboard.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBars,
-  faPenToSquare,
+  faEllipsis,
+  faEllipsisVertical,
+  faPlus,
   faTriangleExclamation,
 } from "@fortawesome/free-solid-svg-icons";
 import {
@@ -25,6 +28,12 @@ const Dashboard = () => {
   const [sortBy, setSortBy] = useState("due"); // Sorting
   const [searchQuery, setSearchQuery] = useState(""); // Search query
   const [toggleCompleted, setToggleCompleted] = useState("show"); // Default to 'show'
+  const [showCreate, setShowCreate] = useState(false); // State to control visibility of the Create component
+
+  // Function to toggle the Create component visibility
+  const toggleCreateForm = () => {
+    setShowCreate(!showCreate); // Toggle between showing and hiding the form
+  };
 
   // Function to calculate days remaining until the due date
   const calculateDaysLeft = (dueDate) => {
@@ -140,10 +149,17 @@ const Dashboard = () => {
               );
               break;
             case "priority":
-              sortedGoals.sort((a, b) => b.priority - a.priority); // Adjust this based on your actual field
+              const priorityOrder = { Low: 1, Medium: 2, High: 3 };
+              sortedGoals.sort(
+                (a, b) => priorityOrder[b.priority] - priorityOrder[a.priority]
+              );
               break;
             case "completed":
-              sortedGoals.sort((a, b) => a.completed - b.completed); // Assuming a completed boolean field
+              const completionStatus = { uncompleted: 0, completed: 1 };
+              sortedGoals.sort(
+                (a, b) =>
+                  completionStatus[b.completed] - completionStatus[a.completed]
+              );
               break;
             default:
               break;
@@ -222,6 +238,7 @@ const Dashboard = () => {
   };
 
   // Function tp delete a specific goal
+  // Function to delete a specific goal with a confirmation prompt
   const deleteGoal = async (goalId) => {
     try {
       const response = await fetch(`http://localhost:5000/goals/${goalId}`, {
@@ -233,13 +250,7 @@ const Dashboard = () => {
       }
 
       setGoals((prevGoals) => prevGoals.filter((goal) => goal.id !== goalId));
-
-      // Show the topbar with success message
-      setStatusMessage("Goal Deleted");
-      setShowStatus(true);
-
-      // Auto-hide the status message after 3 seconds
-      setTimeout(() => setShowStatus(false), 3000);
+      //setShowConfirmation(false); // Close the modal after deletion
     } catch (error) {
       console.error("Error deleting goal:", error);
     }
@@ -338,7 +349,7 @@ const Dashboard = () => {
                 <div key={goal.id} className={styles.goalCard}>
                   <div className={styles.goalTopbar}>
                     <button className={styles.edit}>
-                      <FontAwesomeIcon icon={faPenToSquare} size="xl" />
+                      <FontAwesomeIcon icon={faEllipsis} size="xl" />
                     </button>
                     <button
                       className={styles.trash}
@@ -442,6 +453,13 @@ const Dashboard = () => {
               );
             })
           )}
+          <button className={styles.goalCreateCard} onClick={toggleCreateForm}>
+            <div>
+              <FontAwesomeIcon icon={faPlus} size="xl" />
+              <p>Create Goal</p>
+            </div>
+          </button>
+          {showCreate && <Create />}
         </div>
       </div>
     </div>

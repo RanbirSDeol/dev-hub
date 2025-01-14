@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import Navbar from "./Navbar";
 import styles from "./styles/Create.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
@@ -70,7 +69,6 @@ const Create = () => {
 
   return (
     <div className={styles.container}>
-      <Navbar />
       <div className={styles.goalContainer}>
         <form onSubmit={handleSubmit}>
           <div className={styles.mainInput}>

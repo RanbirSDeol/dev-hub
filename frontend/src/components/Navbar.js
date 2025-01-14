@@ -24,8 +24,8 @@ const Navbar = () => {
   // List of links and their properties
   const navLinks = [
     { to: "/home", label: "Home", icon: faHouse },
-    { to: "/create", label: "Create", icon: faPlus },
-    { to: "/goals", label: "Goals", icon: faBullseye },
+    // { to: "/create", label: "Create", icon: faPlus },
+    // { to: "/goals", label: "Goals", icon: faBullseye },
     { to: "/statistics", label: "Statistics", icon: faChartSimple },
     { to: "/settings", label: "Settings", icon: faGear },
   ];
