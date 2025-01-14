@@ -5,7 +5,11 @@ import Navbar from "../components/Navbar";
 import Topbar from "./Topbar";
 import styles from "./styles/Dashboard.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars, faPenToSquare } from "@fortawesome/free-solid-svg-icons";
+import {
+  faBars,
+  faPenToSquare,
+  faTriangleExclamation,
+} from "@fortawesome/free-solid-svg-icons";
 import {
   faTrashCan,
   faCircleCheck,
@@ -20,6 +24,7 @@ const Dashboard = () => {
   const [showStatus, setShowStatus] = useState(false); // Control visibility of the topbar
   const [sortBy, setSortBy] = useState("due"); // Sorting
   const [searchQuery, setSearchQuery] = useState(""); // Search query
+  const [toggleCompleted, setToggleCompleted] = useState("show"); // Default to 'show'
 
   // Function to calculate days remaining until the due date
   const calculateDaysLeft = (dueDate) => {
@@ -59,10 +64,18 @@ const Dashboard = () => {
     }).format(localDate);
   };
 
-  // Filter goals based on search query
-  const filteredGoals = goals.filter((goal) =>
-    goal.title.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  // Filter goals based on search query and toggleCompleted state
+  const filteredGoals = goals.filter((goal) => {
+    // Filter by search query
+    const matchesSearch = goal.title
+      .toLowerCase()
+      .includes(searchQuery.toLowerCase());
+    // Filter by toggleCompleted state
+    const matchesCompletedToggle =
+      toggleCompleted === "show" || goal.status !== "completed"; // Show completed or hide completed goals
+
+    return matchesSearch && matchesCompletedToggle;
+  });
 
   // Handle sort change
   const handleSortChange = (e) => {
@@ -72,6 +85,10 @@ const Dashboard = () => {
   // Handles search change
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);
+  };
+
+  const handleToggleCompletedChange = (e) => {
+    setToggleCompleted(e.target.value); // 'show' or 'hide'
   };
 
   // Loading goals according to the ID
@@ -233,8 +250,25 @@ const Dashboard = () => {
     if (progress <= 20) return styles.low;
     if (progress <= 40) return styles.mediumLow;
     if (progress <= 60) return styles.medium;
-    if (progress <= 80) return styles.mediumHigh;
+    if (progress <= 99) return styles.mediumHigh;
     return styles.high;
+  };
+
+  // Function to get the priority colors
+  const getPriority = (priority) => {
+    if (!priority) return styles.defaultPriority; // Fallback for undefined priority
+    const priorityLower = priority.toLowerCase();
+
+    switch (priorityLower) {
+      case "low":
+        return styles.lowPriority;
+      case "medium":
+        return styles.mediumPriority;
+      case "high":
+        return styles.highPriority;
+      default:
+        return styles.defaultPriority; // Fallback class for unexpected values
+    }
   };
 
   // Display if there's a error loading the goals
@@ -279,6 +313,15 @@ const Dashboard = () => {
                 <option value="priority">Priority</option>
                 <option value="completed">Completed</option>
               </select>
+              <select
+                id="toggle-completed"
+                name="toggle-completed"
+                value={toggleCompleted}
+                onChange={handleToggleCompletedChange}
+              >
+                <option value="show">Show Completed</option>
+                <option value="hide">Hide Completed</option>
+              </select>
             </div>
           </div>
         </div>
@@ -314,7 +357,11 @@ const Dashboard = () => {
                             : faCircleXmark
                         }
                         size="s"
-                        className={styles.goalIcon}
+                        className={
+                          goal.status === "completed"
+                            ? styles.goalIcon
+                            : styles.goalComplete
+                        }
                       />
                     </p>
                   </div>
@@ -370,7 +417,15 @@ const Dashboard = () => {
                   <p className={styles.goalCreated}>
                     Created @ {formatDate(goal.created_at)}
                   </p>
-                  <p className={styles.priority}>{goal.priority}</p>
+                  <p className={styles.priority}>
+                    <FontAwesomeIcon
+                      icon={faTriangleExclamation}
+                      className={`${styles.priorityIcon} ${getPriority(
+                        goal.priority
+                      )}`}
+                    />
+                    {goal.priority} Priority
+                  </p>
                   <p className={styles.goalDueDate}>
                     {formatDate(goal.due_date)}
                   </p>

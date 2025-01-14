@@ -176,8 +176,13 @@
 }
 
 .goalIcon {
-  font-size: 15px;
-  margin-bottom: 2.5px;
+  font-size: 25px;
+  color: rgb(0, 187, 255);
+}
+
+.goalComplete {
+  font-size: 25px;
+  color: red;
 }
 
 .priority {
@@ -185,6 +190,28 @@
   font-size: 20px;
   bottom: 10px;
   left: 10px;
+  font-size: 15px;
+}
+
+.priorityIcon {
+  margin-right: 5px;
+}
+
+.lowPriority {
+  color: darkgreen;
+}
+
+.mediumPriority {
+  color: goldenrod;
+}
+
+.highPriority {
+  color: darkred;
+}
+
+.defaultPriority {
+  background-color: lightgray;
+  color: gray;
 }
 
 .goalDueDate {
