@@ -35,7 +35,7 @@ const Dashboard = () => {
 
   // Function to toggle the Create component visibility
   const toggleCreateForm = () => {
-    setShowCreate(true);
+    setShowCreate((prev) => !prev);
   };
 
   // Function to calculate days remaining until the due date
@@ -498,7 +498,7 @@ const Dashboard = () => {
               <p>Create Goal</p>
             </div>
           </button>
-          {showCreate && <Create />}
+          {showCreate && <Create onClose={toggleCreateForm} />}
         </div>
       </div>
     </div>
