@@ -162,7 +162,6 @@ app.post("/goals", authenticateToken, (req, res) => {
 });
 
 // Route to update a goal | PUT
-// Route to update a goal | PUT
 app.put("/goals/:id", (req, res) => {
   const {
     title,

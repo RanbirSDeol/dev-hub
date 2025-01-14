@@ -8,11 +8,14 @@ import {
 
 const Create = () => {
   const [visible, setVisible] = useState(true);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [statusMessage, setStatusMessage] = useState(""); // Message to display
+  const [showStatus, setShowStatus] = useState(false); // Control visibility of the topbar
 
   const [formData, setFormData] = useState({
     title: "",
-    initial_value: 0,
-    current_value: 0,
+    initial_value: "",
+    current_value: "",
     target_value: "",
     unit: "",
     priority: "Low",
@@ -31,6 +34,29 @@ const Create = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Check if all fields are filled out
+    const requiredFields = [
+      "title",
+      "initial_value",
+      "current_value",
+      "target_value",
+      "unit",
+      "priority",
+      "due_date",
+    ];
+
+    for (let field of requiredFields) {
+      if (!formData[field]) {
+        setErrorMessage(
+          `Please fill out the ${field.replace("_", " ")} field.`
+        );
+        return;
+      }
+    }
+
+    // Clear any previous error message if form is valid
+    setErrorMessage("");
 
     const token = localStorage.getItem("authToken"); // Get the token from local storage
 
@@ -52,7 +78,6 @@ const Create = () => {
       const data = await response.json();
 
       if (response.ok) {
-        alert("Goal created successfully!");
         setFormData({
           title: "",
           initial_value: "",
@@ -64,7 +89,13 @@ const Create = () => {
           due_date: "",
         });
 
-        window.location.reload(); // Reload the page to see the new goal
+        localStorage.setItem("successMessage", "Goal Created");
+        setTimeout(() => {
+          setShowStatus(false);
+          localStorage.removeItem("successMessage"); // Remove successMessage from localStorage
+        }, 1000);
+
+        window.location.reload();
       } else {
         alert("Error: " + data.error);
       }
@@ -75,106 +106,116 @@ const Create = () => {
   };
 
   return (
-    visible && (
-      <div className={styles.container}>
-        <div className={styles.goalContainer}>
-          <buttom
-            onClick={() => setVisible(false)}
-            className={styles.closeButton}
-          >
-            <FontAwesomeIcon icon={faSquareXmark} size="xl" />
-          </buttom>
-          <form className={styles.createForm} onSubmit={handleSubmit}>
-            <div className={styles.mainInput}>
-              <FontAwesomeIcon
-                icon={faCircleNotch}
-                className={styles.icon}
-                size="xl"
-              />
+    <>
+      {showStatus && (
+        <div className={styles.statusTopbar}>
+          <p>{statusMessage}</p>
+        </div>
+      )}
+
+      {visible && (
+        <div className={styles.container}>
+          <div className={styles.goalContainer}>
+            <button
+              onClick={() => setVisible(false)}
+              className={styles.closeButton}
+            >
+              <FontAwesomeIcon icon={faSquareXmark} size="xl" />
+            </button>
+            <form className={styles.createForm} onSubmit={handleSubmit}>
+              {errorMessage && (
+                <p className={styles.errorMessage}>{errorMessage}</p>
+              )}
+              <div className={styles.mainInput}>
+                <FontAwesomeIcon
+                  icon={faCircleNotch}
+                  className={styles.icon}
+                  size="xl"
+                />
+                <input
+                  type="text"
+                  name="title"
+                  onChange={handleChange}
+                  value={formData.title}
+                  className={styles.inputBig}
+                  placeholder="Enter goal"
+                />
+              </div>
+
+              <div className={styles.values}>
+                <div>
+                  <label className={styles.header}>Initial Value:</label>
+                  <input
+                    type="number"
+                    name="initial_value"
+                    value={formData.initial_value}
+                    onChange={handleChange}
+                    className={styles.inputNum}
+                    placeholder="0"
+                  />
+                </div>
+                <div>
+                  <label className={styles.header}>Current Value:</label>
+                  <input
+                    type="number"
+                    name="current_value"
+                    value={formData.current_value}
+                    onChange={handleChange}
+                    className={styles.inputNum}
+                    placeholder="0"
+                  />
+                </div>
+                <div>
+                  <label className={styles.header}>Target Value:</label>
+                  <input
+                    type="number"
+                    name="target_value"
+                    value={formData.target_value}
+                    onChange={handleChange}
+                    className={styles.inputNum}
+                    placeholder="0"
+                  />
+                </div>
+              </div>
+
               <input
                 type="text"
-                name="title"
+                name="unit"
+                value={formData.unit}
                 onChange={handleChange}
-                value={formData.title}
-                className={styles.inputBig}
-                placeholder="Enter goal"
+                className={styles.inputString}
+                placeholder="Unit"
               />
-            </div>
 
-            <div className={styles.values}>
-              <div>
-                <label className={styles.header}>Initial Value:</label>
-                <input
-                  type="number"
-                  name="initial_value"
-                  value={formData.initial_value}
-                  onChange={handleChange}
-                  className={styles.inputNum}
-                  placeholder="0"
-                />
-              </div>
-              <div>
-                <label className={styles.header}>Current Value:</label>
-                <input
-                  type="number"
-                  name="current_value"
-                  value={formData.current_value}
-                  onChange={handleChange}
-                  className={styles.inputNum}
-                  placeholder="0"
-                />
-              </div>
-              <div>
-                <label className={styles.header}>Target Value:</label>
-                <input
-                  type="number"
-                  name="target_value"
-                  value={formData.target_value}
-                  onChange={handleChange}
-                  className={styles.inputNum}
-                  placeholder="0"
-                />
-              </div>
-            </div>
+              <label className={styles.header}>Priority:</label>
+              <select
+                name="priority"
+                value={formData.priority}
+                onChange={handleChange}
+                className={styles.inputString}
+              >
+                <option value="Low">Low</option>
+                <option value="Medium">Medium</option>
+                <option value="High">High</option>
+              </select>
 
-            <input
-              type="text"
-              name="unit"
-              value={formData.unit}
-              onChange={handleChange}
-              className={styles.inputString}
-              placeholder="Unit"
-            />
+              <label>Due Date:</label>
+              <input
+                type="date"
+                name="due_date"
+                value={formData.due_date}
+                onChange={handleChange}
+                className={styles.inputDate}
+              />
 
-            <label className={styles.header}>Priority:</label>
-            <select
-              type="text"
-              name="priority"
-              value={formData.priority}
-              onChange={handleChange}
-              className={styles.inputString}
-              placeholder="Priority"
-            >
-              <option value="Low">Low</option>
-              <option value="Medium">Medium</option>
-              <option value="High">High</option>
-            </select>
-
-            <label>Due Date:</label>
-            <input
-              type="date"
-              name="due_date"
-              value={formData.due_date}
-              onChange={handleChange}
-              className={styles.inputDate}
-              placeholder="Due Date"
-            />
-
-            <button type="submit">Create Goal</button>
-          </form>
+              <button className={styles.button} type="submit">
+                Create
+              </button>
+            </form>
+          </div>
         </div>
-      </div>
-    )
+      )}
+    </>
   );
 };
 

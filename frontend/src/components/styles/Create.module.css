@@ -1,5 +1,6 @@
 .container {
   display: flex;
+  z-index: 10;
 }
 
 .dashboardContent {
@@ -11,7 +12,7 @@
   display: flex;
   flex-direction: column;
   border: 1px solid #ddd;
-  width: 22.5%;
+  width: 20%;
   height: 50%;
   padding: 1rem;
   gap: 1rem;
@@ -26,8 +27,16 @@
   left: 50%;
   transform: translate(-50%, -50%);
 
-  overflow: auto; /* Ensures content stays scrollable if it overflows */
   box-sizing: border-box; /* Includes padding and border in width/height */
+  overflow: hidden; /* Prevents scrolling */
+}
+
+.errorMessage {
+  color: red;
+  font-size: 1rem;
+  margin-top: 1rem;
+  position: absolute;
+  top: 1px;
 }
 
 .closeButton {
@@ -36,11 +45,13 @@
   position: absolute;
   top: 7px;
   right: 7px;
+  color: red;
 }
 
 .icon {
   margin-top: 15px;
   padding-right: 10px;
+  color: #0582ca;
 }
 
 .mainInput {
@@ -51,11 +62,20 @@
   font-size: 1.5rem; /* Larger font for prominence */
   text-align: left;
   border-bottom: 2px solid #ffffff; /* Add border to the bottom */
-  border-radius: 2px; /* Rounded bottom edges for consistency */
   outline: none; /* Remove focus outline */
   box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
   transition: border-color 0.3s ease; /* Smooth border color transition */
   width: 100%;
+}
+
+.button {
+  width: 70%;
+  font-size: 26px;
+  margin-top: 15px;
+  align-self: center;
+  background-color: #0582ca;
+  color: #ffffff;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
 }
 
 .createForm {
@@ -64,10 +84,32 @@
   align-items: flex-start; /* Aligns content to the right */
   gap: 0.25rem;
   padding: 15px;
+  flex-grow: 1;
 
   max-width: 100%; /* Ensures it doesn't overflow horizontally */
   max-height: 100%; /* Ensures it doesn't overflow vertically */
   overflow: auto; /* Allows scrolling within the form if content grows */
+
+  scrollbar-width: thin; /* For Firefox */
+  scrollbar-color: rgba(0, 0, 0, 0.2) rgba(0, 0, 0, 0.1);
+}
+
+/* For WebKit browsers like Chrome and Safari */
+.createForm::-webkit-scrollbar {
+  width: 4px; /* Makes the scrollbar super thin */
+}
+
+.createForm::-webkit-scrollbar-track {
+  background-color: rgba(0, 0, 0, 0.1); /* Track color */
+}
+
+.createForm::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2); /* Scroll thumb color */
+  border-radius: 3px; /* Rounded edges for the thumb */
+}
+
+.createForm::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(0, 0, 0, 0.3); /* Thumb hover color */
 }
 
 .inputBig,
@@ -123,10 +165,6 @@
   font-size: 1.75rem; /* Adjusted to ensure clarity and consistency with labels */
   border: none;
   outline: none;
-}
-
-.inputDate::-webkit-calendar-picker-indicator {
-  filter: invert(1); /* Inverts colors to make the icon white */
 }
 
 input:focus {

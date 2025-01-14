@@ -103,8 +103,36 @@ const Dashboard = () => {
     setToggleCompleted(e.target.value); // 'show' or 'hide'
   };
 
+  const updateStatusMessage = (message) => {
+    setStatusMessage(message);
+  };
+
+  const addGoal = (newGoal) => {
+    setGoals((prevGoals) => [...prevGoals, newGoal]);
+  };
+
   // Loading goals according to the ID
   useEffect(() => {
+    const checkSuccessMessage = () => {
+      const successMessage = localStorage.getItem("successMessage");
+
+      // If a success message is found in localStorage
+      if (successMessage) {
+        setStatusMessage(successMessage); // Set the success message
+
+        // Show the topbar with success message
+        setShowStatus(true);
+
+        // Auto-hide the status message after 3 seconds
+        setTimeout(() => {
+          setShowStatus(false);
+          localStorage.removeItem("successMessage"); // Remove successMessage from localStorage
+        }, 3000);
+      }
+    };
+
+    checkSuccessMessage();
+
     const fetchGoals = async () => {
       // GET request to fetch goals
       try {
@@ -181,6 +209,12 @@ const Dashboard = () => {
     };
 
     fetchGoals();
+    window.addEventListener("storage", checkSuccessMessage);
+
+    // Cleanup the event listener when the component unmounts
+    return () => {
+      window.removeEventListener("storage", checkSuccessMessage);
+    };
   }, [sortBy]); // Add sortBy as a dependency to re-fetch when it changes
 
   // Function to update the goal progress (+/-)
@@ -244,7 +278,6 @@ const Dashboard = () => {
     }
   };
 
-  // Function tp delete a specific goal
   // Function to delete a specific goal with a confirmation prompt
   const deleteGoal = async (goalId) => {
     try {
@@ -498,7 +531,9 @@ const Dashboard = () => {
               <p>Create Goal</p>
             </div>
           </button>
-          {showCreate && <Create onClose={toggleCreateForm} />}
+          {showCreate && (
+            <Create onGoalCreated={addGoal} onClose={toggleCreateForm} />
+          )}
         </div>
       </div>
     </div>
