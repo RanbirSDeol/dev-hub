@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import Topbar from "./Topbar";
 import Create from "./Create";
+import Edit from "./Edit";
 import Confirmation from "./Confirmation";
 import styles from "./styles/Dashboard.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -28,14 +29,27 @@ const Dashboard = () => {
   const [showStatus, setShowStatus] = useState(false); // Control visibility of the topbar
   const [sortBy, setSortBy] = useState("due"); // Sorting
   const [searchQuery, setSearchQuery] = useState(""); // Search query
-  const [toggleCompleted, setToggleCompleted] = useState("show"); // Default to 'show'
+  const [toggleCompleted, setToggleCompleted] = useState("hide"); // Default to 'show'
   const [showCreate, setShowCreate] = useState(false); // State to control visibility of the Create component
+  const [showEdit, setShowEdit] = useState(false); // State to control visibility of the Edit component
+  const [selectedGoal, setSelectedGoal] = useState(null); // State to store the selected goal
   const [showConfirmation, setShowConfirmation] = useState(false); // State to control modal visibility
   const [goalToDelete, setGoalToDelete] = useState(null);
 
   // Function to toggle the Create component visibility
   const toggleCreateForm = () => {
+    setShowEdit(false);
     setShowCreate((prev) => !prev);
+  };
+
+  const toggleEditForm = () => {
+    setShowCreate(false);
+    setShowEdit((prev) => !prev);
+  };
+
+  const setEditGoal = (goal) => {
+    setSelectedGoal(goal);
+    toggleEditForm();
   };
 
   // Function to calculate days remaining until the due date
@@ -403,8 +417,8 @@ const Dashboard = () => {
                 value={toggleCompleted}
                 onChange={handleToggleCompletedChange}
               >
-                <option value="show">Show Completed</option>
                 <option value="hide">Hide Completed</option>
+                <option value="show">Show Completed</option>
               </select>
             </div>
           </div>
@@ -421,7 +435,10 @@ const Dashboard = () => {
               return (
                 <div key={goal.id} className={styles.goalCard}>
                   <div className={styles.goalTopbar}>
-                    <button className={styles.edit}>
+                    <button
+                      className={styles.edit}
+                      onClick={() => setEditGoal(goal)}
+                    >
                       <FontAwesomeIcon icon={faEllipsis} size="xl" />
                     </button>
                     <button
@@ -533,6 +550,13 @@ const Dashboard = () => {
           </button>
           {showCreate && (
             <Create onGoalCreated={addGoal} onClose={toggleCreateForm} />
+          )}
+          {showEdit && (
+            <Edit
+              goal={selectedGoal}
+              onGoalCreated={addGoal}
+              onClose={toggleEditForm}
+            />
           )}
         </div>
       </div>

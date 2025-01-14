@@ -1,26 +1,31 @@
 import React, { useState } from "react";
-import styles from "./styles/Create.module.css";
+import styles from "./styles/Edit.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCircleNotch,
   faSquareXmark,
 } from "@fortawesome/free-solid-svg-icons";
 
-const Create = () => {
+const Create = (obj) => {
   const [visible, setVisible] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
   const [statusMessage, setStatusMessage] = useState(""); // Message to display
   const [showStatus, setShowStatus] = useState(false); // Control visibility of the topbar
 
+  const formatDate = (date) => {
+    const d = new Date(date);
+    return d.toISOString().split("T")[0]; // Convert to YYYY-MM-DD
+  };
+
   const [formData, setFormData] = useState({
-    title: "",
-    initial_value: "",
-    current_value: "",
-    target_value: "",
-    unit: "",
-    priority: "Low",
-    status: "Uncompleted",
-    due_date: "",
+    title: obj.goal.title,
+    initial_value: obj.goal.initial_value,
+    current_value: obj.goal.current_value,
+    target_value: obj.goal.target_value,
+    unit: obj.goal.unit,
+    priority: obj.goal.priority,
+    status: obj.goal.status,
+    due_date: obj.goal.due_date ? formatDate(obj.goal.due_date) : "",
   });
 
   const handleChange = (e) => {
@@ -47,7 +52,11 @@ const Create = () => {
     ];
 
     for (let field of requiredFields) {
-      if (!formData[field]) {
+      if (
+        formData[field] === "" || // Check for empty string
+        formData[field] === null || // Check for null
+        (typeof formData[field] === "number" && isNaN(formData[field])) // Check for NaN (e.g., for numbers)
+      ) {
         setErrorMessage(
           `Please fill out the ${field.replace("_", " ")} field.`
         );
@@ -66,14 +75,17 @@ const Create = () => {
     }
 
     try {
-      const response = await fetch("http://localhost:5000/goals", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`, // Include the token in the Authorization header
-        },
-        body: JSON.stringify(formData),
-      });
+      const response = await fetch(
+        `http://localhost:5000/goals/${obj.goal.id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`, // Include the token in the Authorization header
+          },
+          body: JSON.stringify(formData),
+        }
+      );
 
       const data = await response.json();
 
@@ -200,6 +212,7 @@ const Create = () => {
                 value={formData.due_date}
                 onChange={handleChange}
                 className={styles.inputDate}
+                placeholder="YYYY-MM-DD"
               />
 
               <button className={styles.button} type="submit">
