@@ -170,25 +170,28 @@ app.put("/goals/:id", (req, res) => {
     target_value,
     unit,
     priority,
-    status,
     due_date,
   } = req.body;
   const { id } = req.params;
 
+  // Ensure current_value does not exceed target_value
+  const adjustedCurrentValue = Math.min(current_value, target_value);
+  const status =
+    adjustedCurrentValue === target_value ? "completed" : "uncompleted";
+
   const sql = `UPDATE goals SET title = ?, initial_value = ?, current_value = ?, target_value = ?, unit = ?, 
                priority = ?, status = ?, due_date = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?`;
 
-  // Ensure the values array has the correct number of parameters
   const values = [
     title,
     initial_value,
-    current_value,
+    adjustedCurrentValue,
     target_value,
     unit,
     priority,
     status,
     due_date,
-    id, // Make sure the id is the last parameter
+    id,
   ];
 
   db.run(sql, values, function (err) {
@@ -201,7 +204,7 @@ app.put("/goals/:id", (req, res) => {
         id,
         title,
         initial_value,
-        current_value,
+        current_value: adjustedCurrentValue,
         target_value,
         unit,
         priority,
