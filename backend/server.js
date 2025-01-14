@@ -162,6 +162,7 @@ app.post("/goals", authenticateToken, (req, res) => {
 });
 
 // Route to update a goal | PUT
+// Route to update a goal | PUT
 app.put("/goals/:id", (req, res) => {
   const {
     title,
@@ -176,11 +177,16 @@ app.put("/goals/:id", (req, res) => {
 
   // Ensure current_value does not exceed target_value
   const adjustedCurrentValue = Math.min(current_value, target_value);
+
+  // Determine if the goal is completed
   const status =
     adjustedCurrentValue === target_value ? "completed" : "uncompleted";
 
+  // If the status is completed, set the finished_date
+  const finishedDate = status === "completed" ? new Date().toISOString() : null;
+
   const sql = `UPDATE goals SET title = ?, initial_value = ?, current_value = ?, target_value = ?, unit = ?, 
-               priority = ?, status = ?, due_date = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?`;
+               priority = ?, status = ?, finished_date = ?, due_date = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?`;
 
   const values = [
     title,
@@ -190,6 +196,7 @@ app.put("/goals/:id", (req, res) => {
     unit,
     priority,
     status,
+    finishedDate, // Add the finished_date field
     due_date,
     id,
   ];
@@ -209,6 +216,7 @@ app.put("/goals/:id", (req, res) => {
         unit,
         priority,
         status,
+        finished_date: finishedDate, // Include finished_date in the response
         due_date,
       });
     }

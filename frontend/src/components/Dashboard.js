@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import Topbar from "./Topbar";
 import Create from "./Create";
+import Confirmation from "./Confirmation";
 import styles from "./styles/Dashboard.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -29,6 +30,8 @@ const Dashboard = () => {
   const [searchQuery, setSearchQuery] = useState(""); // Search query
   const [toggleCompleted, setToggleCompleted] = useState("show"); // Default to 'show'
   const [showCreate, setShowCreate] = useState(false); // State to control visibility of the Create component
+  const [showConfirmation, setShowConfirmation] = useState(false); // State to control modal visibility
+  const [goalToDelete, setGoalToDelete] = useState(null);
 
   // Function to toggle the Create component visibility
   const toggleCreateForm = () => {
@@ -182,7 +185,7 @@ const Dashboard = () => {
 
   // Function to update the goal progress (+/-)
   const updateProgress = async (goalId, change) => {
-    // Update the state immediately
+    // Update the state immediately to reflect the progress change
     setGoals((prevGoals) =>
       prevGoals.map((goal) =>
         goal.id === goalId
@@ -201,10 +204,8 @@ const Dashboard = () => {
       )
     );
 
-    // Calculate the updated goal inline
+    // Now make the backend update to persist the change
     const updatedGoal = goals.find((goal) => goal.id === goalId);
-
-    // Calculate the new current value
     const newCurrentValue = Math.max(
       0,
       Math.min(updatedGoal.target_value, updatedGoal.current_value + change)
@@ -231,7 +232,13 @@ const Dashboard = () => {
         throw new Error("Failed to update goal");
       }
 
+      // Optionally, update the local goal state to reflect the backend changes
       const data = await response.json();
+      setGoals((prevGoals) =>
+        prevGoals.map((goal) =>
+          goal.id === goalId ? { ...goal, ...data } : goal
+        )
+      );
     } catch (error) {
       console.error("Error updating goal:", error);
     }
@@ -250,10 +257,36 @@ const Dashboard = () => {
       }
 
       setGoals((prevGoals) => prevGoals.filter((goal) => goal.id !== goalId));
-      //setShowConfirmation(false); // Close the modal after deletion
+
+      setShowConfirmation(false);
+
+      // Show the topbar with success message
+      setStatusMessage("Goal Deleted");
+      setShowStatus(true);
+
+      // Auto-hide the status message after 3 seconds
+      setTimeout(() => setShowStatus(false), 3000);
     } catch (error) {
       console.error("Error deleting goal:", error);
     }
+  };
+
+  // Function to handle delete button click
+  const handleDeleteClick = (goalId) => {
+    setGoalToDelete(goalId);
+    setShowConfirmation(true); // Show the confirmation modal
+  };
+
+  // Function to handle cancel button click
+  const handleCancelDelete = () => {
+    setShowConfirmation(false); // Close the modal
+    setGoalToDelete(null); // Clear the goal to delete
+  };
+
+  // Function to handle confirm delete button click
+  const handleConfirmDelete = () => {
+    deleteGoal(goalToDelete); // Proceed with deletion
+    setGoalToDelete(null); // Clear the goal to delete
   };
 
   // Progression colors / style based on the progress
@@ -289,6 +322,13 @@ const Dashboard = () => {
   // Dashboard Structure
   return (
     <div className={styles.container}>
+      {showConfirmation && (
+        <Confirmation
+          message="Are you sure you want to delete this goal?"
+          onConfirm={handleConfirmDelete}
+          onCancel={handleCancelDelete}
+        />
+      )}
       {showStatus && (
         <div className={styles.statusTopbar}>
           <p>{statusMessage}</p>
@@ -338,7 +378,7 @@ const Dashboard = () => {
         </div>
 
         <div className={styles.goalsList}>
-          {filteredGoals.length === 0 ? (
+          {filteredGoals.length === -1 ? (
             <p>No goals found</p>
           ) : (
             filteredGoals.map((goal) => {
@@ -353,7 +393,7 @@ const Dashboard = () => {
                     </button>
                     <button
                       className={styles.trash}
-                      onClick={() => deleteGoal(goal.id)}
+                      onClick={() => handleDeleteClick(goal.id)}
                     >
                       <FontAwesomeIcon icon={faTrashCan} size="xl" />
                     </button>
@@ -399,28 +439,24 @@ const Dashboard = () => {
                     )}`}
                     style={{ width: `100%` }}
                   >
-                    {/* Decrement button */}
                     <button
                       className={styles.decrementButton}
-                      onClick={() => updateProgress(goal.id, -1)} // Decrease progress by 5
+                      onClick={() => updateProgress(goal.id, -1)}
                       disabled={goal.current_value > goal.target_value}
                     >
                       -
                     </button>
 
-                    {/* Progress bar */}
                     <div
                       className={`${styles.progressBar} ${getProgressClass(
                         progress
                       )}`}
                       style={{ width: `${progress}%` }}
                     ></div>
-
-                    {/* Increment button */}
                     <button
                       className={styles.incrementButton}
-                      onClick={() => updateProgress(goal.id, 1)} // Increase progress by 1
-                      disabled={goal.current_value >= goal.target_value} // Disable if current_value >= target_value
+                      onClick={() => updateProgress(goal.id, 1)}
+                      disabled={goal.current_value >= goal.target_value}
                     >
                       +
                     </button>
@@ -442,12 +478,15 @@ const Dashboard = () => {
                   </p>
                   <p
                     className={`${styles.goalDaysLeft} ${
-                      calculateDaysLeft(goal.due_date) === "Past Due"
+                      calculateDaysLeft(goal.due_date) === "Past Due" &&
+                      goal.status !== "completed"
                         ? styles.overdue
                         : ""
                     }`}
                   >
-                    {calculateDaysLeft(goal.due_date)}
+                    {goal.status === "completed"
+                      ? `Was Completed on ${formatDate(goal.finished_date)}`
+                      : calculateDaysLeft(goal.due_date)}
                   </p>
                 </div>
               );

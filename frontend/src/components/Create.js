@@ -58,6 +58,8 @@ const Create = () => {
           status: "",
           due_date: "",
         });
+
+        window.location.reload(); // Reload the page to see the new goal
       } else {
         alert("Error: " + data.error);
       }
