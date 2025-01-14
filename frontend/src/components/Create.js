@@ -4,6 +4,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 
 const Create = () => {
+  const [visible, setVisible] = useState(true);
+
   const [formData, setFormData] = useState({
     title: "",
     initial_value: 0,
@@ -70,111 +72,106 @@ const Create = () => {
   };
 
   return (
-    <div className={styles.container}>
-      <div className={styles.goalContainer}>
-        <form onSubmit={handleSubmit}>
-          <div className={styles.mainInput}>
-            <FontAwesomeIcon
-              icon={faCircleNotch}
-              className={styles.icon}
-              size="xl"
-            />
+    visible && (
+      <div className={styles.container}>
+        <div className={styles.goalContainer}>
+          <buttom
+            onClick={() => setVisible(false)}
+            className={styles.closeButton}
+          >
+            X
+          </buttom>
+          <form className={styles.createForm} onSubmit={handleSubmit}>
+            <div className={styles.mainInput}>
+              <FontAwesomeIcon
+                icon={faCircleNotch}
+                className={styles.icon}
+                size="xl"
+              />
+              <input
+                type="text"
+                name="title"
+                onChange={handleChange}
+                value={formData.title}
+                className={styles.inputBig}
+                placeholder="Enter goal"
+              />
+            </div>
+
+            <div className={styles.values}>
+              <div>
+                <label className={styles.header}>Initial Value:</label>
+                <input
+                  type="number"
+                  name="initial_value"
+                  value={formData.initial_value}
+                  onChange={handleChange}
+                  className={styles.inputNum}
+                  placeholder="0"
+                />
+              </div>
+              <div>
+                <label className={styles.header}>Current Value:</label>
+                <input
+                  type="number"
+                  name="current_value"
+                  value={formData.current_value}
+                  onChange={handleChange}
+                  className={styles.inputNum}
+                  placeholder="0"
+                />
+              </div>
+              <div>
+                <label className={styles.header}>Target Value:</label>
+                <input
+                  type="number"
+                  name="target_value"
+                  value={formData.target_value}
+                  onChange={handleChange}
+                  className={styles.inputNum}
+                  placeholder="0"
+                />
+              </div>
+            </div>
+
             <input
               type="text"
-              name="title"
+              name="unit"
+              value={formData.unit}
               onChange={handleChange}
-              value={formData.title}
-              className={styles.inputBig}
-              placeholder="Enter goal"
+              className={styles.inputString}
+              placeholder="Unit"
             />
-          </div>
 
-          <div className={styles.values}>
-            <div>
-              <label className={styles.header}>Initial Value:</label>
-              <input
-                type="number"
-                name="initial_value"
-                value={formData.initial_value}
-                onChange={handleChange}
-                className={styles.inputNum}
-                placeholder="0"
-              />
-            </div>
-            <div>
-              <label className={styles.header}>Current Value:</label>
-              <input
-                type="number"
-                name="current_value"
-                value={formData.current_value}
-                onChange={handleChange}
-                className={styles.inputNum}
-                placeholder="0"
-              />
-            </div>
-            <div>
-              <label className={styles.header}>Target Value:</label>
-              <input
-                type="number"
-                name="target_value"
-                value={formData.target_value}
-                onChange={handleChange}
-                className={styles.inputNum}
-                placeholder="0"
-              />
-            </div>
-          </div>
+            <label className={styles.header}>Priority:</label>
+            <select
+              type="text"
+              name="priority"
+              value={formData.priority}
+              onChange={handleChange}
+              className={styles.inputString}
+              placeholder="Priority"
+            >
+              <option value="Low">Low</option>
+              <option value="Medium">Medium</option>
+              <option value="High">High</option>
+            </select>
 
-          <input
-            type="text"
-            name="unit"
-            value={formData.unit}
-            onChange={handleChange}
-            className={styles.inputString}
-            placeholder="Unit"
-          />
+            <label>Due Date:</label>
+            <input
+              type="date"
+              name="due_date"
+              value={formData.due_date}
+              onChange={handleChange}
+              className={styles.inputDate}
+              placeholder="Due Date"
+            />
 
-          <label className={styles.header}>Priority Value:</label>
-          <select
-            type="text"
-            name="priority"
-            value={formData.priority}
-            onChange={handleChange}
-            className={styles.inputString}
-            placeholder="Priority"
-          >
-            <option value="Low">Low</option>
-            <option value="Medium">Medium</option>
-            <option value="High">High</option>
-          </select>
-
-          <label className={styles.header}>Status Value:</label>
-          <select
-            type="text"
-            name="status"
-            value={formData.status}
-            onChange={handleChange}
-            className={styles.inputString}
-            placeholder="Status"
-          >
-            <option value="Uncompleted">Uncompleted</option>
-            <option value="Completed">Completed</option>
-          </select>
-
-          <label>Due Date:</label>
-          <input
-            type="date"
-            name="due_date"
-            value={formData.due_date}
-            onChange={handleChange}
-            className={styles.inputDate}
-            placeholder="Due Date"
-          />
-
-          <button type="submit">Create Goal</button>
-        </form>
+            <button type="submit">Create Goal</button>
+          </form>
+        </div>
       </div>
-    </div>
+    )
   );
 };
 
