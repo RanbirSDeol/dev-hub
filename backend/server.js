@@ -488,9 +488,7 @@ app.post("/login", async (req, res) => {
       }
 
       // Password matched, create JWT token
-      const token = jwt.sign({ id: user.id, email: user.email }, JWT_SECRET, {
-        expiresIn: "1h", // Token will expire in 1 hour
-      });
+      const token = jwt.sign({ id: user.id, email: user.email }, JWT_SECRET);
 
       // Send the token and user data (without the password)
       res.status(200).json({

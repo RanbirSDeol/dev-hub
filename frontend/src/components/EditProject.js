@@ -51,6 +51,7 @@ const CreateProject = (obj) => {
     }
   };
 
+  // FIXME: Implement the updateImagePreview function
   const handleSubmit = async (e) => {
     e.preventDefault();
 
