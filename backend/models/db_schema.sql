@@ -24,3 +24,15 @@ CREATE TABLE IF NOT EXISTS goals (
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (user_id) REFERENCES users (id)
 );
+
+-- Projects Table
+CREATE TABLE IF NOT EXISTS projects (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  user_id INTEGER NOT NULL,
+  title TEXT NOT NULL,
+  progress INTEGER DEFAULT 0 CHECK(progress >= 0 AND progress <= 100),
+  date_created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  image TEXT,
+  link TEXT,
+  FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE -- Ensure projects are deleted if the user is deleted
+);

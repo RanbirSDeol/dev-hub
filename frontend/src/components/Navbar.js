@@ -11,6 +11,7 @@ import {
   faChartSimple,
   faGear,
   faRightFromBracket,
+  faDiagramProject,
 } from "@fortawesome/free-solid-svg-icons";
 
 const Navbar = () => {
@@ -25,7 +26,7 @@ const Navbar = () => {
   const navLinks = [
     { to: "/home", label: "Home", icon: faHouse },
     // { to: "/create", label: "Create", icon: faPlus },
-    // { to: "/goals", label: "Goals", icon: faBullseye },
+    { to: "/projects", label: "Projects", icon: faDiagramProject },
     { to: "/statistics", label: "Statistics", icon: faChartSimple },
     { to: "/settings", label: "Settings", icon: faGear },
   ];

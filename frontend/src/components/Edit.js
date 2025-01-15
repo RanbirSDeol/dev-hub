@@ -101,7 +101,7 @@ const Create = (obj) => {
           due_date: "",
         });
 
-        localStorage.setItem("successMessage", "Goal Created");
+        localStorage.setItem("successMessage", "Goal Updated");
         setTimeout(() => {
           setShowStatus(false);
           localStorage.removeItem("successMessage"); // Remove successMessage from localStorage

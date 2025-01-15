@@ -238,6 +238,19 @@ app.delete("/goals/:id", (req, res) => {
   });
 });
 
+// | GOALS |
+
+app.get("/projects", (req, res) => {
+  // Insert all projects into a list
+  database.all("SELECT * FROM projects", [], (err, rows) => {
+    if (err) {
+      return res.status(500).json({ error: err.message });
+    }
+    // Return as JSON
+    res.json({ projects: rows });
+  });
+});
+
 // | USERS |
 
 // Route to get all registered users | GET

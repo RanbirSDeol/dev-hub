@@ -363,7 +363,6 @@ const Dashboard = () => {
   };
 
   // Display if there's a error loading the goals
-  if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
 
   // Dashboard Structure
