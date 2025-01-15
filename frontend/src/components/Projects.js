@@ -28,11 +28,11 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(true);
   const [statusMessage, setStatusMessage] = useState(""); // Message to display
   const [showStatus, setShowStatus] = useState(false); // Control visibility of the topbar
-  const [selectedGoal, setSelectedGoal] = useState(null); // State to store the selected goal
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [projectToDelete, setProjectToDelete] = useState(null);
 
   const [showCreate, setShowCreate] = useState(false); // State to control visibility of the Create component
+  const [sortBy, setSortOption] = useState("new");
 
   // Function to toggle the Create component visibility
   const toggleCreateForm = () => {
@@ -91,7 +91,6 @@ const Dashboard = () => {
   // Load our projects from the API '/projects' endpoint
   useEffect(() => {
     const fetchProjects = async () => {
-      // GET request to fetch projects
       try {
         const token = localStorage.getItem("authToken"); // Get the JWT token from localStorage (or wherever it's stored)
         const response = await fetch("http://localhost:5000/projects", {
@@ -105,12 +104,29 @@ const Dashboard = () => {
           throw new Error("Failed to fetch projects");
         }
 
-        // Our project data
         const data = await response.json();
 
-        // Assuming projects are in the 'data' variable
         if (data && Array.isArray(data.projects)) {
-          setProjects(data.projects);
+          let sortedProjects = [...data.projects];
+
+          // Sort the projects based on the selected option
+          switch (sortBy) {
+            case "new":
+              sortedProjects.sort(
+                (a, b) => new Date(b.date_created) - new Date(a.date_created)
+              );
+              break;
+            case "old":
+              sortedProjects.sort(
+                (a, b) => new Date(a.date_created) - new Date(b.date_created)
+              );
+              break;
+            default:
+              break;
+          }
+
+          // Set the projects
+          setProjects(sortedProjects);
         } else {
           throw new Error("Invalid data format: projects not found");
         }
@@ -120,8 +136,9 @@ const Dashboard = () => {
         setLoading(false);
       }
     };
+
     fetchProjects();
-  }, []); // Empty dependency array ensures this effect runs only once on mount
+  }, [sortBy]); // Dependency array for sortBy to trigger refetch and sorting
 
   // Dashboard Structure
   return (
@@ -153,7 +170,11 @@ const Dashboard = () => {
           />
           <div className={styles.filters}>
             <div className={styles.dropdown}>
-              <select id="sort-by" name="sort-by">
+              <select
+                id="sort-by"
+                name="sort-by"
+                onChange={(e) => setSortOption(e.target.value)}
+              >
                 <option value="new">Newest Created</option>
                 <option value="old">Oldest Created</option>
               </select>
