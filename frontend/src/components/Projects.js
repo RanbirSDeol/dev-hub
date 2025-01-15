@@ -28,7 +28,7 @@ const Dashboard = () => {
   // Load our projects from the API '/projects' endpoint
   useEffect(() => {
     const fetchProjects = async () => {
-      // GET request to fetch goals
+      // GET request to fetch projects
       try {
         const token = localStorage.getItem("authToken"); // Get the JWT token from localStorage (or wherever it's stored)
         const response = await fetch("http://localhost:5000/projects", {
@@ -39,13 +39,13 @@ const Dashboard = () => {
 
         // Make sure the response is valid
         if (!response.ok) {
-          throw new Error("Failed to fetch goals");
+          throw new Error("Failed to fetch projects");
         }
 
-        // Our goal data
+        // Our project data
         const data = await response.json();
 
-        // Assuming goals are in the 'data' variable
+        // Assuming projects are in the 'data' variable
         if (data && Array.isArray(data.projects)) {
           setProjects(data.projects);
         } else {
@@ -86,10 +86,10 @@ const Dashboard = () => {
           </div>
         </div>
 
-        <div className={styles.goalsList}>
+        <div className={styles.projectsList}>
           {project.map((project) => (
-            <div key={project.id} className={styles.goalCard}>
-              <div className={styles.goalTopbar}>
+            <div key={project.id} className={styles.projectCard}>
+              <div className={styles.projectTopbar}>
                 <button className={styles.edit}>
                   <FontAwesomeIcon icon={faEllipsis} size="xl" />
                 </button>
@@ -97,15 +97,15 @@ const Dashboard = () => {
                   <FontAwesomeIcon icon={faTrashCan} size="xl" />
                 </button>
               </div>
-              <div className={styles.goalHeader}>
-                <p className={styles.goalTitle}>{project.title}</p>
-                <p className={styles.goalTitle}>{project.image}</p>
-                <p className={styles.goalTitle}>{project.date_created}</p>
-                <p className={styles.goalTitle}>{project.link}</p>
+              <div className={styles.projectHeader}>
+                <p className={styles.projectTitle}>{project.title}</p>
+                <p className={styles.projectTitle}>{project.image}</p>
+                <p className={styles.projectTitle}>{project.date_created}</p>
+                <p className={styles.projectTitle}>{project.link}</p>
               </div>
             </div>
           ))}
-          <button className={styles.goalCreateCard}>
+          <button className={styles.projectCreateCard}>
             <div>
               <FontAwesomeIcon icon={faPlus} size="xl" />
               <p>Create Project</p>
