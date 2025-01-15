@@ -1,21 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
-import Logout from "./Logout";
+import { useNavigate, Link, useLocation } from "react-router-dom";
 import styles from "./styles/Navbar.module.css"; // CSS module for styling
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faHouse,
-  faCrosshairs,
-  faPlus,
-  faBullseye,
-  faChartSimple,
-  faGear,
-  faRightFromBracket,
-  faDiagramProject,
-} from "@fortawesome/free-solid-svg-icons";
+import { faHouse, faDiagramProject } from "@fortawesome/free-solid-svg-icons";
 
-const Navbar = () => {
-  const location = useLocation(); // Get the current location from React Router
+const Navbar = ({ onToggleView }) => {
+  // Destructure onToggleView from props
+  const location = useLocation(); // Get the current location
+  const navigate = useNavigate(); // Hook for navigation
   const [activeLink, setActiveLink] = useState(location.pathname);
 
   useEffect(() => {
@@ -25,11 +17,14 @@ const Navbar = () => {
   // List of links and their properties
   const navLinks = [
     { to: "/home", label: "Home", icon: faHouse },
-    // { to: "/create", label: "Create", icon: faPlus },
     { to: "/projects", label: "Projects", icon: faDiagramProject },
-    { to: "/statistics", label: "Statistics", icon: faChartSimple },
-    { to: "/settings", label: "Settings", icon: faGear },
   ];
+
+  const handleNavigation = (path) => {
+    if (onToggleView) {
+      onToggleView(path === "/home" ? "Home" : "Projects");
+    }
+  };
 
   return (
     <nav className={styles.navbar}>
@@ -39,7 +34,7 @@ const Navbar = () => {
           {navLinks.map((link, index) => (
             <Link
               key={index}
-              to={link.to}
+              onClick={() => handleNavigation(link.to)}
               className={`${styles.link} ${
                 activeLink === link.to ? styles.active : ""
               }`}

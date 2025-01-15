@@ -122,6 +122,26 @@ const Dashboard = () => {
 
   // Load our projects from the API '/projects' endpoint
   useEffect(() => {
+    const checkSuccessMessage = () => {
+      const successMessage = localStorage.getItem("successMessage");
+
+      // If a success message is found in localStorage
+      if (successMessage) {
+        setStatusMessage(successMessage); // Set the success message
+
+        // Show the topbar with success message
+        setShowStatus(true);
+
+        // Auto-hide the status message after 3 seconds
+        setTimeout(() => {
+          setShowStatus(false);
+          localStorage.removeItem("successMessage"); // Remove successMessage from localStorage
+        }, 3000);
+      }
+    };
+
+    checkSuccessMessage();
+
     const fetchProjects = async () => {
       try {
         const token = localStorage.getItem("authToken"); // Get the JWT token from localStorage (or wherever it's stored)
@@ -170,6 +190,12 @@ const Dashboard = () => {
     };
 
     fetchProjects();
+    window.addEventListener("storage", checkSuccessMessage);
+
+    // Cleanup the event listener when the component unmounts
+    return () => {
+      window.removeEventListener("storage", checkSuccessMessage);
+    };
   }, [sortBy]); // Dependency array for sortBy to trigger refetch and sorting
 
   // Dashboard Structure
@@ -187,10 +213,6 @@ const Dashboard = () => {
           <p>{statusMessage}</p>
         </div>
       )}
-      <div className={styles.navbar}>
-        <Topbar />
-        <Navbar />
-      </div>
       <div className={styles.dashboardContainer}>
         <div className={styles.dashboardTopbar}>
           <input
@@ -282,12 +304,5 @@ const Dashboard = () => {
     </div>
   );
 };
-
-/* 
-
-<p className={styles.projectTitle}>{project.date_created}</p>
-                <p className={styles.projectTitle}>{project.link}</p>
-
-*/
 
 export default Dashboard;

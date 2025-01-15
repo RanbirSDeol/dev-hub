@@ -40,12 +40,6 @@ function App() {
           path="/goals"
           element={isAuthenticated() ? <Goals /> : <Navigate to="/goals" />}
         />
-        <Route
-          path="/projects"
-          element={
-            isAuthenticated() ? <Projects /> : <Navigate to="/project" />
-          }
-        />
       </Routes>
     </Router>
   );
