@@ -20,6 +20,7 @@ import {
   faCircleCheck,
   faCircleXmark,
 } from "@fortawesome/free-regular-svg-icons";
+import { data } from "react-router-dom";
 
 const Dashboard = () => {
   // Vars
@@ -30,6 +31,7 @@ const Dashboard = () => {
   const [showStatus, setShowStatus] = useState(false); // Control visibility of the topbar
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [projectToDelete, setProjectToDelete] = useState(null);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const [showCreate, setShowCreate] = useState(false); // State to control visibility of the Create component
   const [sortBy, setSortOption] = useState("new");
@@ -49,13 +51,13 @@ const Dashboard = () => {
 
   const handleCancelDelete = () => {
     setShowConfirmation(false); // Close the modal
-    setProjectToDelete(null); // Clear the goal to delete
+    setProjectToDelete(null); // Clear the project to delete
   };
 
   // Function to handle confirm delete button click
   const handleConfirmDelete = () => {
     deleteProject(projectToDelete); // Proceed with deletion
-    setProjectToDelete(null); // Clear the goal to delete
+    setProjectToDelete(null); // Clear the project to delete
   };
 
   const deleteProject = async (projectId) => {
@@ -87,6 +89,20 @@ const Dashboard = () => {
       console.error("Error deleting project:", error);
     }
   };
+
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value);
+  };
+
+  // Function to query / search using search bar
+  const filteredProjects = project.filter((myProject) => {
+    // Filter by search query
+    const matchesSearch = myProject.title
+      .toLowerCase()
+      .includes(searchQuery.toLowerCase());
+
+    return matchesSearch;
+  });
 
   // Load our projects from the API '/projects' endpoint
   useEffect(() => {
@@ -167,6 +183,8 @@ const Dashboard = () => {
             name="search"
             placeholder="Search..."
             className={styles.searchbar}
+            value={searchQuery}
+            onChange={handleSearchChange}
           />
           <div className={styles.filters}>
             <div className={styles.dropdown}>
@@ -183,32 +201,36 @@ const Dashboard = () => {
         </div>
 
         <div className={styles.projectsList}>
-          {project.map((project) => (
-            <div key={project.id} className={styles.projectCard}>
-              <div className={styles.projectTopbar}>
-                <button className={styles.edit}>
-                  <FontAwesomeIcon icon={faEllipsis} size="xl" />
-                </button>
-                <button
-                  className={styles.trash}
-                  onClick={() => handleDeleteClick(project.id)}
-                >
-                  <FontAwesomeIcon icon={faTrashCan} size="xl" />
-                </button>
+          {filteredProjects.length === 0 ? (
+            <p>No projects found</p>
+          ) : (
+            filteredProjects.map((project) => (
+              <div key={project.id} className={styles.projectCard}>
+                <div className={styles.projectTopbar}>
+                  <button className={styles.edit}>
+                    <FontAwesomeIcon icon={faEllipsis} size="xl" />
+                  </button>
+                  <button
+                    className={styles.trash}
+                    onClick={() => handleDeleteClick(project.id)}
+                  >
+                    <FontAwesomeIcon icon={faTrashCan} size="xl" />
+                  </button>
+                </div>
+                <div className={styles.projectHeader}>
+                  <img
+                    src={`http://localhost:5000/uploads/${project.image}`}
+                    alt="Project"
+                    className={styles.projectImage}
+                  />
+                  <p className={styles.projectTitle}>{project.title}</p>
+                  <p className={styles.projectCreated}>
+                    Created @ {project.date_created}
+                  </p>
+                </div>
               </div>
-              <div className={styles.projectHeader}>
-                <img
-                  src={`http://localhost:5000/uploads/${project.image}`}
-                  alt="Project"
-                  className={styles.projectImage}
-                />
-                <p className={styles.projectTitle}>{project.title}</p>
-                <p className={styles.projectCreated}>
-                  Created @ {project.date_created}
-                </p>
-              </div>
-            </div>
-          ))}
+            ))
+          )}
           <button
             className={styles.projectCreateCard}
             onClick={toggleCreateForm}
