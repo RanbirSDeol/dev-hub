@@ -32,6 +32,7 @@ button {
   margin: 0 10px;
   border: none;
   border-radius: 4px;
+  cursor: pointer;
 }
 
 .confirmBtn {
@@ -39,7 +40,17 @@ button {
   color: white;
 }
 
+.confirmBtn:hover {
+  background-color: #58c772;
+  color: white;
+}
+
 .cancelBtn {
   background-color: #dc3545;
+  color: white;
+}
+
+.cancelBtn:hover {
+  background-color: #d7616d;
   color: white;
 }

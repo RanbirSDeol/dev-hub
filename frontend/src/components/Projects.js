@@ -128,7 +128,7 @@ const Dashboard = () => {
     <div className={styles.container}>
       {showConfirmation && (
         <Confirmation
-          message="Are you sure you want to delete this goal?"
+          message="Are you sure you want to delete this project?"
           onConfirm={handleConfirmDelete}
           onCancel={handleCancelDelete}
         />
@@ -179,7 +179,6 @@ const Dashboard = () => {
                 <p className={styles.projectTitle}>{project.title}</p>
                 <img
                   src={`http://localhost:5000/uploads/${project.image}`}
-                  ///uploads/1736962365347.jpg
                   alt="Project"
                   className={styles.projectImage}
                 />

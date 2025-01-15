@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import Topbar from "./Topbar";
 import CreateGoal from "./CreateGoal";
-import Edit from "./Edit";
+import EditGoal from "./EditGoal";
 import Confirmation from "./Confirmation";
 import styles from "./styles/Dashboard.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -551,7 +551,7 @@ const Dashboard = () => {
             <CreateGoal onGoalCreated={addGoal} onClose={toggleCreateForm} />
           )}
           {showEdit && (
-            <Edit
+            <EditGoal
               goal={selectedGoal}
               onGoalCreated={addGoal}
               onClose={toggleEditForm}
