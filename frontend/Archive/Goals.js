@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Navbar from "./Navbar";
+import Navbar from "../src/components/Navbar";
 import styles from "./styles/Goals.module.css";
 
 const Goals = () => {

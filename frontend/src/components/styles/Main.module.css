@@ -1,0 +1,51 @@
+* {
+  font-family: 'Montserrat', sans-serif;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  background-color: #f5f5f5;
+  min-height: 100vh;  /* Ensure the container takes up the full height */
+}
+
+.navbar {
+  flex-shrink: 0;  /* Prevent navbar from shrinking */
+}
+
+.dashboardContainer {
+  flex-grow: 1;  /* The dashboard takes up the remaining space */
+  padding: 1rem;
+  padding-left: 390px;
+  padding-right: 390px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  background-color: #F5F5F5;  /* Optional: Set background color for the dashboard */
+}
+
+.statusTopbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-color: #4caf50; /* Green color for success */
+  color: white;
+  text-align: center;
+  padding: 10px;
+  font-size: 18px;
+  font-weight: bold;
+  z-index: 1000;
+  animation: slideDown 0.3s ease-in-out;
+}
+
+@keyframes slideDown {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}

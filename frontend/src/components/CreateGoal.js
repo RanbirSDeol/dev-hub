@@ -9,8 +9,6 @@ import {
 const CreateGoal = () => {
   const [visible, setVisible] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
-  const [statusMessage, setStatusMessage] = useState(""); // Message to display
-  const [showStatus, setShowStatus] = useState(false); // Control visibility of the topbar
 
   const [formData, setFormData] = useState({
     title: "",
@@ -91,10 +89,8 @@ const CreateGoal = () => {
 
         localStorage.setItem("successMessage", "Goal Created");
         setTimeout(() => {
-          setShowStatus(false);
           localStorage.removeItem("successMessage"); // Remove successMessage from localStorage
         }, 1000);
-
         window.location.reload();
       } else {
         alert("Error: " + data.error);

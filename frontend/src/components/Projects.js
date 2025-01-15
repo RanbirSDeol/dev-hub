@@ -28,8 +28,6 @@ const Dashboard = () => {
   const [project, setProjects] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [statusMessage, setStatusMessage] = useState(""); // Message to display
-  const [showStatus, setShowStatus] = useState(false); // Control visibility of the topbar
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
   const [projectToDelete, setProjectToDelete] = useState(null);
@@ -95,12 +93,10 @@ const Dashboard = () => {
 
       setShowConfirmation(false);
 
-      // Show the topbar with success message
-      setStatusMessage("Project Deleted");
-      setShowStatus(true);
-
-      // Auto-hide the status message after 3 seconds
-      setTimeout(() => setShowStatus(false), 3000);
+      localStorage.setItem("successMessage", "Project Deleted");
+      setTimeout(() => {
+        localStorage.removeItem("successMessage"); // Remove successMessage from localStorage
+      }, 1000);
     } catch (error) {
       console.error("Error deleting project:", error);
     }
@@ -122,26 +118,6 @@ const Dashboard = () => {
 
   // Load our projects from the API '/projects' endpoint
   useEffect(() => {
-    const checkSuccessMessage = () => {
-      const successMessage = localStorage.getItem("successMessage");
-
-      // If a success message is found in localStorage
-      if (successMessage) {
-        setStatusMessage(successMessage); // Set the success message
-
-        // Show the topbar with success message
-        setShowStatus(true);
-
-        // Auto-hide the status message after 3 seconds
-        setTimeout(() => {
-          setShowStatus(false);
-          localStorage.removeItem("successMessage"); // Remove successMessage from localStorage
-        }, 3000);
-      }
-    };
-
-    checkSuccessMessage();
-
     const fetchProjects = async () => {
       try {
         const token = localStorage.getItem("authToken"); // Get the JWT token from localStorage (or wherever it's stored)
@@ -190,12 +166,6 @@ const Dashboard = () => {
     };
 
     fetchProjects();
-    window.addEventListener("storage", checkSuccessMessage);
-
-    // Cleanup the event listener when the component unmounts
-    return () => {
-      window.removeEventListener("storage", checkSuccessMessage);
-    };
   }, [sortBy]); // Dependency array for sortBy to trigger refetch and sorting
 
   // Dashboard Structure
@@ -207,11 +177,6 @@ const Dashboard = () => {
           onConfirm={handleConfirmDelete}
           onCancel={handleCancelDelete}
         />
-      )}
-      {showStatus && (
-        <div className={styles.statusTopbar}>
-          <p>{statusMessage}</p>
-        </div>
       )}
       <div className={styles.dashboardContainer}>
         <div className={styles.dashboardTopbar}>

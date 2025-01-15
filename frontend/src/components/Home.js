@@ -1,12 +1,11 @@
 // Dashboard Component
 
 import React, { useState, useEffect } from "react";
-import Navbar from "./Navbar";
-import Topbar from "./Topbar";
 import CreateGoal from "./CreateGoal";
 import EditGoal from "./EditGoal";
 import Confirmation from "./Confirmation";
-import styles from "./styles/Dashboard.module.css";
+import styles from "./styles/Home.module.css";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBars,
@@ -25,8 +24,6 @@ const Dashboard = () => {
   const [goals, setGoals] = useState([]); // State for goals
   const [loading, setLoading] = useState(true); // Goals status
   const [error, setError] = useState(null); // Error message
-  const [statusMessage, setStatusMessage] = useState(""); // Message to display
-  const [showStatus, setShowStatus] = useState(false); // Control visibility of the topbar
   const [sortBy, setSortBy] = useState("due"); // Sorting
   const [searchQuery, setSearchQuery] = useState(""); // Search query
   const [toggleCompleted, setToggleCompleted] = useState("hide"); // Default to 'show'
@@ -121,28 +118,8 @@ const Dashboard = () => {
     setGoals((prevGoals) => [...prevGoals, newGoal]);
   };
 
-  // Loading goals according to the ID
+  // Showing
   useEffect(() => {
-    const checkSuccessMessage = () => {
-      const successMessage = localStorage.getItem("successMessage");
-
-      // If a success message is found in localStorage
-      if (successMessage) {
-        setStatusMessage(successMessage); // Set the success message
-
-        // Show the topbar with success message
-        setShowStatus(true);
-
-        // Auto-hide the status message after 3 seconds
-        setTimeout(() => {
-          setShowStatus(false);
-          localStorage.removeItem("successMessage"); // Remove successMessage from localStorage
-        }, 3000);
-      }
-    };
-
-    checkSuccessMessage();
-
     const fetchGoals = async () => {
       // GET request to fetch goals
       try {
@@ -219,13 +196,7 @@ const Dashboard = () => {
     };
 
     fetchGoals();
-    window.addEventListener("storage", checkSuccessMessage);
-
-    // Cleanup the event listener when the component unmounts
-    return () => {
-      window.removeEventListener("storage", checkSuccessMessage);
-    };
-  }, [sortBy]); // Add sortBy as a dependency to re-fetch when it changes
+  });
 
   // Function to update the goal progress (+/-)
   const updateProgress = async (goalId, change) => {
@@ -303,12 +274,10 @@ const Dashboard = () => {
 
       setShowConfirmation(false);
 
-      // Show the topbar with success message
-      setStatusMessage("Goal Deleted");
-      setShowStatus(true);
-
-      // Auto-hide the status message after 3 seconds
-      setTimeout(() => setShowStatus(false), 3000);
+      localStorage.setItem("successMessage", "Goal Deleted");
+      setTimeout(() => {
+        localStorage.removeItem("successMessage"); // Remove successMessage from localStorage
+      }, 1000);
     } catch (error) {
       console.error("Error deleting goal:", error);
     }
@@ -371,12 +340,6 @@ const Dashboard = () => {
           onCancel={handleCancelDelete}
         />
       )}
-      {showStatus && (
-        <div className={styles.statusTopbar}>
-          <p>{statusMessage}</p>
-        </div>
-      )}
-
       <div className={styles.dashboardContainer}>
         <div className={styles.dashboardTopbar}>
           <input

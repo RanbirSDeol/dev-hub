@@ -1,18 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, Link, useLocation } from "react-router-dom";
-import styles from "./styles/Navbar.module.css"; // CSS module for styling
+import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHouse, faDiagramProject } from "@fortawesome/free-solid-svg-icons";
+import styles from "./styles/Navbar.module.css"; // CSS module for styling
 
 const Navbar = ({ onToggleView }) => {
-  // Destructure onToggleView from props
-  const location = useLocation(); // Get the current location
-  const navigate = useNavigate(); // Hook for navigation
-  const [activeLink, setActiveLink] = useState(location.pathname);
-
-  useEffect(() => {
-    setActiveLink(location.pathname); // Update the active link whenever the route changes
-  }, [location]);
+  // Initialize state with value from localStorage (if available) or default to "Home"
+  const [activeLink, setActiveLink] = useState(() => {
+    const savedView = localStorage.getItem("activeView");
+    return savedView ? savedView : "Home";
+  });
 
   // List of links and their properties
   const navLinks = [
@@ -20,34 +17,35 @@ const Navbar = ({ onToggleView }) => {
     { to: "/projects", label: "Projects", icon: faDiagramProject },
   ];
 
-  const handleNavigation = (path) => {
+  // Function to handle navigation and set active link
+  const handleNavigation = (view) => {
+    setActiveLink(view); // Update the active link based on the clicked view
     if (onToggleView) {
-      onToggleView(path === "/home" ? "Home" : "Projects");
+      onToggleView(view); // Pass the active view (Home or Projects) as a param
     }
+    localStorage.setItem("activeView", view); // Save the selected view to localStorage
   };
 
   return (
     <nav className={styles.navbar}>
       <div className={styles.logo}></div>
       <ul className={styles.navLinks}>
-        <li className={styles.linkContainer}>
-          {navLinks.map((link, index) => (
-            <Link
-              key={index}
-              onClick={() => handleNavigation(link.to)}
-              className={`${styles.link} ${
-                activeLink === link.to ? styles.active : ""
-              }`}
-            >
-              <FontAwesomeIcon
-                icon={link.icon}
-                size="s"
-                style={{ paddingRight: "8px" }}
-              />
-              {link.label}
-            </Link>
-          ))}
-        </li>
+        {navLinks.map((link, index) => (
+          <Link
+            key={index}
+            className={`${styles.link} ${
+              activeLink === link.label ? styles.active : ""
+            }`}
+            onClick={() => handleNavigation(link.label)} // Pass the view name (Home or Projects)
+          >
+            <FontAwesomeIcon
+              icon={link.icon}
+              size="s"
+              style={{ paddingRight: "8px" }}
+            />
+            {link.label}
+          </Link>
+        ))}
       </ul>
     </nav>
   );

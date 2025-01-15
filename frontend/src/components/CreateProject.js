@@ -91,8 +91,11 @@ const CreateProject = () => {
       const data = await response.json();
 
       if (response.ok) {
-        alert("Project created successfully!");
         setFormData({ title: "", date_created: "", image: null, link: "" });
+        localStorage.setItem("successMessage", "Project Created");
+        setTimeout(() => {
+          localStorage.removeItem("successMessage"); // Remove successMessage from localStorage
+        }, 1000);
         window.location.reload();
       } else {
         setErrorMessage(data.error || "Failed to create project.");
