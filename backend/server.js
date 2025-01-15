@@ -317,89 +317,61 @@ app.post("/projects", authenticateToken, upload.single("image"), (req, res) => {
   });
 });
 
-// |PUT|: [/projects/:id]: Edits a project within the database [X]
-app.put("/projects/:id", upload.single("image"), (req, res) => {
-  const { id } = req.params;
-  const { title, progress, githubLink } = req.body;
+// |PUT|: [/projects/:id]: Edits a project within the database
+app.put(
+  "/projects/:id",
+  authenticateToken,
+  upload.single("image"), // handle the image file
+  (req, res) => {
+    const user_id = req.user.id; // Get user ID from JWT payload
+    const { id, title, link, date_created } = req.body;
 
-  // Ensure required fields are provided
-  if (!title || !progress || !githubLink) {
-    return res
-      .status(400)
-      .json({ message: "Title, Progress, and Github Link are required" });
-  }
+    console.log(req.file); // Log the file to see if it's uploaded correctly
 
-  // Validate progress (should be between 0 and 100)
-  if (progress < 0 || progress > 100) {
-    return res
-      .status(400)
-      .json({ message: "Progress must be between 0 and 100" });
-  }
-  // SQL query to update the project in the database
-  const query = `
-        UPDATE projects
-        SET title = ?, progress = ?, githubLink = ?
-        WHERE id = ?
+    // Handle image file
+    const image = req.file ? req.file.filename : null;
+    const now = new Date().toISOString();
+    const formattedDate = date_created || now; // Use provided date_created or current date
+
+    // SQL query to update the project in the database
+    const query = `
+      UPDATE projects
+      SET title = ?, date_created = ?, link = ?, image = ?
+      WHERE id = ? AND user_id = ?
     `;
 
-  // Run the update query
-  database.run(query, [title, progress, githubLink, id], function (err) {
-    if (err) {
-      console.error("Error updating project:", err.message);
-      return res.status(500).json({ error: "Failed to update project" });
-    }
+    // Run the update query with the corrected parameter order
+    db.run(
+      query,
+      [id, user_id, title, formattedDate, image, link],
+      function (err) {
+        if (err) {
+          console.error("Error updating project:", err.message);
+          return res.status(500).json({ error: "Failed to update project" });
+        }
 
-    // Check if any row was updated
-    if (this.changes === 0) {
-      return res.status(404).json({ message: "Project not found" });
-    }
+        /* Check if any row was updated
+        if (this.changes === 0) {
+          return res
+            .status(404)
+            .json({ message: "Project not found or you're not authorized" });
+        }*/
 
-    // Respond with the updated project details
-    res.json({
-      message: "Project updated successfully",
-      id,
-      title,
-      progress,
-      githubLink,
-    });
-  });
-});
+        // Respond with the updated project details
+        res.json({
+          message: "Project updated successfully",
+          id,
+          title,
+          link,
+          image: image || null, // Include image if available
+          date_created: formattedDate,
+        });
+      }
+    );
+  }
+);
 
-// |GET|: [/projects/:id]: Retrives a specific projects info from the database. [X]
-app.get("/projects/:id", (req, res) => {
-  const { id } = req.params;
-
-  // SQL query to get the project details by ID
-  const query = `
-    SELECT * FROM projects WHERE id = ?
-  `;
-
-  // Run the query to get the project from the database
-  database.get(query, [id], (err, row) => {
-    if (err) {
-      console.error("Error fetching project:", err.message);
-      return res.status(500).json({ error: "Failed to fetch project" });
-    }
-
-    // Check if the project was found
-    if (!row) {
-      return res.status(404).json({ message: "Project not found" });
-    }
-
-    // Respond with the project details
-    res.json({
-      id: row.id,
-      title: row.title,
-      progress: row.progress,
-      githubLink: row.githubLink,
-      image: row.image, // Send back the image URL if available
-      isFavorite: row.isFavorite,
-      date_created: row.date_created, // Include any other fields you want
-    });
-  });
-});
-
-// |DELETE|: [/projects/:id]: Deletes a project using its ID [X]
+// |DELETE|: [/projects/:id]: Deletes a project using its ID
 app.delete("/projects/:id", (req, res) => {
   const { id } = req.params;
 

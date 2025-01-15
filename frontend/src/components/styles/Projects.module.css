@@ -94,7 +94,7 @@
   text-align: center;
   height: 410px;
   padding: 25px;
-  width: 433px;
+  width: 429px;
   border-radius: 10px;
   background-color: white;
   position: relative;
@@ -128,7 +128,7 @@
 }
 
 .projectImage {
-  width: 410px;
+  width: 400px;
   height: 320px;
   object-fit: cover; /* Ensures the image fills the container while maintaining aspect ratio */
   object-position: top; /* Aligns the image to the top of the container */

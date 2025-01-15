@@ -30,13 +30,13 @@ const Create = (obj) => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    console.log(name, value); // Log for debugging
     setFormData((prevData) => ({
       ...prevData,
       [name]: value,
     }));
   };
 
+  // FIXME: Implement the updateImagePreview function
   const handleSubmit = async (e) => {
     e.preventDefault();
 

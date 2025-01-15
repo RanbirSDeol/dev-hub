@@ -14,7 +14,7 @@ const CreateProject = (obj) => {
   const [formData, setFormData] = useState({
     title: obj.goal.title,
     date_created: obj.goal.date_created,
-    image: obj.goal.image, // File object for image
+    image: obj.goal.image,
     link: obj.goal.link,
   });
 
@@ -55,7 +55,7 @@ const CreateProject = (obj) => {
     e.preventDefault();
 
     // Check required fields
-    const requiredFields = ["title"];
+    const requiredFields = ["title", "link", "date_created"];
     for (let field of requiredFields) {
       if (!formData[field]) {
         setErrorMessage(
@@ -83,28 +83,42 @@ const CreateProject = (obj) => {
     if (formData.image) {
       formPayload.append("image", formData.image);
     }
+    console.log("formData:", formData);
 
     try {
-      const response = await fetch("http://localhost:5000/projects", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        body: formPayload,
-      });
+      const response = await fetch(
+        `http://localhost:5000/projects/${obj.goal.id}`,
+        {
+          method: "PUT",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          body: formPayload,
+        }
+      );
 
       const data = await response.json();
 
       if (response.ok) {
-        alert("Project created successfully!");
-        setFormData({ title: "", date_created: "", image: null, link: "" });
+        setFormData({
+          title: "",
+          date_created: "",
+          image: "",
+          link: "",
+        });
+
+        localStorage.setItem("successMessage", "Project Updated");
+        setTimeout(() => {
+          localStorage.removeItem("successMessage"); // Remove successMessage from localStorage
+        }, 1000);
+
         window.location.reload();
       } else {
-        setErrorMessage(data.error || "Failed to create project.");
+        alert("Error: " + data.error);
       }
     } catch (error) {
       console.error("Error:", error);
-      setErrorMessage("Failed to create project. Please try again later.");
+      alert("Failed to update project.");
     }
   };
 
