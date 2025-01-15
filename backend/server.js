@@ -13,6 +13,7 @@ const path = require("path");
 const jwt = require("jsonwebtoken"); // Import JWT
 const bcrypt = require("bcrypt"); // Import bcrypt for password hashing (if not already imported)
 const JWT_SECRET = process.env.KEY; // This should be kept secure
+const uploadsPath = path.join(__dirname, "../frontend/src/images/uploads");
 
 // | API Documentation |
 
@@ -59,10 +60,10 @@ app.use(
   })
 );
 app.use(express.json());
+app.use("/uploads", express.static(uploadsPath));
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    const uploadsPath = path.join(__dirname, "uploads");
     cb(null, uploadsPath); // Store uploaded images in the "uploads" folder
   },
   filename: (req, file, cb) => {
@@ -287,29 +288,24 @@ app.get("/projects", (req, res) => {
 
 // |POST|: [/projects]: Creating a Project
 app.post("/projects", authenticateToken, upload.single("image"), (req, res) => {
-  const user_id = req.user.id; // Get the user ID from the JWT payload
+  const user_id = req.user.id; // Get user ID from JWT payload
   const { title, date_created, link } = req.body;
 
-  // Ensure the image is handled correctly
-  const image = req.file ? "/uploads/" + req.file.filename : ""; // Image path to be stored in DB
+  const image = req.file ? req.file.filename : "";
 
-  // Set default values for optional fields
   const now = new Date().toISOString();
   const formattedDate = date_created || now;
 
-  // SQL Query to insert data into the database
   const query = `
     INSERT INTO projects (user_id, title, date_created, image, link)
     VALUES (?, ?, ?, ?, ?)
   `;
 
-  // Insert the data into the database
   db.run(query, [user_id, title, formattedDate, image, link], function (err) {
     if (err) {
       return res.status(500).json({ error: err.message });
     }
 
-    // Send the response with the inserted data
     res.status(201).json({
       id: this.lastID,
       user_id,
@@ -409,7 +405,7 @@ app.delete("/projects/:id", (req, res) => {
 
   const query = "DELETE FROM projects WHERE id = ?";
 
-  database.run(query, [id], function (err) {
+  db.run(query, [id], function (err) {
     if (err) {
       console.log("Error deleting project:", err.message);
       return res.status(500).json({ error: "Failed to delete project" });

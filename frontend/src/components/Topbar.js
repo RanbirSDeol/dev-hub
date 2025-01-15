@@ -51,7 +51,7 @@ const Topbar = () => {
           alt="Goal Icon"
           style={{ width: "50px", height: "50px" }}
         />
-        <div>DevHub</div>
+        <div>Dev Tracker</div>
       </div>
       <ul className={styles.navigation}>
         <a

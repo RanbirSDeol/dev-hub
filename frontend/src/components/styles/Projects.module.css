@@ -122,6 +122,11 @@
   color: #4CAF50;
 }
 
+.projectImage {
+  width: 300px;
+  height: 200px;
+}
+
 .projectCreateCard:hover {
   font-size: 19px;
   color: #8ecd93;

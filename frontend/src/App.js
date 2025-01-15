@@ -9,7 +9,6 @@ import {
 import Login from "./components/Login";
 import Dashboard from "./components/Dashboard";
 import Signup from "./components/Signup";
-import Create from "./components/Create";
 import Goals from "./components/Goals";
 import Projects from "./components/Projects";
 
@@ -36,10 +35,6 @@ function App() {
         <Route
           path="/home"
           element={isAuthenticated() ? <Dashboard /> : <Navigate to="/login" />}
-        />
-        <Route
-          path="/create"
-          element={isAuthenticated() ? <Create /> : <Navigate to="/create" />}
         />
         <Route
           path="/goals"

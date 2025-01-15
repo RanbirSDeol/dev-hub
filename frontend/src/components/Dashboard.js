@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import Topbar from "./Topbar";
-import Create from "./Create";
+import CreateGoal from "./CreateGoal";
 import Edit from "./Edit";
 import Confirmation from "./Confirmation";
 import styles from "./styles/Dashboard.module.css";
@@ -548,7 +548,7 @@ const Dashboard = () => {
             </div>
           </button>
           {showCreate && (
-            <Create onGoalCreated={addGoal} onClose={toggleCreateForm} />
+            <CreateGoal onGoalCreated={addGoal} onClose={toggleCreateForm} />
           )}
           {showEdit && (
             <Edit

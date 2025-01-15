@@ -6,7 +6,7 @@ import {
   faSquareXmark,
 } from "@fortawesome/free-solid-svg-icons";
 
-const Create = () => {
+const CreateGoal = () => {
   const [visible, setVisible] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
   const [statusMessage, setStatusMessage] = useState(""); // Message to display
@@ -213,4 +213,4 @@ const Create = () => {
   );
 };
 
-export default Create;
+export default CreateGoal;
