@@ -143,8 +143,19 @@ const CreateProject = () => {
                 placeholder="Project Link"
               />
 
-              <div>
-                <label className={styles.header}>Image:</label>
+              <div className={styles.values}>
+                <label className={styles.header}>Creation Date:</label>
+                <input
+                  type="date"
+                  name="date_created"
+                  value={formData.date_created}
+                  onChange={handleChange}
+                  className={styles.inputDate}
+                />
+              </div>
+
+              <label className={styles.header}>Image:</label>
+              <div className={styles.imageContainer}>
                 <input
                   type="file"
                   id="fileInput"
@@ -167,19 +178,6 @@ const CreateProject = () => {
                     />
                   </div>
                 )}
-              </div>
-
-              <div className={styles.values}>
-                <div>
-                  <label className={styles.header}>Creation Date:</label>
-                  <input
-                    type="date"
-                    name="date_created"
-                    value={formData.date_created}
-                    onChange={handleChange}
-                    className={styles.inputDate}
-                  />
-                </div>
               </div>
 
               <button className={styles.button} type="submit">
