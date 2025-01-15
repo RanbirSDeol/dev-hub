@@ -51,7 +51,6 @@ const CreateProject = (obj) => {
     }
   };
 
-  // FIXME: Implement the updateImagePreview function
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -75,16 +74,20 @@ const CreateProject = (obj) => {
     }
 
     const formPayload = new FormData();
+    formPayload.append("id", obj.goal.id);
     formPayload.append("title", formData.title);
     formPayload.append(
       "date_created",
       formData.date_created || new Date().toISOString()
     );
     formPayload.append("link", formData.link);
+
+    // Only append a new image if there is a new file
     if (formData.image) {
       formPayload.append("image", formData.image);
+    } else {
+      formPayload.append("image", obj.goal.image); // Keep the existing image
     }
-    console.log("formData:", formData);
 
     try {
       const response = await fetch(

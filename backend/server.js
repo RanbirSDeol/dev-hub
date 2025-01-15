@@ -321,50 +321,32 @@ app.post("/projects", authenticateToken, upload.single("image"), (req, res) => {
 app.put(
   "/projects/:id",
   authenticateToken,
-  upload.single("image"), // handle the image file
+  upload.single("image"),
   (req, res) => {
-    const user_id = req.user.id; // Get user ID from JWT payload
-    const { id, title, link, date_created } = req.body;
+    const { id } = req.params;
+    const { title, date_created, link } = req.body;
+    const image = req.file ? req.file.filename : req.body.image; // Only update image if a new one is provided
 
-    console.log(req.file); // Log the file to see if it's uploaded correctly
-
-    // Handle image file
-    const image = req.file ? req.file.filename : null;
-    const now = new Date().toISOString();
-    const formattedDate = date_created || now; // Use provided date_created or current date
-
-    // SQL query to update the project in the database
     const query = `
-      UPDATE projects
-      SET title = ?, date_created = ?, link = ?, image = ?
-      WHERE id = ? AND user_id = ?
-    `;
+    UPDATE projects
+    SET title = ?, date_created = ?, image = COALESCE(?, image), link = ?
+    WHERE id = ? AND user_id = ?
+  `;
 
-    // Run the update query with the corrected parameter order
     db.run(
       query,
-      [id, user_id, title, formattedDate, image, link],
+      [title, date_created, image, link, id, req.user.id],
       function (err) {
         if (err) {
-          console.error("Error updating project:", err.message);
-          return res.status(500).json({ error: "Failed to update project" });
+          return res.status(500).json({ error: err.message });
         }
 
-        /* Check if any row was updated
-        if (this.changes === 0) {
-          return res
-            .status(404)
-            .json({ message: "Project not found or you're not authorized" });
-        }*/
-
-        // Respond with the updated project details
-        res.json({
-          message: "Project updated successfully",
+        res.status(200).json({
           id,
           title,
+          date_created,
+          image: image || null,
           link,
-          image: image || null, // Include image if available
-          date_created: formattedDate,
         });
       }
     );
