@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import styles from "./styles/Edit.module.css";
+import styles from "./styles/EditGoal.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCircleNotch,

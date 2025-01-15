@@ -1,22 +1,27 @@
-import React, { useState } from "react";
-import styles from "./styles/CreateProject.module.css";
+import { useState, useEffect } from "react";
+import styles from "./styles/EditProject.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCircleNotch,
   faSquareXmark,
 } from "@fortawesome/free-solid-svg-icons";
 
-const CreateProject = () => {
+const CreateProject = (obj) => {
   const [visible, setVisible] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
   const [imagePreview, setImagePreview] = useState(null);
 
   const [formData, setFormData] = useState({
-    title: "",
-    date_created: "",
-    image: null, // File object for image
-    link: "",
+    title: obj.goal.title,
+    date_created: obj.goal.date_created,
+    image: obj.goal.image, // File object for image
+    link: obj.goal.link,
   });
+
+  const updateImagePreview = () => {
+    console.log(obj.goal.image); // Check if this is the correct image URL or value
+    setImagePreview(`http://localhost:5000/uploads/${obj.goal.image}`);
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -103,6 +108,11 @@ const CreateProject = () => {
     }
   };
 
+  useEffect(() => {
+    // Run updateImagePreview only on initial render
+    updateImagePreview();
+  }, []);
+
   return (
     <>
       {visible && (
@@ -163,9 +173,7 @@ const CreateProject = () => {
                   accept="image/*"
                   onChange={handleChange}
                   className={styles.inputFile}
-                  style={{ display: "none" }}
                 />
-
                 <label
                   htmlFor="fileInput"
                   className={styles.inputFileLabel}
@@ -183,7 +191,7 @@ const CreateProject = () => {
               </div>
 
               <button className={styles.button} type="submit">
-                Create Project
+                Update Project
               </button>
             </form>
           </div>

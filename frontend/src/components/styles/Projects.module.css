@@ -210,10 +210,33 @@
 
 .projectCreated {
   position: absolute;
-  font-size: 10px;
+  font-size: 11px;
   bottom: 10px;
   right: 10px;
 }
+
+.projectSource {
+  position: absolute;
+  font-size: 11px;
+  bottom: 10px;
+  left: 10px;
+}
+
+.projectSource {
+  text-decoration: none; 
+  color: inherit;  
+  font-weight: 600;
+  padding: 2px;
+  border: 2px solid #0582ca;
+  border-radius: 5px;
+  color: #0582ca;
+}
+
+.projectSource:hover {
+  background-color: #0582ca;
+  color: white;
+}
+
 
 .projectIcon {
   font-size: 25px;

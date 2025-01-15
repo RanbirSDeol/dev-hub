@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import Topbar from "./Topbar";
+import EditProject from "./EditProject";
 import Confirmation from "./Confirmation";
 import CreateProject from "./CreateProject";
 import styles from "./styles/Projects.module.css";
@@ -30,18 +31,33 @@ const Dashboard = () => {
   const [statusMessage, setStatusMessage] = useState(""); // Message to display
   const [showStatus, setShowStatus] = useState(false); // Control visibility of the topbar
   const [showConfirmation, setShowConfirmation] = useState(false);
+  const [showEdit, setShowEdit] = useState(false);
   const [projectToDelete, setProjectToDelete] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
+  const [selectedGoal, setSelectedProject] = useState(null);
 
   const [showCreate, setShowCreate] = useState(false); // State to control visibility of the Create component
   const [sortBy, setSortOption] = useState("new");
 
   // Function to toggle the Create component visibility
   const toggleCreateForm = () => {
+    setShowEdit(false);
     setShowCreate((prev) => !prev);
   };
 
-  // Function to delete a specific project with a confirmation prompt
+  const toggleEditForm = () => {
+    setShowCreate(false);
+    setShowEdit((prev) => !prev);
+  };
+
+  const setEditProject = (project) => {
+    setSelectedProject(project);
+    toggleEditForm();
+  };
+
+  const addProject = (newGoal) => {
+    setProjects((prevGoals) => [...prevGoals, newGoal]);
+  };
 
   // Function to handle delete button click
   const handleDeleteClick = (projectId) => {
@@ -208,7 +224,11 @@ const Dashboard = () => {
               <div key={project.id} className={styles.projectCard}>
                 <div className={styles.projectTopbar}>
                   <button className={styles.edit}>
-                    <FontAwesomeIcon icon={faEllipsis} size="xl" />
+                    <FontAwesomeIcon
+                      icon={faEllipsis}
+                      size="xl"
+                      onClick={() => setEditProject(project)}
+                    />
                   </button>
                   <button
                     className={styles.trash}
@@ -224,6 +244,15 @@ const Dashboard = () => {
                     className={styles.projectImage}
                   />
                   <p className={styles.projectTitle}>{project.title}</p>
+                  <a
+                    className={styles.projectSource}
+                    href={project.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Source
+                  </a>
+
                   <p className={styles.projectCreated}>
                     Created @ {project.date_created}
                   </p>
@@ -241,6 +270,13 @@ const Dashboard = () => {
             </div>
           </button>
           {showCreate && <CreateProject onClose={toggleCreateForm} />}
+          {showEdit && (
+            <EditProject
+              goal={selectedGoal}
+              onGoalCreated={addProject}
+              onClose={toggleEditForm}
+            />
+          )}
         </div>
       </div>
     </div>
