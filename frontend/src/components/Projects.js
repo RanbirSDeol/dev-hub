@@ -204,49 +204,47 @@ const Dashboard = () => {
         </div>
 
         <div className={styles.projectsList}>
-          {filteredProjects.length === 0 ? (
-            <p>No projects found</p>
-          ) : (
-            filteredProjects.map((project) => (
-              <div key={project.id} className={styles.projectCard}>
-                <div className={styles.projectTopbar}>
-                  <button className={styles.edit}>
-                    <FontAwesomeIcon
-                      icon={faEllipsis}
-                      size="xl"
-                      onClick={() => setEditProject(project)}
-                    />
-                  </button>
-                  <button
-                    className={styles.trash}
-                    onClick={() => handleDeleteClick(project.id)}
-                  >
-                    <FontAwesomeIcon icon={faTrashCan} size="xl" />
-                  </button>
-                </div>
-                <div className={styles.projectHeader}>
-                  <img
-                    src={`http://localhost:5000/uploads/${project.image}`}
-                    alt="Project"
-                    className={styles.projectImage}
+          {/* No length check, simply map through the projects */}
+          {filteredProjects.map((project) => (
+            <div key={project.id} className={styles.projectCard}>
+              <div className={styles.projectTopbar}>
+                <button className={styles.edit}>
+                  <FontAwesomeIcon
+                    icon={faEllipsis}
+                    size="xl"
+                    onClick={() => setEditProject(project)}
                   />
-                  <p className={styles.projectTitle}>{project.title}</p>
-                  <a
-                    className={styles.projectSource}
-                    href={project.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Source
-                  </a>
-
-                  <p className={styles.projectCreated}>
-                    Created @ {project.date_created}
-                  </p>
-                </div>
+                </button>
+                <button
+                  className={styles.trash}
+                  onClick={() => handleDeleteClick(project.id)}
+                >
+                  <FontAwesomeIcon icon={faTrashCan} size="xl" />
+                </button>
               </div>
-            ))
-          )}
+              <div className={styles.projectHeader}>
+                <img
+                  src={`http://localhost:5000/uploads/${project.image}`}
+                  alt="Project"
+                  className={styles.projectImage}
+                />
+                <p className={styles.projectTitle}>{project.title}</p>
+                <a
+                  className={styles.projectSource}
+                  href={project.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Source
+                </a>
+
+                <p className={styles.projectCreated}>
+                  Created @ {project.date_created}
+                </p>
+              </div>
+            </div>
+          ))}
+
           <button
             className={styles.projectCreateCard}
             onClick={toggleCreateForm}
@@ -256,6 +254,7 @@ const Dashboard = () => {
               <p>Create Project</p>
             </div>
           </button>
+
           {showCreate && <CreateProject onClose={toggleCreateForm} />}
           {showEdit && (
             <EditProject

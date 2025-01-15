@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import styles from "./styles/Signup.module.css";
+import Status from "./Status";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faEye,
@@ -54,6 +56,11 @@ const Signup = () => {
       if (data) {
         // Navigate to the home/dashboard page
         navigate("/login");
+
+        localStorage.setItem("successMessage", "Account Created");
+        setTimeout(() => {
+          localStorage.removeItem("successMessage");
+        }, 3000);
       } else {
         setError("Account could not be created.");
       }
@@ -64,81 +71,84 @@ const Signup = () => {
   };
 
   return (
-    <div className={styles.mainContainer}>
-      <div className={styles.leftContainer}>
-        <form onSubmit={handleSubmit} className={styles.form}>
-          <h1 className={styles.displayName}>
-            <img
-              src={targetIcon}
-              alt="Goal Icon"
-              style={{ width: "80px", height: "80px" }}
-            />
-            GOAL TRACKER
-          </h1>
-          <h1 className={styles.title}>Sign Up</h1>
-
-          {/* Display error message */}
-          {error && <div className={styles.errorMessage}>{error}</div>}
-
-          <div className={styles.inputContainer}>
-            <label htmlFor="name" className={styles.label}></label>
-            <input
-              type="text"
-              id="name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              className={styles.input}
-              placeholder="Enter your name"
-            />
-          </div>
-
-          <div className={styles.inputContainer}>
-            <label htmlFor="email" className={styles.label}></label>
-            <input
-              type="email"
-              id="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className={styles.input}
-              placeholder="Enter your email" // Optional: add a placeholder
-            />
-          </div>
-
-          <div className={styles.inputContainer}>
-            <label htmlFor="password" className={styles.label}></label>
-            <div className={styles.passwordWrapper}>
-              <input
-                type={isPasswordVisible ? "text" : "password"}
-                id="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className={styles.input}
-                placeholder="Enter your password" // Optional: add a placeholder
+    <div>
+      <Status />
+      <div className={styles.mainContainer}>
+        <div className={styles.leftContainer}>
+          <form onSubmit={handleSubmit} className={styles.form}>
+            <h1 className={styles.displayName}>
+              <img
+                src={targetIcon}
+                alt="Goal Icon"
+                style={{ width: "80px", height: "80px" }}
               />
-              <button
-                type="button"
-                onClick={() => setIsPasswordVisible(!isPasswordVisible)}
-                className={styles.toggleButton}
-              >
-                {isPasswordVisible ? (
-                  <FontAwesomeIcon icon={faEyeSlash} />
-                ) : (
-                  <FontAwesomeIcon icon={faEye} />
-                )}
-              </button>
-            </div>
-          </div>
+              DevHub
+            </h1>
+            <h1 className={styles.title}>Sign Up</h1>
 
-          <button type="submit" className={styles.sign_in_button}>
-            Create
-          </button>
-          <p className={styles.subtitle}>
-            Already have an account?{" "}
-            <a className={styles.link} href="/login">
-              Sign in
-            </a>
-          </p>
-        </form>
+            {/* Display error message */}
+            {error && <div className={styles.errorMessage}>{error}</div>}
+
+            <div className={styles.inputContainer}>
+              <label htmlFor="name" className={styles.label}></label>
+              <input
+                type="text"
+                id="name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className={styles.input}
+                placeholder="Enter your name"
+              />
+            </div>
+
+            <div className={styles.inputContainer}>
+              <label htmlFor="email" className={styles.label}></label>
+              <input
+                type="email"
+                id="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className={styles.input}
+                placeholder="Enter your email" // Optional: add a placeholder
+              />
+            </div>
+
+            <div className={styles.inputContainer}>
+              <label htmlFor="password" className={styles.label}></label>
+              <div className={styles.passwordWrapper}>
+                <input
+                  type={isPasswordVisible ? "text" : "password"}
+                  id="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className={styles.input}
+                  placeholder="Enter your password" // Optional: add a placeholder
+                />
+                <button
+                  type="button"
+                  onClick={() => setIsPasswordVisible(!isPasswordVisible)}
+                  className={styles.toggleButton}
+                >
+                  {isPasswordVisible ? (
+                    <FontAwesomeIcon icon={faEyeSlash} />
+                  ) : (
+                    <FontAwesomeIcon icon={faEye} />
+                  )}
+                </button>
+              </div>
+            </div>
+
+            <button type="submit" className={styles.sign_in_button}>
+              Create
+            </button>
+            <p className={styles.subtitle}>
+              Already have an account?{" "}
+              <a className={styles.link} href="/login">
+                Sign in
+              </a>
+            </p>
+          </form>
+        </div>
       </div>
     </div>
   );

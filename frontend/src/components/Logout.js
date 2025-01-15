@@ -10,6 +10,10 @@ const Logout = () => {
   const handleLogout = () => {
     localStorage.removeItem("authToken");
     navigate("/login");
+    localStorage.setItem("successMessage", "Logged Out");
+    setTimeout(() => {
+      localStorage.removeItem("successMessage");
+    }, 1000);
   };
 
   return (
