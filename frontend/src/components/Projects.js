@@ -99,6 +99,9 @@ const Dashboard = () => {
               </div>
               <div className={styles.goalHeader}>
                 <p className={styles.goalTitle}>{project.title}</p>
+                <p className={styles.goalTitle}>{project.image}</p>
+                <p className={styles.goalTitle}>{project.date_created}</p>
+                <p className={styles.goalTitle}>{project.link}</p>
               </div>
             </div>
           ))}
