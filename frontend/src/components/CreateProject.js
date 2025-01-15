@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import styles from "./styles/Create.module.css";
+import styles from "./styles/CreateProject.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCircleNotch,
@@ -9,6 +9,7 @@ import {
 const CreateProject = () => {
   const [visible, setVisible] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
+  const [imagePreview, setImagePreview] = useState(null);
 
   const [formData, setFormData] = useState({
     title: "",
@@ -21,10 +22,22 @@ const CreateProject = () => {
     const { name, value } = e.target;
 
     if (name === "image") {
+      const file = e.target.files[0];
+
+      // Set the file object for the image
       setFormData((prevData) => ({
         ...prevData,
-        image: e.target.files[0], // Set the file object for image
+        image: file,
       }));
+
+      // Preview the image if one is selected
+      if (file) {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          setImagePreview(reader.result); // Store the preview URL
+        };
+        reader.readAsDataURL(file); // Read the image file as a data URL
+      }
     } else {
       setFormData((prevData) => ({
         ...prevData,
@@ -94,7 +107,7 @@ const CreateProject = () => {
     <>
       {visible && (
         <div className={styles.container}>
-          <div className={styles.goalContainer}>
+          <div className={styles.projectContainer}>
             <button
               onClick={() => setVisible(false)}
               className={styles.closeButton}
@@ -121,19 +134,6 @@ const CreateProject = () => {
                 />
               </div>
 
-              <div className={styles.values}>
-                <div>
-                  <label className={styles.header}>Creation Date:</label>
-                  <input
-                    type="date"
-                    name="date_created"
-                    value={formData.date_created}
-                    onChange={handleChange}
-                    className={styles.inputDate}
-                  />
-                </div>
-              </div>
-
               <input
                 type="url"
                 name="link"
@@ -147,11 +147,39 @@ const CreateProject = () => {
                 <label className={styles.header}>Image:</label>
                 <input
                   type="file"
+                  id="fileInput"
                   name="image"
                   accept="image/*"
                   onChange={handleChange}
                   className={styles.inputFile}
                 />
+                <label
+                  htmlFor="fileInput"
+                  className={styles.inputFileLabel}
+                ></label>
+
+                {imagePreview && (
+                  <div className={styles.imagePreviewContainer}>
+                    <img
+                      src={imagePreview}
+                      alt=""
+                      className={styles.imagePreview}
+                    />
+                  </div>
+                )}
+              </div>
+
+              <div className={styles.values}>
+                <div>
+                  <label className={styles.header}>Creation Date:</label>
+                  <input
+                    type="date"
+                    name="date_created"
+                    value={formData.date_created}
+                    onChange={handleChange}
+                    className={styles.inputDate}
+                  />
+                </div>
               </div>
 
               <button className={styles.button} type="submit">

@@ -51,7 +51,7 @@
 .icon {
   margin-top: 15px;
   padding-right: 10px;
-  color: #4CAF50;
+  color: #0582ca;
 }
 
 .mainInput {
@@ -74,20 +74,20 @@
   margin-top: 15px;
   align-self: center;
   border-radius: 8px;
-  background-color: #4CAF50;
+  background-color: #0582ca;
   color: #ffffff;
   box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
 }
 
 .button:hover {
-  background-color: #69bc6c;
-  border-color: #69bc6c;
+  background-color: #0471a0;
+  border-color: #0471a0;
 }
 
 .button:active {
-  background-color: #69bc6c;
-  border-color: #69bc6c;
-  transform: scale(0.4CAF50); 
+  background-color: #045b89;
+  border-color: #045b89;
+  transform: scale(0.98); 
 }
 
 .createForm {

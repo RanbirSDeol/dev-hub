@@ -176,12 +176,15 @@ const Dashboard = () => {
                 </button>
               </div>
               <div className={styles.projectHeader}>
-                <p className={styles.projectTitle}>{project.title}</p>
                 <img
                   src={`http://localhost:5000/uploads/${project.image}`}
                   alt="Project"
                   className={styles.projectImage}
                 />
+                <p className={styles.projectTitle}>{project.title}</p>
+                <p className={styles.projectCreated}>
+                  Created @ {project.date_created}
+                </p>
               </div>
             </div>
           ))}

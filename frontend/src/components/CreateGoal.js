@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import styles from "./styles/Create.module.css";
+import styles from "./styles/CreateGoal.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCircleNotch,
