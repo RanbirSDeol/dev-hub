@@ -8,6 +8,8 @@ const sqlite3 = require("sqlite3").verbose(); // Import sqlite3
 const app = express();
 const cors = require("cors");
 const port = process.env.PORT;
+const multer = require("multer");
+const path = require("path");
 const jwt = require("jsonwebtoken"); // Import JWT
 const bcrypt = require("bcrypt"); // Import bcrypt for password hashing (if not already imported)
 const JWT_SECRET = process.env.KEY; // This should be kept secure
@@ -15,21 +17,40 @@ const JWT_SECRET = process.env.KEY; // This should be kept secure
 // | API Documentation |
 
 /*
-----
-GET '/' : An API check
-GET '/goals' : Returns all the goals
+
+|USERS|
+
 GET '/users' : Returns all the users
+
 GET '/get-user' : Returns a specific user, must have token
-----
-POST '/goals' : Adds a new goal
+
 POST '/register' : Registers a new user
+
 POST '/login' : Logs in a user
-----
+
+|GOALS|
+
+GET '/goals' : Returns all the goals
+
+POST '/goals' : Adds a new goal
+
 PUT '/goals/:id' : Updates a goal, all fields required
-----
+
 DELETE '/goals/:id' : Deletes a goal
-----
+
+|PROJECTS|
+
+GET '/projects': Returns all the projects
+
+POST '/projects': Creates a new project
+
+PUT '/projects/:id': Updates a project
+
+DELETE '/projects/:id': Deletes a project
+
 */
+
+// | MIDDLEWARE |
 
 // Middleware to parse JSON
 app.use(
@@ -38,6 +59,18 @@ app.use(
   })
 );
 app.use(express.json());
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    const uploadsPath = path.join(__dirname, "uploads");
+    cb(null, uploadsPath); // Store uploaded images in the "uploads" folder
+  },
+  filename: (req, file, cb) => {
+    const fileExtension = path.extname(file.originalname); // Get file extension
+    cb(null, Date.now() + fileExtension); // Generate unique filename based on timestamp
+  },
+});
+const upload = multer({ storage: storage });
 
 // Middleware to authenticate token
 function authenticateToken(req, res, next) {
@@ -238,16 +271,159 @@ app.delete("/goals/:id", (req, res) => {
   });
 });
 
-// | GOALS |
+// | PROJECTS |
 
+// |GET|: [/projects]: Returns all of our project.
 app.get("/projects", (req, res) => {
   // Insert all projects into a list
-  database.all("SELECT * FROM projects", [], (err, rows) => {
+  db.all("SELECT * FROM projects", [], (err, rows) => {
     if (err) {
       return res.status(500).json({ error: err.message });
     }
     // Return as JSON
     res.json({ projects: rows });
+  });
+});
+
+// |POST|: [/projects]: Creating a Project
+app.post("/projects", authenticateToken, upload.single("image"), (req, res) => {
+  const user_id = req.user.id; // Get the user ID from the JWT payload
+  const { title, date_created, link } = req.body;
+
+  // Ensure the image is handled correctly
+  const image = req.file ? "/uploads/" + req.file.filename : ""; // Image path to be stored in DB
+
+  // Set default values for optional fields
+  const now = new Date().toISOString();
+  const formattedDate = date_created || now;
+
+  // SQL Query to insert data into the database
+  const query = `
+    INSERT INTO projects (user_id, title, date_created, image, link)
+    VALUES (?, ?, ?, ?, ?)
+  `;
+
+  // Insert the data into the database
+  db.run(query, [user_id, title, formattedDate, image, link], function (err) {
+    if (err) {
+      return res.status(500).json({ error: err.message });
+    }
+
+    // Send the response with the inserted data
+    res.status(201).json({
+      id: this.lastID,
+      user_id,
+      title,
+      date_created: formattedDate,
+      image,
+      link,
+    });
+  });
+});
+
+// |PUT|: [/projects/:id]: Edits a project within the database [X]
+app.put("/projects/:id", upload.single("image"), (req, res) => {
+  const { id } = req.params;
+  const { title, progress, githubLink } = req.body;
+
+  // Ensure required fields are provided
+  if (!title || !progress || !githubLink) {
+    return res
+      .status(400)
+      .json({ message: "Title, Progress, and Github Link are required" });
+  }
+
+  // Validate progress (should be between 0 and 100)
+  if (progress < 0 || progress > 100) {
+    return res
+      .status(400)
+      .json({ message: "Progress must be between 0 and 100" });
+  }
+  // SQL query to update the project in the database
+  const query = `
+        UPDATE projects
+        SET title = ?, progress = ?, githubLink = ?
+        WHERE id = ?
+    `;
+
+  // Run the update query
+  database.run(query, [title, progress, githubLink, id], function (err) {
+    if (err) {
+      console.error("Error updating project:", err.message);
+      return res.status(500).json({ error: "Failed to update project" });
+    }
+
+    // Check if any row was updated
+    if (this.changes === 0) {
+      return res.status(404).json({ message: "Project not found" });
+    }
+
+    // Respond with the updated project details
+    res.json({
+      message: "Project updated successfully",
+      id,
+      title,
+      progress,
+      githubLink,
+    });
+  });
+});
+
+// |GET|: [/projects/:id]: Retrives a specific projects info from the database. [X]
+app.get("/projects/:id", (req, res) => {
+  const { id } = req.params;
+
+  // SQL query to get the project details by ID
+  const query = `
+    SELECT * FROM projects WHERE id = ?
+  `;
+
+  // Run the query to get the project from the database
+  database.get(query, [id], (err, row) => {
+    if (err) {
+      console.error("Error fetching project:", err.message);
+      return res.status(500).json({ error: "Failed to fetch project" });
+    }
+
+    // Check if the project was found
+    if (!row) {
+      return res.status(404).json({ message: "Project not found" });
+    }
+
+    // Respond with the project details
+    res.json({
+      id: row.id,
+      title: row.title,
+      progress: row.progress,
+      githubLink: row.githubLink,
+      image: row.image, // Send back the image URL if available
+      isFavorite: row.isFavorite,
+      date_created: row.date_created, // Include any other fields you want
+    });
+  });
+});
+
+// |DELETE|: [/projects/:id]: Deletes a project using its ID [X]
+app.delete("/projects/:id", (req, res) => {
+  const { id } = req.params;
+
+  const query = "DELETE FROM projects WHERE id = ?";
+
+  database.run(query, [id], function (err) {
+    if (err) {
+      console.log("Error deleting project:", err.message);
+      return res.status(500).json({ error: "Failed to delete project" });
+    }
+
+    // Check if the row exists
+    if (this.changes == 0) {
+      return res
+        .status(404)
+        .json({ message: "No project found with given ID" });
+    }
+
+    console.log(`Project with ID ${id} deleted succesfully`);
+    res.json({ message: `Project with ID ${id} deleted successfully` });
   });
 });
 
