@@ -142,13 +142,6 @@ const Dashboard = () => {
         if (data && Array.isArray(data.goals)) {
           let sortedGoals = [...data.goals];
 
-          // Move due date forward by 1 day | Error on backend
-          sortedGoals = sortedGoals.map((goal) => {
-            const dueDate = new Date(goal.due_date);
-            dueDate.setDate(dueDate.getDate() + 1); // Add 1 day to the due date
-            return { ...goal, due_date: dueDate.toISOString() };
-          });
-
           // Sort the goals based on the selected option
           switch (sortBy) {
             case "new":
@@ -240,6 +233,7 @@ const Dashboard = () => {
             newCurrentValue === updatedGoal.target_value
               ? "completed"
               : "uncompleted",
+          due_date: updatedGoal.due_date,
         }),
       });
 

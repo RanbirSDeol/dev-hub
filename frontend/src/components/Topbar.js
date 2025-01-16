@@ -18,23 +18,18 @@ const Topbar = () => {
     const token = localStorage.getItem("authToken");
 
     const fetchUser = async () => {
-      try {
-        const response = await fetch("http://localhost:5000/get-user", {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+      const response = await fetch("http://localhost:5000/get-user", {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
-        const data = await response.json();
-        if (response.ok) {
-          setUser(data.user); // Set the user data from the response
-        } else {
-          alert("Error: " + data.error);
-        }
-      } catch (error) {
-        console.error("Error fetching user data:", error);
-        alert("Failed to fetch user data.");
+      const data = await response.json();
+      if (response.ok) {
+        setUser(data.user); // Set the user data from the response
+      } else {
+        alert("Error: " + data.error);
       }
     };
 

@@ -149,7 +149,6 @@ app.post("/goals", authenticateToken, (req, res) => {
     unit,
     priority,
     status,
-    due_date,
   } = req.body;
   const user_id = req.user.id; // User ID from the JWT payload
 
@@ -158,6 +157,19 @@ app.post("/goals", authenticateToken, (req, res) => {
     return res.status(400).json({ error: "User ID is required" });
   }
 
+  // Incrementing our due_date by one, since SQLite stores it one day behind?!
+
+  // Convert due_date to a Date object
+  let dueDate = new Date(req.body.due_date);
+
+  // Subtract one day (24 hours)
+  dueDate.setDate(dueDate.getDate() + 1);
+
+  // Format the date to 'YYYY-MM-DD' format
+  const formattedDueDate = dueDate.toISOString().split("T")[0];
+  due_date = formattedDueDate;
+
+  // Prepare the SQL query
   const sql = `INSERT INTO goals (user_id, title, initial_value, current_value, target_value, unit, priority, status, due_date) 
                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 

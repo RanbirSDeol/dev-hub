@@ -46,13 +46,11 @@ const Login = () => {
 
       if (data.token) {
         localStorage.setItem("authToken", data.token);
-
-        localStorage.setItem("successMessage", "Logged In");
         setTimeout(() => {
-          localStorage.removeItem("successMessage");
-        }, 3000);
-
-        setTimeout(() => {
+          localStorage.setItem("successMessage", "Logged In");
+          setTimeout(() => {
+            localStorage.removeItem("successMessage");
+          }, 50);
           navigate("/home");
           navigate(0);
         }, 1000);

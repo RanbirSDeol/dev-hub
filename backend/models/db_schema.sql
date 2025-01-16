@@ -20,7 +20,7 @@ CREATE TABLE IF NOT EXISTS goals (
   status TEXT DEFAULT 'Pending',
   due_date TIMESTAMP,
   finished_date TIMESTAMP, 
-  created_at TIMESTAMP DEFAULT (datetime('now', '-5 hours')),  -- Adjust for EST (UTC-5)
+  created_at TIMESTAMP DEFAULT (datetime('now', '-5 hours')), 
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (user_id) REFERENCES users (id)
 );
