@@ -54,11 +54,17 @@ DELETE '/projects/:id': Deletes a project
 // | MIDDLEWARE |
 
 // Middleware to parse JSON
-app.use(
-  cors({
-    origin: "http://localhost:3000", // allow only localhost:3000 to access the server
-  })
-);
+const corsOptions = {
+  origin: [
+    "http://localhost:3000",
+    "https://dev-dc5p6fbpt-ranbirsdeols-projects.vercel.app",
+  ], // Add your Vercel URL here
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+};
+
+app.use(cors(corsOptions));
+
 app.use(express.json());
 app.use("/uploads", express.static(uploadsPath));
 
