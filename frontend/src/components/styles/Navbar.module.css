@@ -1,13 +1,16 @@
 .navbar {
   text-decoration: none;
-  flex: 0 0 3%;  /* The navbar takes up 25% of the container width */
+  flex: 0 0 3%;  /* Navbar takes up 3% of container width */
   background-color: white;
   border-radius: 2px;
-  height: 5vh;  /* Optionally, to make it take up the full height */
+  height: 3vh;
   padding-left: 390px;
   padding-right: 390px;
-  padding-top: 20px;
-  padding-bottom: 20px;
+  padding-top: 10px;
+  padding-bottom: 50px;
+  display: flex;
+  justify-content: left;
+  align-items: left;
 }
 
 .navLinks {
@@ -15,16 +18,15 @@
   flex-direction: row;
   justify-content: left;
   gap: 2rem;
-  height: 90vh;
   width: 100%;
-  font-size: 2rem;
+  font-size: 1.5rem;  /* Adjust font size for better responsiveness */
 }
 
 li {
   display: flex;
   flex-direction: row;
   justify-content: left;
-  gap: 2rem;
+  gap: 1rem;  /* Reduce gap between list items for better responsiveness */
   width: 100%;
   border-radius: 25px;
   transition: border 0.1s ease;
@@ -35,7 +37,7 @@ li {
   display: flex;
   height: 35px;
   justify-content: center;
-  flex-direction: row;
+  align-items: center;
   font-size: 1.25rem;
   text-decoration: none;
   text-align: center;
@@ -55,4 +57,50 @@ li {
   border: none;
   border-bottom: 3px solid #000000;
   box-shadow: none;
+}
+
+/* Responsive Design */
+
+/* Phones */
+@media (max-width: 600px) {
+  .navbar {
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    height: auto; 
+  }
+
+  .navLinks {
+    flex-direction: row;
+    justify-content: center;
+    gap: 1rem;
+    font-size: 1.25rem;  
+  }
+
+  .link {
+    font-size: 1.2rem; 
+  }
+}
+
+/* Tablets */
+@media (min-width: 601px) and (max-width: 1024px) {
+  .navbar {
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    height: auto;
+  }
+
+  .navLinks {
+    flex-direction: row;
+    justify-content: left;
+    gap: 1.5rem;
+    font-size: 1.4rem; 
+  }
+
+  .link {
+    font-size: 1.3rem;  
+  }
 }
