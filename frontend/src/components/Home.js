@@ -1,6 +1,7 @@
 // Dashboard Component
 
 import React, { useState, useEffect } from "react";
+import { debounce } from "lodash";
 import CreateGoal from "./CreateGoal";
 import EditGoal from "./EditGoal";
 import Confirmation from "./Confirmation";
@@ -26,7 +27,7 @@ const Dashboard = () => {
   const [error, setError] = useState(null); // Error message
   const [sortBy, setSortBy] = useState("due"); // Sorting
   const [searchQuery, setSearchQuery] = useState(""); // Search query
-  const [toggleCompleted, setToggleCompleted] = useState("hide"); // Default to 'show'
+  const [toggleCompleted, setToggleCompleted] = useState("show"); // Default to 'show'
   const [showCreate, setShowCreate] = useState(false); // State to control visibility of the Create component
   const [showEdit, setShowEdit] = useState(false); // State to control visibility of the Edit component
   const [selectedGoal, setSelectedGoal] = useState(null); // State to store the selected goal
@@ -192,7 +193,7 @@ const Dashboard = () => {
   });
 
   // Function to update the goal progress (+/-)
-  const updateProgress = async (goalId, change) => {
+  const updateProgress = debounce(async (goalId, change) => {
     // Update the state immediately to reflect the progress change
     setGoals((prevGoals) =>
       prevGoals.map((goal) =>
@@ -218,6 +219,13 @@ const Dashboard = () => {
       0,
       Math.min(updatedGoal.target_value, updatedGoal.current_value + change)
     );
+
+    if (updatedGoal.current_value + change === updatedGoal.target_value) {
+      localStorage.setItem("successMessage", "Goal Completed");
+      setTimeout(() => {
+        localStorage.removeItem("successMessage"); // Remove successMessage from localStorage
+      }, 1000);
+    }
 
     try {
       // Send a PUT request to update the goal in the backend
@@ -251,7 +259,7 @@ const Dashboard = () => {
     } catch (error) {
       console.error("Error updating goal:", error);
     }
-  };
+  }, 100);
 
   // Function to delete a specific goal with a confirmation prompt
   const deleteGoal = async (goalId) => {
@@ -365,8 +373,8 @@ const Dashboard = () => {
                 value={toggleCompleted}
                 onChange={handleToggleCompletedChange}
               >
-                <option value="hide">Hide Completed</option>
                 <option value="show">Show Completed</option>
+                <option value="hide">Hide Completed</option>
               </select>
             </div>
           </div>
@@ -383,6 +391,19 @@ const Dashboard = () => {
               return (
                 <div key={goal.id} className={styles.goalCard}>
                   <div className={styles.goalTopbar}>
+                    <FontAwesomeIcon
+                      icon={
+                        goal.status === "completed"
+                          ? faCircleCheck
+                          : faCircleXmark
+                      }
+                      size="s"
+                      className={
+                        goal.status === "completed"
+                          ? styles.goalIcon
+                          : styles.goalComplete
+                      }
+                    />
                     <button
                       className={styles.edit}
                       onClick={() => setEditGoal(goal)}
@@ -397,22 +418,7 @@ const Dashboard = () => {
                     </button>
                   </div>
                   <div className={styles.goalHeader}>
-                    <p className={styles.goalTitle}>
-                      {goal.title}{" "}
-                      <FontAwesomeIcon
-                        icon={
-                          goal.status === "completed"
-                            ? faCircleCheck
-                            : faCircleXmark
-                        }
-                        size="s"
-                        className={
-                          goal.status === "completed"
-                            ? styles.goalIcon
-                            : styles.goalComplete
-                        }
-                      />
-                    </p>
+                    <p className={styles.goalTitle}>{goal.title}</p>
                   </div>
                   <div>
                     <p
@@ -440,7 +446,7 @@ const Dashboard = () => {
                     <button
                       className={styles.decrementButton}
                       onClick={() => updateProgress(goal.id, -1)}
-                      disabled={goal.current_value > goal.target_value}
+                      disabled={goal.current_value === 0}
                     >
                       -
                     </button>
@@ -454,7 +460,7 @@ const Dashboard = () => {
                     <button
                       className={styles.incrementButton}
                       onClick={() => updateProgress(goal.id, 1)}
-                      disabled={goal.current_value >= goal.target_value}
+                      disabled={goal.current_value === goal.target_value}
                     >
                       +
                     </button>
