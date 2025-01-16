@@ -125,7 +125,7 @@ const Dashboard = () => {
       // GET request to fetch goals
       try {
         const token = localStorage.getItem("authToken"); // Get the JWT token from localStorage (or wherever it's stored)
-        const response = await fetch("http://localhost:5000/goals", {
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/goals`, {
           headers: {
             Authorization: `Bearer ${token}`, // Pass the token in the header
           },
@@ -229,21 +229,24 @@ const Dashboard = () => {
 
     try {
       // Send a PUT request to update the goal in the backend
-      const response = await fetch(`http://localhost:5000/goals/${goalId}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          ...updatedGoal,
-          current_value: newCurrentValue, // Updated value
-          status:
-            newCurrentValue === updatedGoal.target_value
-              ? "completed"
-              : "uncompleted",
-          due_date: updatedGoal.due_date,
-        }),
-      });
+      const response = await fetch(
+        `${process.env.REACT_APP_API_URL}/goals/${goalId}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            ...updatedGoal,
+            current_value: newCurrentValue, // Updated value
+            status:
+              newCurrentValue === updatedGoal.target_value
+                ? "completed"
+                : "uncompleted",
+            due_date: updatedGoal.due_date,
+          }),
+        }
+      );
 
       if (!response.ok) {
         throw new Error("Failed to update goal");
@@ -264,9 +267,12 @@ const Dashboard = () => {
   // Function to delete a specific goal with a confirmation prompt
   const deleteGoal = async (goalId) => {
     try {
-      const response = await fetch(`http://localhost:5000/goals/${goalId}`, {
-        method: "DELETE",
-      });
+      const response = await fetch(
+        `${process.env.REACT_APP_API_URL}/goals/${goalId}`,
+        {
+          method: "DELETE",
+        }
+      );
 
       if (!response.ok) {
         throw new Error("Failed to delete goal");

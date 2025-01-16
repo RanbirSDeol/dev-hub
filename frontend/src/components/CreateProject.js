@@ -80,13 +80,16 @@ const CreateProject = () => {
     }
 
     try {
-      const response = await fetch("http://localhost:5000/projects", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        body: formPayload,
-      });
+      const response = await fetch(
+        `${process.env.REACT_APP_API_URL}/projects`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          body: formPayload,
+        }
+      );
 
       const data = await response.json();
 

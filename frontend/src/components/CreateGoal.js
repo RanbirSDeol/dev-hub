@@ -64,7 +64,7 @@ const CreateGoal = () => {
     }
 
     try {
-      const response = await fetch("http://localhost:5000/goals", {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/goals`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

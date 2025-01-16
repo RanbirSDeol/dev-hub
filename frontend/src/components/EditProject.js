@@ -20,7 +20,9 @@ const CreateProject = (obj) => {
 
   const updateImagePreview = () => {
     console.log(obj.goal.image); // Check if this is the correct image URL or value
-    setImagePreview(`http://localhost:5000/uploads/${obj.goal.image}`);
+    setImagePreview(
+      `${process.env.REACT_APP_API_URL}/uploads/${obj.goal.image}`
+    );
   };
 
   const handleChange = (e) => {

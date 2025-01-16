@@ -76,7 +76,7 @@ const Create = (obj) => {
 
     try {
       const response = await fetch(
-        `http://localhost:5000/goals/${obj.goal.id}`,
+        `${process.env.REACT_APP_API_URL}/${obj.goal.id}`,
         {
           method: "PUT",
           headers: {
