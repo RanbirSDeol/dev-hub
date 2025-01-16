@@ -13,7 +13,9 @@
 }
 
 .navbar {
+  width: 100%;  /* Ensure navbar takes up the full width */
   flex-shrink: 0;  /* Prevent navbar from shrinking */
+  background-color: #F5F5F5;  /* Example background color for navbar */
 }
 
 .dashboardContainer {
@@ -24,4 +26,29 @@
   padding-top: 20px;
   padding-bottom: 20px;
   background-color: #F5F5F5;  /* Optional: Set background color for the dashboard */
+}
+
+/* Responsive Design */
+
+/* Phones */
+@media (max-width: 600px) {
+  .container {
+    flex-direction: column;
+  }
+
+  .dashboardContainer {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+}
+
+/* Tablets */
+@media (min-width: 601px) and (max-width: 1024px) {
+  .container {
+    flex-direction: column;
+  }
+  .dashboardContainer {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
 }

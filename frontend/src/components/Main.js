@@ -28,13 +28,15 @@ const Dashboard = () => {
           <Topbar />
           <Navbar onToggleView={toggleView} />
         </div>
-        <div className={styles.content}>
-          {activeView === "Home" && <Home />}
-          {activeView === "Projects" && <Projects />}
-        </div>
+        <div className={styles.content}></div>
       </div>
     </>
   );
 };
+
+/* 
+{activeView === "Home" && <Home />}
+          {activeView === "Projects" && <Projects />}
+*/
 
 export default Dashboard;
