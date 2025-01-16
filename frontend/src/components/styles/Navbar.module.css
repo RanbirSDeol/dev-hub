@@ -88,8 +88,8 @@ li {
 /* Tablets */
 @media (min-width: 601px) and (max-width: 1024px) {
   .navbar {
-    padding-left: 150px;
-    padding-right: 150px;
+    padding-left: 50px;
+    padding-right: 50px;
     padding-top: 10px;
     padding-bottom: 10px;
     height: auto;

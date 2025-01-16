@@ -5,7 +5,7 @@ import { debounce } from "lodash";
 import CreateGoal from "./CreateGoal";
 import EditGoal from "./EditGoal";
 import Confirmation from "./Confirmation";
-import styles from "./styles/Home.module.css";
+import styles from "./styles/Goals.module.css";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -360,6 +360,7 @@ const Dashboard = () => {
                 name="sort-by"
                 value={sortBy}
                 onChange={handleSortChange}
+                className={styles.sortBy}
               >
                 <option value="due">Due Date</option>
                 <option value="new">Newest Created</option>
@@ -372,6 +373,7 @@ const Dashboard = () => {
                 name="toggle-completed"
                 value={toggleCompleted}
                 onChange={handleToggleCompletedChange}
+                className={styles.showCompleted}
               >
                 <option value="show">Show Completed</option>
                 <option value="hide">Hide Completed</option>

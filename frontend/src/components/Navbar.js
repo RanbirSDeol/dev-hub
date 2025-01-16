@@ -13,7 +13,7 @@ const Navbar = ({ onToggleView }) => {
 
   // List of links and their properties
   const navLinks = [
-    { to: "/home", label: "Home", icon: faHouse },
+    { to: "/goals", label: "Goals", icon: faHouse },
     { to: "/projects", label: "Projects", icon: faDiagramProject },
   ];
 

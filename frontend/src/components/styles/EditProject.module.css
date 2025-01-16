@@ -263,3 +263,69 @@ input:focus {
   border-color: #8BAAAD;
   box-shadow: 0 0 4px rgba(139, 170, 173, 0.5);
 }
+
+/* Responsive Design for Phones */
+@media (max-width: 600px) {
+  .projectContainer {
+    width: 90%;
+    height: auto;
+    padding: 1rem;
+  }
+
+  .mainInput {
+    font-size: 1.2rem;
+  }
+
+  .button {
+    width: 100%;
+    font-size: 22px;
+  }
+
+  .inputBig,
+  .inputString,
+  .inputNum,
+  .inputDate {
+    font-size: 1.5rem;
+  }
+
+  .values {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .createForm {
+    padding: 10px;
+  }
+
+  .errorMessage {
+    font-size: 0.9rem;
+  }
+}
+
+/* Responsive Design for Tablets */
+@media (min-width: 601px) and (max-width: 1524px) {
+  .projectContainer {
+    width: 60%;
+  }
+
+  .mainInput {
+    font-size: 1.4rem;
+  }
+
+  .button {
+    width: 80%;
+    font-size: 24px;
+  }
+
+  .inputBig,
+  .inputString,
+  .inputNum,
+  .inputDate {
+    font-size: 1.6rem;
+  }
+
+  .values {
+    flex-direction: row;
+    gap: 1rem;
+  }
+}

@@ -2,21 +2,21 @@
   display: flex;
   flex-direction: column;
   background-color: #f5f5f5;
-  min-height: 100vh;  /* Ensure the container takes up the full height */
+  min-height: 100vh;
 }
 
 .navbar {
-  flex-shrink: 0;  /* Prevent navbar from shrinking */
+  flex-shrink: 0;
 }
 
 .dashboardContainer {
-  flex-grow: 1;  /* The dashboard takes up the remaining space */
+  flex-grow: 1;
   padding: 1rem;
   padding-left: 390px;
   padding-right: 390px;
   padding-top: 20px;
   padding-bottom: 20px;
-  background-color: #F5F5F5;  /* Optional: Set background color for the dashboard */
+  background-color: #F5F5F5;
 }
 
 .header {
@@ -29,19 +29,19 @@
 }
 
 .searchbar {
-  width: 100%;               
-  max-width: 400px;           
-  padding: 10px 15px; 
-  margin-right: 25px;       
-  border: 2px solid #ccc;        
-  font-size: 16px;      
-  outline: none;    
-  box-sizing: border-box;     
+  width: 100%;
+  max-width: 400px;
+  padding: 10px 15px;
+  margin-right: 25px;
+  border: 2px solid #ccc;
+  font-size: 16px;
+  outline: none;
+  box-sizing: border-box;
   transition: border-color 0.3s ease;
 }
 
 .searchbar:focus {
-  border-color: #5b9bd5;     
+  border-color: #5b9bd5;
   background-color: #f0f8ff;
 }
 
@@ -57,28 +57,27 @@
 }
 
 .dropdown p {
-  font-size: 18px;           
-  color: #8b8b8b;      
+  font-size: 18px;
+  color: #8b8b8b;
   font-weight: 600;
 }
 
-.dropdown select {          
+.dropdown select {
   padding: 10px 15px;
-  font-size: 16px;           
-  border: 2px solid #ccc; 
-  background-color: white;     
+  font-size: 16px;
+  border: 2px solid #ccc;
+  background-color: white;
   color: #333;
-  outline: none;       
+  outline: none;
   transition: border-color 0.3s ease, background-color 0.3s ease;
 }
 
 .dropdown select:focus {
-  border-color: #5b9bd5;         
-  background-color: #fff;    
+  border-color: #5b9bd5;
+  background-color: #fff;
 }
 
 /* project Cards */
-
 .projectsList {
   display: flex;
   flex-wrap: wrap;
@@ -122,6 +121,12 @@
   color: #4CAF50;
 }
 
+.projectCreateCard:hover {
+  font-size: 19px;
+  color: #8ecd93;
+  border: 1px dashed #8ecd93;
+}
+
 .projectHeader {
   margin-top: 20px;
   text-align: left;
@@ -130,34 +135,20 @@
 .projectImage {
   width: 400px;
   height: 320px;
-  object-fit: cover; /* Ensures the image fills the container while maintaining aspect ratio */
-  object-position: top; /* Aligns the image to the top of the container */
-  border-radius: 8px; /* Optional: rounded corners for the image */
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Optional: subtle shadow for depth */
+  object-fit: cover;
+  object-position: top;
+  border-radius: 8px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.projectCreateCard:hover {
-  font-size: 19px;
-  color: #8ecd93;
-  border: 1px dashed #8ecd93;
+.projectIcon {
+  font-size: 25px;
+  color: rgb(0, 187, 255);
 }
 
-.numberDisplay {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.currentValue {
-  padding-right: 10px;
-  font-size: 26px;
-  font-weight: 600;
-}
-
-.endValue {
-  font-size: 18px;
-  font-weight: 200;
-  color: #383838;
+.projectComplete {
+  font-size: 25px;
+  color: red;
 }
 
 .projectTopbar {
@@ -260,43 +251,12 @@
   margin-right: 5px;
 }
 
-.lowPriority {
-  color: darkgreen;
-}
-
-.mediumPriority {
-  color: goldenrod;
-}
-
-.highPriority {
-  color: rgb(235, 0, 0);
-}
-
-.defaultPriority {
-  background-color: lightgray;
-  color: gray;
-}
-
-.projectDueDate {
-  padding-top: 10px;
-}
-
-.progressDetails {
-  font-size: 1.25rem;
-  color: #F4FFF8;
-}
-
-.progressDisplay {
-  display: flex;
-  flex-direction: column;
-}
-
 .statusTopbar {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
-  background-color: #4caf50; /* Green color for success */
+  background-color: #4caf50;
   color: white;
   text-align: center;
   padding: 10px;
@@ -312,5 +272,154 @@
   }
   to {
     transform: translateY(0);
+  }
+}
+
+/* PHONE */
+@media (max-width: 600px) {
+  .navbar {
+    padding: 10px;
+  }
+
+  .dashboardContainer {
+    padding-left: 30px;
+    padding-right: 30px;
+  }
+
+  .searchbar {
+    width: 100%;
+    max-width: none;
+    margin-right: 0;
+  }
+
+  .filters {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .projectsList {
+    gap: 0.5rem;
+    margin-top: 10px;
+  }
+
+  .projectCard {
+    width: 100%;
+    padding: 15px;
+  }
+
+  .projectCreateCard {
+    width: 100%;
+    padding: 15px;
+  }
+
+  .projectImage {
+    width: 100%;
+  }
+
+  .projectTitle {
+    font-size: 18px;
+  }
+
+  .projectHeader {
+    font-size: 18px;
+  }
+
+  .numberDisplay {
+    font-size: 18px;
+  }
+
+  .currentValue {
+    font-size: 22px;
+  }
+
+  .projectPercent {
+    font-size: 50px;
+  }
+
+  .priority {
+    font-size: 12px;
+  }
+
+  .projectSource {
+    font-size: 12px;
+  }
+
+  .projectSource:hover {
+    font-size: 13px;
+  }
+}
+
+/* TABLETS */
+@media (min-width: 601px) and (max-width: 1024px) {
+  .navbar {
+    padding: 15px;
+  }
+
+  .dashboardContainer {
+    padding-left: 50px;
+    padding-right: 50px;
+  }
+
+  .searchbar {
+    width: 100%;
+    max-width: 350px;
+    margin-right: 20px;
+  }
+
+  .filters {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .projectsList {
+    gap: 1rem;
+    margin-top: 20px;
+  }
+
+  .projectCard {
+    width: 48%;
+    padding: 20px;
+  }
+
+  .projectCreateCard {
+    width: 48%;
+    padding: 20px;
+  }
+
+  .projectImage {
+    width: 100%;
+    padding-bottom: 15px;
+  }
+
+  .projectTitle {
+    font-size: 20px;
+  }
+
+  .projectHeader {
+    font-size: 20px;
+  }
+
+  .numberDisplay {
+    font-size: 20px;
+  }
+
+  .currentValue {
+    font-size: 24px;
+  }
+
+  .projectPercent {
+    font-size: 55px;
+  }
+
+  .priority {
+    font-size: 14px;
+  }
+
+  .projectSource {
+    font-size: 14px;
+  }
+
+  .projectSource:hover {
+    font-size: 15px;
   }
 }

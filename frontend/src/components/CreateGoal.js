@@ -91,6 +91,7 @@ const CreateGoal = () => {
         setTimeout(() => {
           localStorage.removeItem("successMessage"); // Remove successMessage from localStorage
         }, 1000);
+        window.location.reload();
       } else {
         alert("Error: " + data.error);
       }
