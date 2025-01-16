@@ -28,7 +28,9 @@ const Dashboard = () => {
           <Topbar />
           <Navbar onToggleView={toggleView} />
         </div>
-        <div className={styles.content}></div>
+        <div className={styles.content}>
+          {activeView === "Home" && <Home />}
+        </div>
       </div>
     </>
   );

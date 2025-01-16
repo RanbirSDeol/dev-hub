@@ -389,3 +389,82 @@
 .incrementButton:hover {
   color: #ccc; /* Change color on hover */
 }
+
+/* Responsive Design */
+
+/* PHONES */
+
+@media (max-width: 600px) {
+  .dashboardContainer {
+    padding-left: 50px;
+    padding-right: 50px;
+  }
+
+  .goalCard,
+  .goalCreateCard {
+    width: 100%;
+    padding: 10px;
+  }
+
+  .searchbar {
+    width: 100%;
+    max-width: 330px;
+  }
+
+  .filters {
+    margin-top: 10px;
+    flex-direction: column;
+    align-items: center;
+  }
+  .dashboardTopbar {
+    flex-direction: column;
+  }
+
+  .goalsList {
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+  }
+
+  .goalCard {
+    margin-bottom: 20px; /* Add some space between cards on smaller screens */
+  }
+
+  .goalCreateCard {
+    margin-bottom: 20px; /* Add some space between the "Create New Goal" card */
+  }
+}
+
+/* TABLETS */
+
+@media (min-width: 601px) and (max-width: 1524px) {
+  .dashboardContainer {
+    padding-left: 150px;
+    padding-right: 150px;
+  }
+
+  .goalCard,
+  .goalCreateCard {
+    width: 48%;
+    padding: 15px;
+  }
+
+  .searchbar {
+    width: 100%;
+    max-width: 300px;
+  }
+
+  .filters {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .dashboardTopbar {
+    flex-direction: row;
+  }
+
+  .goalsList {
+    flex-direction: row;
+    align-items: left;
+  }
+}

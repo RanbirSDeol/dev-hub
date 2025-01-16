@@ -64,16 +64,18 @@ li {
 /* Phones */
 @media (max-width: 600px) {
   .navbar {
-    padding-left: 10px;
-    padding-right: 10px;
+    padding-left: 5px;
+    padding-right: 5px;
     padding-top: 5px;
     padding-bottom: 5px;
     height: auto; 
   }
 
   .navLinks {
+    padding-left: 50px;
+    padding-right: 50px;
     flex-direction: row;
-    justify-content: center;
+    justify-content: left;
     gap: 1rem;
     font-size: 1.25rem;  
   }
@@ -86,8 +88,8 @@ li {
 /* Tablets */
 @media (min-width: 601px) and (max-width: 1024px) {
   .navbar {
-    padding-left: 20px;
-    padding-right: 20px;
+    padding-left: 150px;
+    padding-right: 150px;
     padding-top: 10px;
     padding-bottom: 10px;
     height: auto;

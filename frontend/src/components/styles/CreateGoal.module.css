@@ -1,3 +1,4 @@
+/* Default Styles for Desktop */
 .container {
   display: flex;
   z-index: 10;
@@ -186,4 +187,70 @@
 input:focus {
   border-color: #8BAAAD;
   box-shadow: 0 0 4px rgba(139, 170, 173, 0.5);
+}
+
+/* Responsive Design for Phones */
+@media (max-width: 600px) {
+  .goalContainer {
+    width: 90%; /* Make goal container wider */
+    height: auto; /* Adjust height for mobile */
+    padding: 1rem;
+  }
+
+  .mainInput {
+    font-size: 1.2rem; /* Smaller font size */
+  }
+
+  .button {
+    width: 100%; /* Make button full width on mobile */
+    font-size: 22px; /* Smaller font size */
+  }
+
+  .inputBig,
+  .inputString,
+  .inputNum,
+  .inputDate {
+    font-size: 1.5rem; /* Slightly smaller font for inputs */
+  }
+
+  .values {
+    flex-direction: column; /* Stack values vertically */
+    gap: 0.5rem;
+  }
+
+  .createForm {
+    padding: 10px;
+  }
+
+  .errorMessage {
+    font-size: 0.9rem; /* Smaller error message font */
+  }
+}
+
+/* Responsive Design for Tablets */
+@media (min-width: 601px) and (max-width: 1524px) {
+  .goalContainer {
+    width: 60%; /* Adjust width for tablet */
+  }
+
+  .mainInput {
+    font-size: 1.4rem; /* Slightly smaller font */
+  }
+
+  .button {
+    width: 80%; /* Adjust button width */
+    font-size: 24px; /* Slightly smaller font size */
+  }
+
+  .inputBig,
+  .inputString,
+  .inputNum,
+  .inputDate {
+    font-size: 1.6rem; /* Adjust input font sizes */
+  }
+
+  .values {
+    flex-direction: row;
+    gap: 1rem;
+  }
 }
