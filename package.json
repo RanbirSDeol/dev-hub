@@ -1,0 +1,7 @@
+{
+  "scripts": {
+    "start": "node backend/server.js", 
+    "setup": "sqlite3 backend/modals/database.db < backend/db_schema.sql && npm run build --prefix frontend", 
+    "dev": "nodemon backend/server.js"
+  }
+}
