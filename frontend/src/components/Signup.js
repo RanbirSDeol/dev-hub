@@ -74,7 +74,7 @@ const Signup = () => {
     <div>
       <Status />
       <div className={styles.mainContainer}>
-        <div className={styles.leftContainer}>
+        <div className={styles.container}>
           <form onSubmit={handleSubmit} className={styles.form}>
             <h1 className={styles.displayName}>
               <img

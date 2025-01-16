@@ -1,6 +1,6 @@
 .mainContainer {
   display: flex;
-  flex-direction: column; /* Default to a single column layout for small screens */
+  flex-direction: column; 
   height: 100vh;
   width: 100vw;
 }
@@ -18,13 +18,12 @@
   color: red;
 }
 
-.leftContainer {
-  flex: 1; /* Allow containers to flexibly adjust their size */
+.container {
+  flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  /* background: linear-gradient(to right, #ffffff, #e8f0fa, #f2f7ff, #fbf2ea, #fcedf7); */
 }
 
 .title {
@@ -44,11 +43,12 @@
   background-color: white;
   text-align: left;
   transform: scale(1);
-  width: 500px;
-  height: 600px;
+  width: 100%;
+  max-width: 500px; 
+  height: auto; 
   border: 1px solid #ddd;
-  border-radius: 2px;
-  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
   gap: 20px;
   padding-top: 35px;
   padding-bottom: 35px;
@@ -57,12 +57,12 @@
 }
 
 .passwordWrapper {
-  position: relative; /* This allows absolute positioning of the button */
-  width: 100%; /* Adjust the width of the container */
+  position: relative;
+  width: 100%; 
 }
 
 .input {
-  width: 100%; /* Make the input take full width of the container */
+  width: 100%;
   padding: 12px 0;
   padding-left: 0px;
   margin-top: 20px;
@@ -75,18 +75,18 @@
 }
 
 .input::placeholder {
-  color: #ccc; /* Light grey color for placeholder */
+  color: #ccc; 
   font-style: italic;
 }
 
 .input:focus {
-  border-bottom: 2px solid #0582ca; /* Change the color on focus, e.g., blue */
+  border-bottom: 2px solid #0582ca; 
 }
 
 .sign_in_button {
-  width: 30%;
+  width: 100%;
   padding: 12px;
-  margin-left: -0px;
+  margin-left: -1px;
   font-size: 1rem;
   color: white;
   border: none;
@@ -113,8 +113,7 @@
   color: black;
   position: absolute;
   top: 50%;
-  width: 10%;
-  right: 0px; /* Adjust the right margin to your preference */
+  right: 0px;
   transform: translateY(-50%);
   background: transparent;
   border: none;
@@ -140,24 +139,84 @@
 }
 
 /* Responsive Design */
-@media (min-width: 768px) {
+
+/* PHONES */
+@media (max-width: 600px) {
   .mainContainer {
-    flex-direction: row; /* Switch to side-by-side layout on medium screens */
+    flex-direction: column;
   }
 
-  .rightContainer {
-    display: flex; /* Show the right container */
-    justify-content: center;
-    align-items: center;
-  }
-}
-
-@media (min-width: 1200px) {
-  .leftContainer {
-    padding: 100px; /* Increase padding for larger screens */
+  .container {
+    padding: 20px; 
   }
 
   .form {
-    max-width: 500px; /* Allow more width for larger screens */
+    width: 90%; 
+    padding: 20px;
+  }
+
+  .title {
+    font-size: 1.5rem;
+  }
+
+  .subtitle {
+    font-size: 0.9rem;
+  }
+}
+
+
+/* TABLETS */
+@media (min-width: 601px) and (max-width: 1024px) {
+  .mainContainer {
+    flex-direction: column; 
+  }
+
+  .form {
+    width: 80%;
+    padding: 30px; 
+  }
+
+  .title {
+    font-size: 1.8rem;
+  }
+
+  .subtitle {
+    font-size: 1rem; 
+  }
+}
+
+/* LAPTOPS */
+@media (min-width: 1025px) and (max-width: 1200px) {
+  .mainContainer {
+    flex-direction: row;
+  }
+
+  .form {
+    width: 60%;
+    padding: 40px; 
+  }
+
+  .title {
+    font-size: 1.9rem;
+  }
+}
+
+/* PCs */
+@media (min-width: 1201px) {
+  .mainContainer {
+    flex-direction: row; 
+  }
+
+  .form {
+    width: 50%; 
+    padding: 50px;
+  }
+
+  .title {
+    font-size: 2rem;
+  }
+
+  .subtitle {
+    font-size: 1.1rem; 
   }
 }
