@@ -8,7 +8,7 @@ const Navbar = ({ onToggleView }) => {
   // Initialize state with value from localStorage (if available) or default to "Home"
   const [activeLink, setActiveLink] = useState(() => {
     const savedView = localStorage.getItem("activeView");
-    return savedView ? savedView : "Home";
+    return savedView ? savedView : "Goals";
   });
 
   // List of links and their properties

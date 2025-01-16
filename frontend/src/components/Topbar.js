@@ -16,12 +16,15 @@ const Topbar = () => {
     const token = localStorage.getItem("authToken");
 
     const fetchUser = async () => {
-      const response = await fetch("http://localhost:5000/get-user", {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await fetch(
+        `${process.env.REACT_APP_API_URL}/get-user`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       const data = await response.json();
       if (response.ok) {
