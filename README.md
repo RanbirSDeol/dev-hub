@@ -7,18 +7,14 @@ Dev Hub is a fullstack application which is creating using React.js and Node, wh
 You can access a showcase of this project as: dev-hub-drab-theta.vercel.app/login. 
 (Note: It may take some time for the server to start)
 
-You can use the following account for testing:
+You can use the following account for testing: 
 
-Email: test@test.com
-Password: test12345
+[email: test@test.com | pass: test12345]
 
 ### Showcases
 
-Home Page For Goals
+Goals Page
 ![Photo](/public/homepage.png)
 
-Home Page For Projects
+Projects Page
 ![Photo](/public/projects.png)
-
-Creation Page For Goals
-![Photo](/public/create.png)
