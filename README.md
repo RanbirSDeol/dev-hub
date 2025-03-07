@@ -1,15 +1,15 @@
-# Dev Hub
+# Dev Hub  
 
-Dev Hub is a fullstack application which is creating using React.js and Node, which uses a SQLite3 database. This program allows you to create and track your goals, while also allowing you to track your projects created. Finally, you can fully manipulate your goals, and projects, since this program follows CRUD. Moreover, this project is fully responsive and works on all devices.
+Dev Hub is a full-stack application built with React.js and Node.js, using a SQLite3 database. It enables you to create, track, and manage your goals and projects, offering complete CRUD functionality. Additionally, this project is fully responsive, ensuring it works seamlessly across all devices.  
 
-### Hosting
+## Hosting  
 
-You can access a showcase of this project as: dev-hub-drab-theta.vercel.app/login. 
-(Note: It may take some time for the server to start)
+A live showcase of the project is available at: [dev-hub-drab-theta.vercel.app/login](https://dev-hub-drab-theta.vercel.app/login).  
+(Note: It may take a few moments for the server to start.)  
 
-You can use the following account for testing: 
-
-[email: test@test.com | pass: test12345]
+For testing purposes, use the following account credentials:  
+**Email:** test@test.com  
+**Password:** test12345
 
 ### Showcases
 
