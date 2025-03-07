@@ -225,7 +225,7 @@ const Dashboard = () => {
               <div className={styles.projectHeader}>
                 <img
                   src={`http://localhost:5000/uploads/${project.image}`}
-                  alt="Project"
+                  alt=""
                   className={styles.projectImage}
                 />
                 <p className={styles.projectTitle}>{project.title}</p>

@@ -160,7 +160,20 @@ const CreateProject = () => {
                 />
               </div>
 
-              <label className={styles.header}>Image:</label>
+              <button className={styles.button} type="submit">
+                Create Project
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
+    </>
+  );
+};
+
+/*
+
+<label className={styles.header}>Image:</label>
               <div className={styles.imageContainer}>
                 <input
                   type="file"
@@ -188,15 +201,6 @@ const CreateProject = () => {
                 )}
               </div>
 
-              <button className={styles.button} type="submit">
-                Create Project
-              </button>
-            </form>
-          </div>
-        </div>
-      )}
-    </>
-  );
-};
+*/
 
 export default CreateProject;
